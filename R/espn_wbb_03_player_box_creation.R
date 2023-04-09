@@ -73,9 +73,6 @@ wbb_player_box_games <- function(y) {
 
     ifelse(!dir.exists(file.path("wbb/player_box")), dir.create(file.path("wbb/player_box")), FALSE)
 
-    ifelse(!dir.exists(file.path("wbb/player_box/csv")), dir.create(file.path("wbb/player_box/csv")), FALSE)
-    data.table::fwrite(espn_df, file = paste0("wbb/player_box/csv/player_box_", y, ".csv.gz"))
-
     ifelse(!dir.exists(file.path("wbb/player_box/rds")), dir.create(file.path("wbb/player_box/rds")), FALSE)
     saveRDS(espn_df, glue::glue("wbb/player_box/rds/player_box_{y}.rds"))
 
@@ -93,7 +90,6 @@ wbb_player_box_games <- function(y) {
     )
   }
 
-  sched <- arrow::read_parquet(paste0("wbb/schedules/parquet/wbb_schedule_", y, ".parquet"))
   sched <- sched %>%
     dplyr::mutate(dplyr::across(dplyr::any_of(c(
       "id",

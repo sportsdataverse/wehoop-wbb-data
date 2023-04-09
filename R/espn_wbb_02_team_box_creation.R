@@ -75,8 +75,6 @@ wbb_team_box_games <- function(y) {
       wehoop:::make_wehoop_data("ESPN WBB Team Boxscores from wehoop data repository", Sys.time())
 
     ifelse(!dir.exists(file.path("wbb/team_box")), dir.create(file.path("wbb/team_box")), FALSE)
-    ifelse(!dir.exists(file.path("wbb/team_box/csv")), dir.create(file.path("wbb/team_box/csv")), FALSE)
-    data.table::fwrite(espn_df, file = paste0("wbb/team_box/csv/team_box_", y, ".csv.gz"))
 
     ifelse(!dir.exists(file.path("wbb/team_box/rds")), dir.create(file.path("wbb/team_box/rds")), FALSE)
     saveRDS(espn_df, glue::glue("wbb/team_box/rds/team_box_{y}.rds"))
@@ -95,7 +93,6 @@ wbb_team_box_games <- function(y) {
 
   }
 
-  sched <- arrow::read_parquet(paste0("wbb/schedules/parquet/wbb_schedule_", y, ".parquet"))
   sched <- sched %>%
     dplyr::mutate(dplyr::across(dplyr::any_of(c(
       "id",

@@ -78,15 +78,12 @@ wbb_pbp_games <- function(y) {
     cli::cli_progress_step(msg = "Updating {y} ESPN WBB PBP GitHub Release",
                            msg_done = "Updated {y} ESPN WBB PBP GitHub Release!")
   }
-  ifelse(!dir.exists(file.path("wbb/pbp")), dir.create(file.path("wbb/pbp")), FALSE)
-  ifelse(!dir.exists(file.path("wbb/pbp/csv")), dir.create(file.path("wbb/pbp/csv")), FALSE)
   if (nrow(espn_df) > 1) {
     espn_df <- espn_df %>%
       dplyr::arrange(dplyr::desc(.data$game_date)) %>%
       wehoop:::make_wehoop_data("ESPN WBB Play-by-Play from wehoop data repository", Sys.time())
 
-    data.table::fwrite(espn_df, file = paste0("wbb/pbp/csv/play_by_play_", y, ".csv.gz"))
-
+    ifelse(!dir.exists(file.path("wbb/pbp")), dir.create(file.path("wbb/pbp")), FALSE)
     ifelse(!dir.exists(file.path("wbb/pbp/rds")), dir.create(file.path("wbb/pbp/rds")), FALSE)
     saveRDS(espn_df, glue::glue("wbb/pbp/rds/play_by_play_{y}.rds"))
 
@@ -104,7 +101,6 @@ wbb_pbp_games <- function(y) {
     )
   }
 
-  sched <- arrow::read_parquet(paste0("wbb/schedules/parquet/wbb_schedule_", y, ".parquet"))
   sched <- sched %>%
     dplyr::mutate(dplyr::across(dplyr::any_of(c(
       "id",
