@@ -20,6 +20,6 @@ do
     git add wbb/* >> /dev/null
     git pull --rebase >> /dev/null
     git commit -m "WBB Data update (Start: $i End: $i)" >> /dev/null || echo "No changes to commit"
-    git pull  >> /dev/null
+    git pull --rebase  >> /dev/null
     git push  >> /dev/null
 done
