@@ -6,6 +6,8 @@ on:
     - cron: '0 7 * 11-12 *'
     - cron: '0 7 * 1-3 *'
     - cron: '0 7 1-12 4 *'
+  repository_dispatch:
+    types: [daily_wbb_data]
   workflow_dispatch:
     inputs:
       start_year:
@@ -65,10 +67,10 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install -r requirements.txt
       - name: Check for Inputs
-        if: ${{ env.START_YEAR == ''}}
+        if: ${{ env.START_YEAR == '' || github.event.client_payload.event_name == 'daily_wbb_data'}}
         run: |
-            echo START_YEAR=$(Rscript -e "wehoop::most_recent_wbb_season()") >> $GITHUB_ENV
-            echo END_YEAR=$(Rscript -e "wehoop::most_recent_wbb_season()") >> $GITHUB_ENV
+            echo START_YEAR=$(Rscript -e "cat(wehoop::most_recent_wbb_season())") >> $GITHUB_ENV
+            echo END_YEAR=$(Rscript -e "cat(wehoop::most_recent_wbb_season())") >> $GITHUB_ENV
       - name: Update WBB Data ${{ inputs.start_year }}-${{ inputs.end_year }} (Rescrape? ${{ inputs.rescrape }})
         env:
           GITHUB_PAT: ${{ secrets.SDV_GH_TOKEN }}
