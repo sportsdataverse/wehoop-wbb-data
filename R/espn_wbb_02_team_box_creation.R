@@ -87,6 +87,7 @@ wbb_team_box_games <- function(y) {
       file_name =  glue::glue("team_box_{y}"),
       sportsdataverse_type = "team boxscores data",
       release_tag = "espn_womens_college_basketball_team_boxscores",
+      pkg_function = "wehoop::load_wbb_team_box()",
       file_types = c("rds", "csv", "parquet"),
       .token = Sys.getenv("GITHUB_PAT")
     )

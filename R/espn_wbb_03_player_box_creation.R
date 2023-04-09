@@ -141,7 +141,7 @@ wbb_player_box_games <- function(y) {
     file_name =  glue::glue("wbb_schedule_{y}"),
     sportsdataverse_type = "schedule data",
     release_tag = "espn_womens_college_basketball_schedules",
-    pkg_function = "wehoop::load_wbb_schedules()",
+    pkg_function = "wehoop::load_wbb_schedule()",
     file_types = c("rds", "csv", "parquet"),
     .token = Sys.getenv("GITHUB_PAT")
   )
