@@ -4,14 +4,6 @@ gcol <- gc()
 # if (!requireNamespace("pacman", quietly = TRUE)) {
 #   install.packages("pacman", lib = Sys.getenv("R_LIBS"), repos = "http://cran.us.r-project.org")
 # }
-gpat <- Sys.getenv("GITHUB_PAT")
-sdv_gpat <- Sys.getenv("SDV_GH_TOKEN")
-cli::cli_alert_info(
-      "GPAT: {gpat}"
-)
-cli::cli_alert_info(
-      "SDV_GPAT: {sdv_gpat}"
-)
 suppressPackageStartupMessages(suppressMessages(library(dplyr)))
 suppressPackageStartupMessages(suppressMessages(library(magrittr)))
 suppressPackageStartupMessages(suppressMessages(library(jsonlite)))
