@@ -13,6 +13,7 @@ suppressPackageStartupMessages(suppressMessages(library(data.table)))
 suppressPackageStartupMessages(suppressMessages(library(arrow)))
 suppressPackageStartupMessages(suppressMessages(library(glue)))
 suppressPackageStartupMessages(suppressMessages(library(optparse)))
+suppressPackageStartupMessages(suppressMessages(library(tibble)))
 
 option_list <- list(
   make_option(
@@ -159,6 +160,112 @@ wbb_pbp_games <- function(y) {
       file_types = c("rds", "csv", "parquet"),
       .token = Sys.getenv("GITHUB_PAT")
     )
+
+    # --- Shots extraction (derived from in-memory PBP frame; no extra HTTP) ---
+    shots_df <- espn_df %>%
+      dplyr::filter(.data$shooting_play == TRUE) %>%
+      dplyr::select(
+        dplyr::any_of(c(
+          "game_id",
+          "season",
+          "period_number",
+          "clock_display_value",
+          "team_id",
+          "athlete_id_1",
+          "athlete_id_2",
+          "type_id",
+          "type_text",
+          "scoring_play",
+          "score_value",
+          "coordinate_x",
+          "coordinate_y",
+          "coordinate_x_raw",
+          "coordinate_y_raw"
+        ))
+      )
+
+    if (nrow(shots_df) > 0) {
+      shots_df <- shots_df %>%
+        wehoop:::make_wehoop_data(
+          "ESPN WBB Shots from wehoop data repository",
+          Sys.time()
+        )
+
+      ifelse(
+        !dir.exists(file.path("wbb/shots")),
+        dir.create(file.path("wbb/shots")),
+        FALSE
+      )
+      ifelse(
+        !dir.exists(file.path("wbb/shots/rds")),
+        dir.create(file.path("wbb/shots/rds")),
+        FALSE
+      )
+      ifelse(
+        !dir.exists(file.path("wbb/shots/parquet")),
+        dir.create(file.path("wbb/shots/parquet")),
+        FALSE
+      )
+      saveRDS(shots_df, glue::glue("wbb/shots/rds/shots_{y}.rds"))
+      arrow::write_parquet(
+        shots_df,
+        glue::glue("wbb/shots/parquet/shots_{y}.parquet"),
+        compression = "zstd",
+        compression_level = 22
+      )
+
+      cli::cli_progress_step(
+        msg = "Updating {y} ESPN WBB Shots GitHub Release",
+        msg_done = "Updated {y} ESPN WBB Shots GitHub Release!"
+      )
+
+      shots_retry_rate <- purrr::rate_backoff(
+        pause_base = 1,
+        pause_min = 1,
+        max_times = 5
+      )
+      purrr::insistently(
+        sportsdataversedata::sportsdataverse_save,
+        rate = shots_retry_rate,
+        quiet = FALSE
+      )(
+        data_frame = shots_df,
+        file_name = glue::glue("shots_{y}"),
+        sportsdataverse_type = "shots data",
+        release_tag = "espn_womens_college_basketball_shots",
+        pkg_function = "wehoop::load_wbb_pbp()",
+        file_types = c("rds", "csv", "parquet"),
+        .token = Sys.getenv("GITHUB_PAT")
+      )
+
+      shots_manifest_path <- "wbb/shots/wbb_shots_in_data_repo.csv"
+      ifelse(
+        !dir.exists(file.path("wbb/shots")),
+        dir.create(file.path("wbb/shots"), recursive = TRUE),
+        FALSE
+      )
+      shots_manifest_row <- tibble::tibble(
+        season = as.integer(y),
+        row_count = as.integer(nrow(shots_df)),
+        generated_at_utc = format(Sys.time(), tz = "UTC", usetz = TRUE),
+        source_endpoint = "derived from espn_wbb pbp"
+      )
+      if (file.exists(shots_manifest_path)) {
+        data.table::fwrite(
+          shots_manifest_row,
+          shots_manifest_path,
+          append = TRUE
+        )
+      } else {
+        data.table::fwrite(shots_manifest_row, shots_manifest_path)
+      }
+
+      rm(shots_df)
+    } else {
+      cli::cli_alert_info(
+        "{Sys.time()}: no shooting_play rows for {y}; skipping shots upload"
+      )
+    }
   }
 
   sched <- sched %>%
@@ -312,6 +419,22 @@ sched_g <- sched_g %>%
 # arrow::write_parquet(sched_g %>%
 #                        dplyr::filter(.data$PBP == TRUE) %>%
 #                        dplyr::arrange(dplyr::desc(.data$date)), "wbb/wbb_games_in_data_repo.parquet")
+
+# --- Manifest upload (idempotent -- overwrites release asset on each run) ----
+tryCatch({
+  source(file.path("R", "manifest_upload_helper.R"), local = TRUE)
+  upload_wbb_manifest(
+    manifest_path        = "wbb/shots/wbb_shots_in_data_repo.csv",
+    release_tag          = "espn_womens_college_basketball_shots",
+    file_name            = "wbb_shots_in_data_repo",
+    sportsdataverse_type = "shots manifest",
+    pkg_function         = "wehoop::load_wbb_shots_manifest()"
+  )
+}, error = function(e) {
+  cli::cli_alert_warning(
+    "{Sys.time()}: shots manifest upload failed (non-fatal): {e$message}"
+  )
+})
 
 cli::cli_progress_message("")
 
