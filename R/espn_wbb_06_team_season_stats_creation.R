@@ -87,10 +87,52 @@ list_team_ids <- function(season) {
   suppressWarnings(as.integer(ids[grepl("^[0-9]+$", ids)]))
 }
 
-# ESPN's team season stats payload uses parallel-array categories (same shape
-# as player season stats). Each category has labels[], names[], displayNames[],
-# descriptions[], totals[] aligned by index.
+# ESPN's team season stats payload comes in two shapes; we handle both.
+# Shape A (current endpoint): category[["stats"]] is a list of dicts, each
+# with name/displayName/shortDisplayName/description/abbreviation/value/
+# displayValue. Shape B (legacy / sibling player_season_stats endpoint):
+# parallel arrays — labels[], names[], displayNames[], descriptions[],
+# totals[] aligned by index.
 parse_one_category <- function(season, team_id, team_meta, category) {
+  cat_name <- safe_chr(category[["name"]]) %|%
+    safe_chr(category[["displayName"]]) %|%
+    NA_character_
+
+  # Shape A: list-of-dicts under `stats`.
+  stats_list <- category[["stats"]]
+  if (is.list(stats_list) && length(stats_list) > 0 &&
+      is.list(stats_list[[1]])) {
+    pluck_chr <- function(k) {
+      vapply(stats_list, function(s) safe_chr(s[[k]]), character(1))
+    }
+    pluck_num <- function(k) {
+      vapply(stats_list, function(s) {
+        v <- s[[k]]
+        if (is.null(v) || length(v) == 0) return(NA_real_)
+        suppressWarnings(as.numeric(v[[1]]))
+      }, numeric(1))
+    }
+    return(tibble::tibble(
+      season = season,
+      team_id = as.integer(team_id),
+      team_slug = team_meta$team_slug,
+      team_abbreviation = team_meta$team_abbreviation,
+      team_display_name = team_meta$team_display_name,
+      team_short_display_name = team_meta$team_short_display_name,
+      team_color = team_meta$team_color,
+      team_alternate_color = team_meta$team_alternate_color,
+      team_logo = team_meta$team_logo,
+      category = cat_name,
+      stat_label = pluck_chr("shortDisplayName"),
+      stat_name = pluck_chr("name"),
+      stat_display_name = pluck_chr("displayName"),
+      stat_description = pluck_chr("description"),
+      display_value = pluck_chr("displayValue"),
+      value = pluck_num("value")
+    ))
+  }
+
+  # Shape B fallback: parallel arrays.
   totals <- category[["totals"]] %||% category[["values"]] %||% list()
   if (length(totals) == 0) return(NULL)
 
@@ -114,10 +156,6 @@ parse_one_category <- function(season, team_id, team_meta, category) {
     if (length(x) >= n) return(as.character(x[seq_len(n)]))
     c(as.character(x), rep(NA_character_, n - length(x)))
   }
-
-  cat_name <- safe_chr(category[["name"]]) %|%
-    safe_chr(category[["displayName"]]) %|%
-    NA_character_
 
   num_val <- suppressWarnings(as.numeric(vals))
 
