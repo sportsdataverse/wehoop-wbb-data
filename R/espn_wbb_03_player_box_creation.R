@@ -60,8 +60,11 @@ wbb_player_box_games <- function(y) {
             resp <- glue::glue(
               "https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/json/final/{x}.json"
             )
-            player_box_score <- wehoop:::helper_espn_wbb_player_box(resp)
-            return(player_box_score)
+            tryCatch(
+              wehoop:::helper_espn_wbb_player_box(resp),
+              error = function(e) NULL,
+              warning = function(w) NULL
+            )
           },
           error = function(e) {
             message(glue::glue(

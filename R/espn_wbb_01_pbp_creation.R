@@ -84,8 +84,11 @@ wbb_pbp_games <- function(y) {
             resp <- glue::glue(
               "https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/json/final/{x}.json"
             )
-            pbp <- wehoop:::helper_espn_wbb_pbp(resp)
-            return(pbp)
+            tryCatch(
+              wehoop:::helper_espn_wbb_pbp(resp),
+              error = function(e) NULL,
+              warning = function(w) NULL
+            )
           },
           error = function(e) {
             message(glue::glue("{Sys.time()}: PBP data issue for {x}!"))
