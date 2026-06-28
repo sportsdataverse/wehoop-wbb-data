@@ -6,3 +6,4 @@ season,row_count,generated_at_utc,source_endpoint
 2026,9778,2026-06-07 09:10:47 UTC,https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/team_rosters/json/2026/<team_id>.json
 2026,9778,2026-06-14 09:46:23 UTC,https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/team_rosters/json/2026/<team_id>.json
 2026,9778,2026-06-21 10:07:31 UTC,https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/team_rosters/json/2026/<team_id>.json
+2026,9778,2026-06-28 09:06:07 UTC,https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/team_rosters/json/2026/<team_id>.json
