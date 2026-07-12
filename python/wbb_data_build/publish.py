@@ -11,9 +11,12 @@ import subprocess
 from pathlib import Path
 from typing import Callable
 
+from wbb_data_build._logging import get_logger, human_size
 from wbb_data_build.config import DatasetSpec
 
 DEFAULT_REPO = "sportsdataverse/sportsdataverse-data"
+
+log = get_logger()
 
 
 def _gh(args: list[str]) -> None:
@@ -74,7 +77,10 @@ def publish_dataset(
     run = runner or _gh
     exists = exists_check or _gh_release_exists
     files = _dataset_files(spec, season, Path(base))
+    if not files:
+        log.warning("%s %s: no files to publish under %s", spec.dataset, season, base)
     if not dry_run and not exists(spec.tag, repo):
+        log.info("release %s missing on %s -- creating it", spec.tag, repo)
         run(
             [
                 "release",
@@ -90,9 +96,12 @@ def publish_dataset(
         )
     count = 0
     for f in files:
+        size = human_size(f.stat().st_size)
         if dry_run:
-            print(f"[dry-run] upload {f} -> {repo}:{spec.tag}")
+            log.info("[dry-run] upload %s (%s) -> %s:%s", f, size, repo, spec.tag)
             continue
+        log.info("uploading %s (%s) -> %s:%s", f.name, size, repo, spec.tag)
         run(["release", "upload", spec.tag, str(f), "--repo", repo, "--clobber"])
         count += 1
+        log.info("uploaded %s -> %s (asset %d/%d)", f.name, spec.tag, count, len(files))
     return {"tag": spec.tag, "files": [str(f) for f in files], "uploaded": count}

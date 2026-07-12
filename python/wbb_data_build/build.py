@@ -8,13 +8,21 @@ season.
 
 from __future__ import annotations
 
+import sys
+import time
 from pathlib import Path
 
 import polars as pl
 from tqdm import tqdm
 
 from wbb_data_build import ingest, io, publish, reshapers
+from wbb_data_build._logging import get_logger
 from wbb_data_build.config import REGISTRY
+
+log = get_logger()
+
+# Non-TTY runs (CI) get a heartbeat line every N games instead of a tqdm bar.
+_PROGRESS_EVERY = 250
 
 
 def build_season(
@@ -54,33 +62,70 @@ def build_season(
         # ported to sportsdataverse.
         raise NotImplementedError(f"{dataset}: crosswalks still build via the R creation scripts")
     root = ingest.raw_root(raw_root)
+    started = time.monotonic()
+    mode = "http" if isinstance(root, str) else "disk"
     if dataset in reshapers.SEASON_BUILDERS:
         # Season-level datasets (schedules/shots/...) build from the raw season
         # tree and/or already-built parquets -- no per-game loop.
+        log.info("%s %s: season-level build starting (raw=%s via %s)", dataset, season, root, mode)
         out = reshapers.SEASON_BUILDERS[dataset](season, raw_root=root, base=Path(base))
         if out.height == 0:
+            log.warning(
+                "%s %s: season-level build produced 0 rows; nothing written", dataset, season
+            )
             return out
         io.write_dataset(out, spec, season, base=base)
         if publish_release or dry_run:
             publish.publish_dataset(spec, season, base=base, dry_run=dry_run)
+        log.info(
+            "%s %s: done -- %d rows in %.1fs",
+            dataset,
+            season,
+            out.height,
+            time.monotonic() - started,
+        )
         return out
     game_ids = ingest.season_game_ids(season, raw_root=root)
     if not game_ids:
+        log.warning(
+            "%s %s: no game_json games in the season schedule; nothing built", dataset, season
+        )
         return pl.DataFrame()
+    log.info(
+        "%s %s: per-game build starting -- %d games (raw=%s via %s)",
+        dataset,
+        season,
+        len(game_ids),
+        root,
+        mode,
+    )
     reshape = reshapers.RESHAPERS[spec.reshaper]
     frames: list[pl.DataFrame] = []
-    for gid in tqdm(game_ids, desc=f"{dataset} {season}"):
+    missing = 0
+    failed = 0
+    for n, gid in enumerate(tqdm(game_ids, desc=f"{dataset} {season}", disable=None), start=1):
         final = ingest.read_final(gid, raw_root=root)
         if final is None:
+            missing += 1
             continue
         try:
             frame = reshape(final, season=season, game_id=gid)
         except Exception as e:  # R tryCatch(...) -> NULL parity
-            print(f"{dataset} reshape failed for {gid}: {e}")
+            log.warning("%s %s: reshape failed for game %s: %s", dataset, season, gid, e)
+            failed += 1
             continue
         if frame is not None and frame.height:
             frames.append(frame)
+        if not sys.stderr.isatty() and n % _PROGRESS_EVERY == 0:
+            log.info("%s %s: %d/%d games processed", dataset, season, n, len(game_ids))
+    if missing:
+        log.warning(
+            "%s %s: %d/%d games had no readable payload", dataset, season, missing, len(game_ids)
+        )
+    if failed:
+        log.warning("%s %s: %d/%d games failed to reshape", dataset, season, failed, len(game_ids))
     if not frames:
+        log.warning("%s %s: 0 games reshaped; nothing written", dataset, season)
         return pl.DataFrame()
     out = pl.concat(frames, how="diagonal_relaxed")
     # R: every per-game season compile is arrange(desc(game_date)) before
@@ -90,4 +135,13 @@ def build_season(
     io.write_dataset(out, spec, season, base=base)
     if publish_release or dry_run:
         publish.publish_dataset(spec, season, base=base, dry_run=dry_run)
+    log.info(
+        "%s %s: done -- %d rows from %d/%d games in %.1fs",
+        dataset,
+        season,
+        out.height,
+        len(frames),
+        len(game_ids),
+        time.monotonic() - started,
+    )
     return out

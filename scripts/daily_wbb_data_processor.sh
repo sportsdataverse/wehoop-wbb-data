@@ -23,6 +23,11 @@ END_YEAR=${END_YEAR:-$START_YEAR}
 # R pipeline did (per-run cache under .wbb_raw_cache/, gitignored).
 export WEHOOP_WBB_RAW_ROOT="${WEHOOP_WBB_RAW_ROOT:-https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main}"
 
+# Scrape-log conventions: unbuffered + utf-8 so wbb_data_build's timestamped
+# log lines land in the Actions console AND the tee'd season logfile live.
+export PYTHONUNBUFFERED=1
+export PYTHONIOENCODING=utf-8
+
 # Dependency order: pbp/team_box/player_box first (schedules reads their
 # game-id sets; shots read the pbp parquet), then the rest.
 PY_DATASETS="pbp team_box player_box schedules shots rosters player_season_stats team_season_stats standings game_rosters officials"
@@ -41,25 +46,35 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
     git config --local user.name "Github Action"
     SEASON_RC=0
 
+    # ::group:: markers collapse each dataset in the Actions UI; in the tee'd
+    # season logfile they read as plain section headers.
     run_py() {
       local ds="$1"
+      echo "::group::wbb_data_build $ds $i"
       (cd python && uv run python -m wbb_data_build --dataset "$ds" --base ../wbb -s "$i" -e "$i" --publish) || {
         rc=$?; echo "::warning ::wbb_data_build $ds for season $i exited with code $rc"; SEASON_RC=$rc
       }
+      echo "::endgroup::"
     }
     for ds in $PY_DATASETS; do run_py "$ds"; done
 
     for SCRIPT in "${R_CROSSWALKS[@]}"; do
+      echo "::group::$SCRIPT $i"
       Rscript "$SCRIPT" -s "$i" -e "$i" || {
         rc=$?; echo "::warning ::$SCRIPT for season $i exited with code $rc"; SEASON_RC=$rc
       }
+      echo "::endgroup::"
     done
 
+    echo "::group::serialize_rds $i"
     Rscript R/serialize_rds.R -s "$i" -e "$i" || {
       rc=$?; echo "::warning ::serialize_rds for season $i exited with code $rc"; SEASON_RC=$rc
     }
+    echo "::endgroup::"
 
     echo "RSCRIPT_RC=$SEASON_RC" > "/tmp/_rc_${i}"
+    # Grep-able terminal line for the season logfile (scrape-log convention).
+    echo "season $i EXIT=$SEASON_RC"
     # Commit whatever datasets succeeded even if one step errored -- the
     # per-dataset tryCatch/warning handling keeps partial output usable.
     git pull >/dev/null

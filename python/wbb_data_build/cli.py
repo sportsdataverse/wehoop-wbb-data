@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import argparse
 
+from wbb_data_build._logging import get_logger
 from wbb_data_build.build import build_season
 from wbb_data_build.config import REGISTRY
+
+log = get_logger()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -28,5 +31,5 @@ def main(argv: list[str] | None = None) -> int:
             publish_release=a.publish,
             dry_run=a.dry_run,
         )
-        print(f"{a.dataset} {season}: {df.height} rows")
+        log.info("%s %s: season complete -- %d rows", a.dataset, season, df.height)
     return 0
