@@ -25,13 +25,11 @@ env:
 
 jobs:
   update_wbb_data:
-    runs-on: ${{ matrix.config.os }}
+    # Python (wbb_data_build) owns the 11 raw-derived datasets; R is retained
+    # for the crosswalks (wbb_11-13), serialize_rds.R, and run_summary.R.
+    # ubuntu matches daily_cfb (the previous windows matrix predates the cutover).
+    runs-on: ubuntu-latest
     name: Update WBB Data ${{ inputs.start_year }}-${{ inputs.end_year }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {os: 'windows-latest', r: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -46,8 +44,7 @@ jobs:
       - name: Setting up R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
+          r-version: 'release'
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -59,6 +56,17 @@ jobs:
             sportsdataverse/wehoop
             sportsdataverse/sportsdataverse-data
             ropensci/piggyback
+
+      - name: Set up uv + Python
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+          enable-cache: true
+          cache-dependency-glob: python/uv.lock
+
+      - name: Install Python deps
+        working-directory: python
+        run: uv sync
 
       - name: Extract years from trigger dispatch
         if: ${{ github.event.client_payload.event_name == 'daily_wbb_data' }}
@@ -85,8 +93,9 @@ jobs:
       - name: Update WBB Data ${{ env.START_YEAR }}-${{ env.END_YEAR }}
         shell: bash
         env:
-          GITHUB_PAT: ${{ secrets.SDV_GH_TOKEN }}
+          GITHUB_PAT: ${{ secrets.SDV_GH_TOKEN }}   # R piggyback/sportsdataversedata + contents API
+          GH_TOKEN: ${{ secrets.SDV_GH_TOKEN }}      # gh CLI publish (wbb_data_build)
           SPORTSDATAVERSE.UPLOAD.QUIET: FALSE
           SPORTSDATAVERSE.UPLOAD.MAX_TIMES: 20
         run: |
-          bash scripts/daily_wbb_R_processor.sh -s ${{ env.START_YEAR }} -e ${{ env.END_YEAR }}
+          bash scripts/daily_wbb_data_processor.sh -s ${{ env.START_YEAR }} -e ${{ env.END_YEAR }}
