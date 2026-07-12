@@ -30,6 +30,17 @@ Creation scripts run in order: `espn_wbb_01_pbp` (also writes schedules + the
 
 `GITHUB_PAT` is required for uploads (CI injects `secrets.SDV_GH_TOKEN`).
 
+A **Python producer** (`python/wbb_data_build/`, uv + polars, parity-tested
+against the released parquets) now exists alongside the R scripts for the 11
+raw-derived datasets — see `python/wbb_data_build/README.md`. The daily cron
+still runs the R pipeline; the cutover is a separate follow-up. The three
+crosswalk datasets remain R-only (live ESPN+Torvik+Fox inputs).
+
+```sh
+cd python && uv run pytest        # offline parity + smoke suite
+uv run python -m wbb_data_build --dataset team_box -s 2025 -e 2025 --dry-run
+```
+
 ## Outputs
 
 Local committed output under `wbb/<dataset>/{rds,csv,parquet}/`; each script
