@@ -39,4 +39,9 @@ def test_pbp_parity(season, tmp_path):
         # re-scraped since the oracle was compiled (the released 2025 and
         # 2026 assets already disagree on order), so order is not asserted.
         require_order=False,
+        # Deliberate improvement: R/jsonlite has no int64, so the released
+        # `id` is Float64 and collides above 2^53 (adjacent ~4e17 play ids
+        # round to the same double). The Python producer emits exact Int64;
+        # values still compare equal under the oracle's lossy Float64 view.
+        dtype_upgrades={"id": (pl.Int64(), pl.Float64())},
     )

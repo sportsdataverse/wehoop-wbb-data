@@ -19,6 +19,7 @@ def assert_parquet_parity(
     sample_cols: list[str],
     r_only_all_null_ok: tuple[str, ...] = (),
     require_order: bool = True,
+    dtype_upgrades: dict[str, tuple[pl.DataType, pl.DataType]] | None = None,
 ) -> None:
     r = pl.read_parquet(r_parquet)
     if r_only_all_null_ok:
@@ -50,12 +51,22 @@ def assert_parquet_parity(
         assert py.columns == list(r.columns), (
             f"column order diverges: py={py.columns} r={list(r.columns)}"
         )
+    # Deliberate dtype improvements over the R release: each entry pins the
+    # exact (py, r) dtype pair, and values are still compared under the
+    # oracle's (lossy) dtype so an unintended drift can't hide behind it.
+    upgrades = dtype_upgrades or {}
+    for c, (py_dtype, r_dtype) in upgrades.items():
+        assert py.schema[c] == py_dtype, f"{c}: expected py dtype {py_dtype}, got {py.schema[c]}"
+        assert r.schema[c] == r_dtype, f"{c}: expected oracle dtype {r_dtype}, got {r.schema[c]}"
     for c in keys + sample_cols:
+        if c in upgrades:
+            continue
         assert py.schema[c] == r.schema[c], (
             f"dtype mismatch on {c}: py={py.schema[c]} r={r.schema[c]}"
         )
     assert py.height == r.height, f"row count: py={py.height} r={r.height}"
     cols = keys + sample_cols
-    pys = py.sort(keys).select(cols)
+    py_cmp = py.with_columns([pl.col(c).cast(r.schema[c]) for c in upgrades if c in cols])
+    pys = py_cmp.sort(keys).select(cols)
     rs = r.sort(keys).select(cols)
     assert pys.equals(rs), "value mismatch on keys+sample cols after sort"

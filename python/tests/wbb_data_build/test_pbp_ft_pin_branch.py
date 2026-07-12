@@ -59,8 +59,10 @@ def test_ft_pin_and_flip_on_relabeled_real_payload():
     marked = {}
     for label, play in (("home", home_play), ("away", away_play), ("bare", bare_play)):
         play["type.text"] = _HISTORICAL_FT
-        # Row locator: game_play_number (Int32, unique per game) -- the Float64
-        # play `id` collides at 1e17 magnitude (an artifact R shares).
+        # Row locator: game_play_number (Int32, unique per game). The play
+        # `id` is Int64 in the Python producer (exact), but the R releases
+        # ship it Float64 with 1e17-magnitude collisions -- keep the habit of
+        # never keying on it.
         marked[label] = play["game_play_number"]
 
     df = helper_wbb_play_by_play(final)
