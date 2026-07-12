@@ -1530,6 +1530,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "polars" },
     { name = "pyarrow" },
+    { name = "requests" },
     { name = "sportsdataverse" },
     { name = "tqdm" },
 ]
@@ -1543,6 +1544,7 @@ dev = [
 requires-dist = [
     { name = "polars", specifier = ">=1.0,<2.0" },
     { name = "pyarrow", specifier = ">=15.0" },
+    { name = "requests", specifier = ">=2.28" },
     { name = "sportsdataverse", git = "https://github.com/sportsdataverse/sportsdataverse-py?branch=main" },
     { name = "tqdm", specifier = ">=4.66" },
 ]

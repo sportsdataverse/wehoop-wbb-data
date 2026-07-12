@@ -7,6 +7,7 @@ dependencies = [
     "sportsdataverse>=0.0.71",
     "polars>=1.0,<2.0",
     "pyarrow>=15.0",
+    "requests>=2.28",
     "tqdm>=4.66",
 ]
 
