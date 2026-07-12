@@ -51,3 +51,20 @@ All released oracles below are downloaded from the matching
   `released/game_rosters_2026.parquet` (80 rows),
   `released/officials_2026.parquet` (9 rows) — each from its
   `espn_womens_college_basketball_*` tag, filtered to the 3 2026 game-ids.
+
+## Captured 2026-07-12 (third wave — season-level datasets, 2026)
+
+- **Two teams**: `197` and `2429` (the two teams of fixture game 401804834).
+  `raw/wbb/team_rosters/json/2026/{197,2429}.json` and
+  `raw/wbb/team_stats/json/2026/{197,2429}.json` verbatim from `wehoop-wbb-raw`.
+- **Five athletes**: `raw/wbb/player_season_stats/json/2026/*.json` — the
+  intersection of those two teams' rostered athletes with the athletes present
+  in the released `player_season_stats_2026` asset (the release predates most
+  of the raw files, so only 5 of 27 raw athletes appear in the oracle).
+- **Standings**: `raw/wbb/standings/json/2026.json` = the raw season standings
+  JSON trimmed to its first two `children` (conference groups `1` and `62`);
+  the full raw file is 6.8MB.
+- **Oracles**: `released/rosters_2026.parquet` (27 rows, team_id-filtered),
+  `released/team_season_stats_2026.parquet` (90 rows),
+  `released/player_season_stats_2026.parquet` (210 rows, athlete-filtered),
+  `released/standings_2026.parquet` (1848 rows, group_id-filtered).

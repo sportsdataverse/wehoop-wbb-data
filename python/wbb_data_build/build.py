@@ -48,6 +48,16 @@ def build_season(
     """
     spec = REGISTRY[dataset]
     root = ingest.raw_root(raw_root)
+    if dataset in reshapers.SEASON_BUILDERS:
+        # Season-level datasets (schedules/shots/...) build from the raw season
+        # tree and/or already-built parquets -- no per-game loop.
+        out = reshapers.SEASON_BUILDERS[dataset](season, raw_root=root, base=Path(base))
+        if out.height == 0:
+            return out
+        io.write_dataset(out, spec, season, base=base)
+        if publish_release or dry_run:
+            publish.publish_dataset(spec, season, base=base, dry_run=dry_run)
+        return out
     game_ids = ingest.season_game_ids(season, raw_root=root)
     if not game_ids:
         return pl.DataFrame()
@@ -67,6 +77,10 @@ def build_season(
     if not frames:
         return pl.DataFrame()
     out = pl.concat(frames, how="diagonal_relaxed")
+    # R: every per-game season compile is arrange(desc(game_date)) before
+    # write/publish (stable, NA last).
+    if "game_date" in out.columns:
+        out = out.sort("game_date", descending=True, nulls_last=True, maintain_order=True)
     io.write_dataset(out, spec, season, base=base)
     if publish_release or dry_run:
         publish.publish_dataset(spec, season, base=base, dry_run=dry_run)

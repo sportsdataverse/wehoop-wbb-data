@@ -25,3 +25,8 @@ pythonpath = ["."]
 
 [tool.ruff]
 line-length = 100
+
+[tool.ruff.lint]
+# Explicit polars bool masks (pl.col("c") == True/False) are the project
+# convention (see sdv-py CLAUDE.md "Polars version"); E712 fights that.
+ignore = ["E712"]
