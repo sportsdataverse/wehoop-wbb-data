@@ -13,6 +13,12 @@ dependencies = [
 [dependency-groups]
 dev = ["pytest>=8.0"]
 
+# Dev-period source: the sdv-py feature worktree carrying the new helper_wbb_*
+# producers. Flip to the sibling root (../../../sdv-py) or the released pin once
+# sdv-py feat/wbb-python-producer merges (tracked in the SDD ledger).
+[tool.uv.sources]
+sportsdataverse = { path = "../../../sdv-py/.claude/worktrees/wbb-python-producer", editable = true }
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]

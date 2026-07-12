@@ -19,6 +19,10 @@ def assert_parquet_parity(
         f"column set diverges: only-py={set(py.columns) - set(r.columns)}, "
         f"only-r={set(r.columns) - set(py.columns)}"
     )
+    # Column ORDER is part of the released-parquet contract (R select order).
+    assert py.columns == list(r.columns), (
+        f"column order diverges: py={py.columns} r={list(r.columns)}"
+    )
     for c in keys + sample_cols:
         assert py.schema[c] == r.schema[c], (
             f"dtype mismatch on {c}: py={py.schema[c]} r={r.schema[c]}"
