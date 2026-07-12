@@ -17,6 +17,10 @@ from sportsdataverse.wbb import (
     helper_wbb_team_box,
 )
 
+from wbb_data_build._logging import get_logger
+
+log = get_logger()
+
 
 def team_box_reshaper(final: dict, *, season: int, game_id: int) -> pl.DataFrame:
     return helper_wbb_team_box(final)
@@ -115,7 +119,7 @@ def _sidecar_builder(subdir: str, helper) -> object:
             try:
                 frame = helper(payload, season=season, game_id=gid)
             except Exception as e:  # R tryCatch(...) -> NULL parity
-                print(f"{subdir} parse failed for {gid}: {e}")
+                log.warning("%s: parse failed for game %s: %s", subdir, gid, e)
                 continue
             if frame.height:
                 frames.append(frame)
@@ -152,7 +156,7 @@ def _per_entity_frames(
         try:
             frame = helper(payload, **{"season": season, id_kw: eid})
         except Exception as e:  # R tryCatch(...) -> NULL parity
-            print(f"{subdir} parse failed for {eid}: {e}")
+            log.warning("%s: parse failed for entity %s: %s", subdir, eid, e)
             continue
         if frame.height:
             frames.append(frame)

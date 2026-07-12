@@ -14,9 +14,12 @@ from pathlib import Path
 
 import polars as pl
 
+from wbb_data_build._logging import get_logger, human_size
 from wbb_data_build.config import DatasetSpec
 
 _LEAGUE = "wbb"
+
+log = get_logger()
 
 
 def _utc_now_str() -> str:
@@ -53,5 +56,15 @@ def write_dataset(
     csv = csv_dir / f"{spec.stem}_{season}.csv"
     df.write_parquet(pq)
     df.write_csv(csv)
-    _append_manifest(spec, season, df.height, base)
+    manifest = _append_manifest(spec, season, df.height, base)
+    log.info(
+        "wrote %s (%s) + %s (%s), %d rows x %d cols; manifest %s upserted",
+        pq,
+        human_size(pq.stat().st_size),
+        csv.name,
+        human_size(csv.stat().st_size),
+        df.height,
+        df.width,
+        manifest.name,
+    )
     return [pq, csv]
