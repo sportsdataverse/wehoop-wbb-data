@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Python producer for the ESPN WBB release datasets (parity port of the R creation scripts)."
 requires-python = ">=3.11"
 dependencies = [
-    "sportsdataverse>=0.0.72",
+    "sportsdataverse>=0.0.71",
     "polars>=1.0,<2.0",
     "pyarrow>=15.0",
     "tqdm>=4.66",
