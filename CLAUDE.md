@@ -11,13 +11,17 @@ Pipeline: `ESPN -> wehoop-wbb-raw --push--> wehoop-wbb-data [HERE] --release--> 
 
 ## Commands (verified)
 
-Driven by `scripts/daily_wbb_R_processor.sh` (getopts `-s -e`; loops seasons,
-runs each creation script, commits + pushes). Reads raw JSON from
-`raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw`, not a local clone.
+Driven by `scripts/daily_wbb_data_processor.sh` (getopts `-s -e`; Python
+`wbb_data_build` builds + publishes the 11 raw-derived datasets, then R runs
+the crosswalks, `serialize_rds.R`, and `run_summary.R`; commits + pushes).
+Reads raw JSON from `raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw`
+over HTTP (the 58GB raw repo is never cloned), caching under `.wbb_raw_cache/`.
 
 ```sh
-bash scripts/daily_wbb_R_processor.sh -s 2025 -e 2025   # full daily compile
-Rscript R/espn_wbb_01_pbp_creation.R -s 2025 -e 2025     # any single creation script
+bash scripts/daily_wbb_data_processor.sh -s 2025 -e 2025   # full daily compile (CI entry point)
+bash scripts/daily_wbb_R_processor.sh -s 2025 -e 2025      # legacy full-R fallback (manual only)
+Rscript R/espn_wbb_01_pbp_creation.R -s 2025 -e 2025        # any single R creation script
+Rscript R/serialize_rds.R -s 2025 -e 2025 --no-upload       # parquet -> rds, local only
 ```
 
 Creation scripts run in order: `espn_wbb_01_pbp` (also writes schedules + the
@@ -30,11 +34,11 @@ Creation scripts run in order: `espn_wbb_01_pbp` (also writes schedules + the
 
 `GITHUB_PAT` is required for uploads (CI injects `secrets.SDV_GH_TOKEN`).
 
-A **Python producer** (`python/wbb_data_build/`, uv + polars, parity-tested
-against the released parquets) now exists alongside the R scripts for the 11
-raw-derived datasets — see `python/wbb_data_build/README.md`. The daily cron
-still runs the R pipeline; the cutover is a separate follow-up. The three
-crosswalk datasets remain R-only (live ESPN+Torvik+Fox inputs).
+The **Python producer** (`python/wbb_data_build/`, uv + polars, parity-tested
+against the released parquets) owns the 11 raw-derived datasets in the daily
+cron — see `python/wbb_data_build/README.md`. R is retained for the three
+crosswalk datasets (live ESPN+Torvik+Fox inputs), the `.rds` serialization
+(`R/serialize_rds.R` — wehoop's `load_wbb_*` reads rds), and `run_summary.R`.
 
 ```sh
 cd python && uv run pytest        # offline parity + smoke suite

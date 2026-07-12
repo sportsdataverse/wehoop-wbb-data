@@ -7,17 +7,18 @@ dependencies = [
     "sportsdataverse>=0.0.71",
     "polars>=1.0,<2.0",
     "pyarrow>=15.0",
+    "requests>=2.28",
     "tqdm>=4.66",
 ]
 
 [dependency-groups]
 dev = ["pytest>=8.0"]
 
-# Dev-period source: the sdv-py feature worktree carrying the new helper_wbb_*
-# producers. Flip to the sibling root (../../../sdv-py) or the released pin once
-# sdv-py feat/wbb-python-producer merges (tracked in the SDD ledger).
+# sdv-py main carries the helper_wbb_* producers (PRs #243/#245); PyPI 0.0.71
+# does not. CI-resolvable on a fresh runner. Pin to the released version once
+# one ships.
 [tool.uv.sources]
-sportsdataverse = { path = "../../../sdv-py/.claude/worktrees/wbb-python-producer", editable = true }
+sportsdataverse = { git = "https://github.com/sportsdataverse/sportsdataverse-py", branch = "main" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

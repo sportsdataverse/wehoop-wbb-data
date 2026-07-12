@@ -25,9 +25,13 @@ wehoop-wbb-raw (sibling, on disk)
 
 ```sh
 cd python
-uv sync                                  # sportsdataverse comes from the
-                                         # [tool.uv.sources] editable path
-export WEHOOP_WBB_RAW_ROOT=/path/to/wehoop-wbb-raw   # or pass raw_root=
+uv sync            # sportsdataverse resolves from git+main ([tool.uv.sources])
+
+# raw_root: a sibling checkout on disk...
+export WEHOOP_WBB_RAW_ROOT=/path/to/wehoop-wbb-raw
+# ...or (what CI uses -- the 58GB raw repo is never cloned) the HTTP base:
+export WEHOOP_WBB_RAW_ROOT=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main
+# HTTP mode caches per-game JSON under $WEHOOP_WBB_CACHE (default .wbb_raw_cache/)
 ```
 
 ## CLI
@@ -51,5 +55,8 @@ All 11 raw-derived datasets are parity-green against the released assets:
 not the raw repo, and move to Python when those source surfaces land in
 sportsdataverse.
 
-The cron cutover (running this producer in `daily_wbb.yml` + the R
-`saveRDS` serialize step for the `.rds` assets) is a separate follow-up.
+The daily cron (`.github/workflows/daily_wbb.yml` →
+`scripts/daily_wbb_data_processor.sh`) runs this producer for all 11
+datasets, then R serializes each parquet to `.rds` (`R/serialize_rds.R`,
+rds-only upload — wehoop's `load_wbb_*` reads rds) and runs the crosswalks
+and `run_summary.R`.
