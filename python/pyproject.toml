@@ -1,0 +1,21 @@
+[project]
+name = "wehoop-wbb-data-build"
+version = "0.1.0"
+description = "Python producer for the ESPN WBB release datasets (parity port of the R creation scripts)."
+requires-python = ">=3.11"
+dependencies = [
+    "sportsdataverse>=0.0.72",
+    "polars>=1.0,<2.0",
+    "pyarrow>=15.0",
+    "tqdm>=4.66",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
