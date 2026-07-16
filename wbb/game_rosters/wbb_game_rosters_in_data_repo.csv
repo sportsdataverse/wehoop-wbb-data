@@ -2,4 +2,5 @@ season,row_count,generated_at_utc,source_endpoint
 2004,620,2026-07-16 22:08:47 UTC,
 2005,1181,2026-07-16 22:32:14 UTC,
 2006,2401,2026-07-16 23:49:14 UTC,
+2007,5024,2026-07-16 23:56:42 UTC,
 2026,168228,2026-05-30 09:15:56 UTC,https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/game_rosters/json/<game_id>.json
