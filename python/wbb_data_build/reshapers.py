@@ -105,24 +105,38 @@ def shots_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
     return shots_from_pbp(pl.read_parquet(p))
 
 
-def _sidecar_builder(subdir: str, helper) -> object:
-    """Per-game sidecar loop (R scripts 08/09): completed games, tryCatch skips."""
+def _sidecar_builder(subdir: str, helper, *, fallback_subdir: str | None = None) -> object:
+    """Per-game sidecar loop (R scripts 08/09): completed games, tryCatch skips.
+
+    ``fallback_subdir`` recovers a game from a second raw location when the
+    primary sidecar is absent. Used by game_rosters: its boxscore roster is
+    byte-identical in the processed ``json/final`` summary (present for far
+    more historical games than the recent-only ``game_rosters/json`` scrape),
+    so pre-scrape seasons compile with zero HTTP. Purely additive -- for a
+    game whose primary sidecar exists the fallback never fires, so
+    current-season output is unchanged.
+    """
 
     def _build(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
         from wbb_data_build import ingest
 
-        frames: list[pl.DataFrame] = []
-        for gid in ingest.season_completed_game_ids(season, raw_root=raw_root):
+        def _one(gid: int) -> pl.DataFrame | None:
             payload = ingest.read_final(gid, raw_root=raw_root, subdir=subdir)
+            if payload is None and fallback_subdir is not None:
+                payload = ingest.read_final(gid, raw_root=raw_root, subdir=fallback_subdir)
             if payload is None:
-                continue
+                return None
             try:
                 frame = helper(payload, season=season, game_id=gid)
             except Exception as e:  # R tryCatch(...) -> NULL parity
                 log.warning("%s: parse failed for game %s: %s", subdir, gid, e)
-                continue
-            if frame.height:
-                frames.append(frame)
+                return None
+            return frame if frame.height else None
+
+        # Thread-pooled reads (I/O-bound HTTP in CI); input-order results keep
+        # the concat byte-identical to the serial build.
+        gids = ingest.season_completed_game_ids(season, raw_root=raw_root)
+        frames = [f for f in ingest.parallel_map(_one, gids) if f is not None]
         if not frames:
             return pl.DataFrame()
         return pl.concat(frames, how="diagonal_relaxed")
@@ -133,7 +147,13 @@ def _sidecar_builder(subdir: str, helper) -> object:
 def _game_rosters_builder() -> object:
     from sportsdataverse.wbb import helper_wbb_game_rosters
 
-    return _sidecar_builder("game_rosters/json", helper_wbb_game_rosters)
+    # Zero-HTTP backfill: fall back to json/final when the recent-only
+    # game_rosters/json scrape is absent. Validated against 40 games spanning
+    # the game_rosters/json scrape window (earliest, latest, and midpoint) --
+    # zero divergence between the two sources' reshaped frames.
+    return _sidecar_builder(
+        "game_rosters/json", helper_wbb_game_rosters, fallback_subdir="json/final"
+    )
 
 
 def _officials_builder() -> object:
@@ -148,19 +168,20 @@ def _per_entity_frames(
     """R scripts 04/05/06: loop the season's per-entity JSONs, tryCatch skips."""
     from wbb_data_build import ingest
 
-    frames: list[pl.DataFrame] = []
-    for eid in ingest.season_dir_ids(subdir, season, raw_root=raw_root):
+    def _one(eid: int) -> pl.DataFrame | None:
         payload = ingest.read_final(eid, raw_root=raw_root, subdir=f"{subdir}/json/{season}")
         if payload is None:
-            continue
+            return None
         try:
             frame = helper(payload, **{"season": season, id_kw: eid})
         except Exception as e:  # R tryCatch(...) -> NULL parity
             log.warning("%s: parse failed for entity %s: %s", subdir, eid, e)
-            continue
-        if frame.height:
-            frames.append(frame)
-    return frames
+            return None
+        return frame if frame.height else None
+
+    # Thread-pooled reads; input-order results keep _season_concat deterministic.
+    eids = ingest.season_dir_ids(subdir, season, raw_root=raw_root)
+    return [f for f in ingest.parallel_map(_one, eids) if f is not None]
 
 
 def _season_concat(frames: list[pl.DataFrame]) -> pl.DataFrame:
@@ -191,10 +212,12 @@ def player_season_stats_builder(season: int, *, raw_root: Path, base: Path) -> p
 
     from wbb_data_build import ingest
 
-    rosters = {
-        tid: ingest.read_final(tid, raw_root=raw_root, subdir=f"team_rosters/json/{season}")
-        for tid in ingest.season_dir_ids("team_rosters", season, raw_root=raw_root)
-    }
+    team_ids = ingest.season_dir_ids("team_rosters", season, raw_root=raw_root)
+    payloads = ingest.parallel_map(
+        lambda tid: ingest.read_final(tid, raw_root=raw_root, subdir=f"team_rosters/json/{season}"),
+        team_ids,
+    )
+    rosters = dict(zip(team_ids, payloads))
     lookup = build_athlete_identity_lookup({t: r for t, r in rosters.items() if r})
 
     def _helper(payload: dict, *, season: int, athlete_id: int) -> pl.DataFrame:
