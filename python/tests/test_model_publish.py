@@ -74,10 +74,14 @@ def test_builders_refuse_an_empty_season(tmp_path):
 
 
 def test_builders_reject_seasons_below_the_floor(tmp_path):
-    with pytest.raises(ValueError, match=str(MIN_SEASON)):
-        build_ratings([MIN_SEASON - 1], tmp_path, compute=_fake_ratings)
-    with pytest.raises(ValueError, match=str(MIN_SEASON)):
-        build_player_value([MIN_SEASON - 1], tmp_path, compute=_fake_bpm)
+    from wbb_model_publish.builders import MIN_SEASON_PLAYER_VALUE, MIN_SEASON_RATINGS
+
+    with pytest.raises(ValueError, match=str(MIN_SEASON_RATINGS)):
+        build_ratings([MIN_SEASON_RATINGS - 1], tmp_path, compute=_fake_ratings)
+    with pytest.raises(ValueError, match=str(MIN_SEASON_PLAYER_VALUE)):
+        build_player_value([MIN_SEASON_PLAYER_VALUE - 1], tmp_path, compute=_fake_bpm)
+    # ratings' wider floor must NOT gate player-value's builder and vice versa
+    assert MIN_SEASON_RATINGS < MIN_SEASON_PLAYER_VALUE
 
 
 def test_cards_carry_tag_and_seasons(tmp_path):
