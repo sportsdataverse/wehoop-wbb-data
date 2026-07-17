@@ -18,11 +18,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-# Probed against the released assets (2026-07-16): early WBB coverage is thin
-# AND holey -- 2003/2005 crash empty, 2004=64 teams, 2008=271, then a
-# 2009-2013 hole (9-174 teams). Stable real coverage starts at 2014 (340
-# teams, up to ~620 by 2025).
-MIN_SEASON = 2014
+# Probed against the released assets AFTER the boxscoreAvailable-flag fix
+# (sdv-py#275) + the throttle-retry re-extraction (2026-07-17). The old
+# "2009-2013 hole" was those two bugs, not ESPN: recovered team counts are
+# 2008=354 (260 with >=5 games -- BETTER than the originally-published
+# 2014's 187), 2009-2013 = 240-348. 2004-2007 stay out (4-70 teams with
+# >=5 games: too sparse for opponent adjustment).
+MIN_SEASON = 2008
 
 
 def _build_seasonal(
