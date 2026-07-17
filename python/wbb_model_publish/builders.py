@@ -18,8 +18,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-# The released ESPN WBB boxscore assets start at 2002.
-MIN_SEASON = 2002
+# Probed against the released assets (2026-07-16): early WBB coverage is thin
+# AND holey -- 2003/2005 crash empty, 2004=64 teams, 2008=271, then a
+# 2009-2013 hole (9-174 teams). Stable real coverage starts at 2014 (340
+# teams, up to ~620 by 2025).
+MIN_SEASON = 2014
 
 
 def _build_seasonal(
@@ -130,10 +133,7 @@ def write_player_value_card(results: list[dict], out_dir) -> Path:
         out_dir,
         tag="wbb_player_value",
         grain="one row per (player_id, season, team_id)",
-        source=(
-            "sdv-py sportsdataverse.wbb.wbb_box_bpm() over the "
-            "released ESPN player boxscores"
-        ),
+        source=("sdv-py sportsdataverse.wbb.wbb_box_bpm() over the released ESPN player boxscores"),
         notes=[
             "Box Plus/Minus with the team constraint: minutes-weighted player"
             " scores sum to the team's adjusted efficiency margin (points per"
