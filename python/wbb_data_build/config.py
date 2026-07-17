@@ -12,6 +12,17 @@ from dataclasses import dataclass
 RAW_ROOT_ENV = "WEHOOP_WBB_RAW_ROOT"  # sibling wehoop-wbb-raw checkout root
 _T = "espn_womens_college_basketball_"
 
+# --- rds contract -------------------------------------------------------------
+# wehoop::load_wbb_* reads .rds EXCLUSIVELY -- the rds is the R package's entire
+# read path, not a courtesy format. Python writes it natively via
+# sportsdataverse._rds.write_rds (byte-validated against R's saveRDS); there is
+# no R serialize step. Reproduces wehoop:::make_wehoop_data() +
+# sportsdataverse_save() in the published attribute order. The class is
+# load-bearing -- wehoop registers print.wehoop_data on it.
+RDS_CLASS: tuple[str, ...] = ("wehoop_data", "tbl_df", "tbl", "data.table", "data.frame")
+RDS_ATTR_PREFIX = "wehoop"
+RDS_TYPE_TEMPLATE = "ESPN WBB {dataset} from wehoop data repository"
+
 
 @dataclass(frozen=True)
 class DatasetSpec:

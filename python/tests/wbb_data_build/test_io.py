@@ -9,7 +9,7 @@ def test_write_dataset_emits_parquet_csv_and_manifest(tmp_path):
     spec = REGISTRY["team_box"]
     paths = io.write_dataset(df, spec, 2025, base=tmp_path)
     names = sorted(p.name for p in paths)
-    assert names == ["team_box_2025.csv", "team_box_2025.parquet"]
+    assert names == ["team_box_2025.csv", "team_box_2025.parquet", "team_box_2025.rds"]
     assert (tmp_path / "team_box" / "parquet" / "team_box_2025.parquet").exists()
     assert (tmp_path / "team_box" / "csv" / "team_box_2025.csv").exists()
     manifest = tmp_path / "team_box" / "wbb_team_box_in_data_repo.csv"
