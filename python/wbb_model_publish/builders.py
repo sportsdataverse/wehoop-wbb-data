@@ -24,7 +24,16 @@ from pathlib import Path
 # 2008=354 (260 with >=5 games -- BETTER than the originally-published
 # 2014's 187), 2009-2013 = 240-348. 2004-2007 stay out (4-70 teams with
 # >=5 games: too sparse for opponent adjustment).
-MIN_SEASON = 2008
+MIN_SEASON_RATINGS = 2008
+
+# Player value floors HIGHER than ratings: wbb_box_bpm keeps only players
+# with >=10 games, and the partial archival coverage (2008-2013 averages
+# ~4 captured games per team) leaves nobody qualified -- per-player season
+# values need full-coverage seasons, which start at 2014.
+MIN_SEASON_PLAYER_VALUE = 2014
+
+# Backwards-compat alias (ratings floor, the wider of the two).
+MIN_SEASON = MIN_SEASON_RATINGS
 
 
 def _build_seasonal(
@@ -33,11 +42,12 @@ def _build_seasonal(
     *,
     stem: str,
     compute,
+    min_season: int,
 ) -> list[dict]:
     """Shared season loop: compute -> refuse-empty -> write ``{stem}_{season}.parquet``."""
-    too_old = [s for s in seasons if s < MIN_SEASON]
+    too_old = [s for s in seasons if s < min_season]
     if too_old:
-        raise ValueError(f"{stem}: seasons {too_old} predate the {MIN_SEASON} ESPN boxscore floor")
+        raise ValueError(f"{stem}: seasons {too_old} predate the {min_season} ESPN boxscore floor")
 
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -79,7 +89,9 @@ def build_ratings(seasons: list[int], out_dir, *, compute=None) -> list[dict]:
         def compute(season):
             return wbb_team_ratings(season)
 
-    return _build_seasonal(seasons, out_dir, stem="wbb_ratings", compute=compute)
+    return _build_seasonal(
+        seasons, out_dir, stem="wbb_ratings", compute=compute, min_season=MIN_SEASON_RATINGS
+    )
 
 
 def build_player_value(seasons: list[int], out_dir, *, compute=None) -> list[dict]:
@@ -105,7 +117,13 @@ def build_player_value(seasons: list[int], out_dir, *, compute=None) -> list[dic
         def compute(season):
             return wbb_box_bpm(season)
 
-    return _build_seasonal(seasons, out_dir, stem="wbb_player_value", compute=compute)
+    return _build_seasonal(
+        seasons,
+        out_dir,
+        stem="wbb_player_value",
+        compute=compute,
+        min_season=MIN_SEASON_PLAYER_VALUE,
+    )
 
 
 def write_ratings_card(results: list[dict], out_dir) -> Path:
