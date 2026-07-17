@@ -26,7 +26,10 @@ from pathlib import Path
 
 import polars as pl
 
+from wbb_data_build._logging import get_logger
 from wbb_data_build.config import RAW_ROOT_ENV
+
+log = get_logger()
 
 _RAW_REPO_API = "https://api.github.com/repos/sportsdataverse/wehoop-wbb-raw/contents"
 
@@ -75,19 +78,51 @@ def raw_root(explicit: str | Path | None = None) -> Path | str:
     return _resolve_root(explicit)
 
 
+#: Statuses worth retrying: throttling + transient server errors. A 404 is a
+#: genuinely-missing file and stays an immediate ``None``.
+_RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
+_RETRY_ATTEMPTS = 5
+
+
 def _http_get_bytes(url: str) -> bytes | None:
-    """GET ``url`` -> bytes; ``None`` on any failure (R tryCatch parity)."""
+    """GET ``url`` -> bytes; ``None`` on genuine absence or exhausted retries.
+
+    Throttling is NOT absence: a bulk backfill at 16 workers gets 429s from
+    raw.githubusercontent, and the original any-non-200 -> ``None`` treated
+    those as "game does not exist" -- the 2003:2013 re-extraction silently
+    compiled 2012/2013 to ~40 games each. 429/5xx now retry with exponential
+    backoff (honoring ``Retry-After``), and exhausted retries are LOGGED so
+    throttling can never silently thin a season again.
+    """
+    import time
+
     import requests
 
     headers: dict[str, str] = {}
     pat = os.environ.get("GITHUB_PAT") or os.environ.get("GH_TOKEN")
     if pat and url.startswith("https://api.github.com/"):
         headers["Authorization"] = f"token {pat}"
-    try:
-        resp = requests.get(url, headers=headers, timeout=60)
-    except requests.RequestException:
-        return None
-    return resp.content if resp.status_code == 200 else None
+    for attempt in range(_RETRY_ATTEMPTS):
+        try:
+            resp = requests.get(url, headers=headers, timeout=60)
+        except requests.RequestException:
+            resp = None
+        if resp is not None and resp.status_code == 200:
+            return resp.content
+        if resp is not None and resp.status_code not in _RETRY_STATUSES:
+            return None  # 404 etc: genuinely absent, not transient
+        if attempt == _RETRY_ATTEMPTS - 1:
+            break
+        retry_after = 0.0
+        if resp is not None:
+            try:
+                retry_after = float(resp.headers.get("Retry-After", 0))
+            except (TypeError, ValueError):
+                retry_after = 0.0
+        time.sleep(max(retry_after, 2.0 * (2**attempt)))
+    status = resp.status_code if resp is not None else "request-error"
+    log.warning("GET %s failed after %d attempts (last: %s)", url, _RETRY_ATTEMPTS, status)
+    return None
 
 
 def _cache_root() -> Path:
