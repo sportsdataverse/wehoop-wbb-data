@@ -16,7 +16,7 @@ def test_publish_uploads_each_file_with_clobber(tmp_path):
         exists_check=lambda tag, repo: True,  # release already exists
     )
     uploads = [c for c in calls if c[:2] == ["release", "upload"]]
-    assert len(uploads) == 2  # parquet + csv
+    assert len(uploads) == 3  # parquet + rds + csv (rds is the R loader's read path)
     assert all("--clobber" in c for c in uploads)
     assert res["tag"] == spec.tag
 

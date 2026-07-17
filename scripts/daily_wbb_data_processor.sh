@@ -6,7 +6,6 @@
 # parquet; schedules stamp flags from the built pbp/team_box/player_box
 # parquets. Crosswalks (wbb_11-13) stay on R (live ESPN+Torvik+Fox inputs),
 # and R also serializes every Python parquet to .rds (wehoop's load_* reads
-# rds) via R/serialize_rds.R.
 #
 # Usage: bash scripts/daily_wbb_data_processor.sh -s 2026 -e 2026
 set -uo pipefail
@@ -66,11 +65,6 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
       echo "::endgroup::"
     done
 
-    echo "::group::serialize_rds $i"
-    Rscript R/serialize_rds.R -s "$i" -e "$i" || {
-      rc=$?; echo "::warning ::serialize_rds for season $i exited with code $rc"; SEASON_RC=$rc
-    }
-    echo "::endgroup::"
 
     echo "RSCRIPT_RC=$SEASON_RC" > "/tmp/_rc_${i}"
     # Grep-able terminal line for the season logfile (scrape-log convention).

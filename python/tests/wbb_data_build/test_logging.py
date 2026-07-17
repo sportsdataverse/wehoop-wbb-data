@@ -38,7 +38,7 @@ def test_publish_logs_upload_confirmations(tmp_path, capsys):
     )
     out = capsys.readouterr().out
     assert "uploading team_box_2025.parquet" in out
-    assert f"uploaded team_box_2025.csv -> {spec.tag} (asset 2/2)" in out
+    assert f"uploaded team_box_2025.csv -> {spec.tag} (asset 3/3)" in out
 
 
 def test_publish_dry_run_logs_would_be_uploads(tmp_path, capsys):
