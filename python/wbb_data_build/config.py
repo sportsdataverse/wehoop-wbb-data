@@ -43,6 +43,19 @@ REGISTRY: dict[str, DatasetSpec] = {
         _T + "player_season_stats",
         "player_season_stats",
     ),
+    # Athlete identity + bio. NEW dataset -- no R creation script exists, and
+    # nothing published this before: the player_season_stats payload carries no
+    # identity at all (not even the athlete id -- only the filename does).
+    # NB: unlike this league's player_season_stats, the raw tree is FLAT (no
+    # {season} segment) -- a core record is per-athlete and the core-v2 athlete
+    # resource takes no season param. "Who played in season Y" comes from the
+    # built player_box.
+    "player_core": DatasetSpec(
+        "player_core",
+        "player_core",
+        _T + "player_core",
+        "player_core",
+    ),
     "team_season_stats": DatasetSpec(
         "team_season_stats", "team_season_stats", _T + "team_season_stats", "team_season_stats"
     ),

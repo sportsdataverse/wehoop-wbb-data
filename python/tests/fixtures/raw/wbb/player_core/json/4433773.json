@@ -1,0 +1,219 @@
+{
+"$ref": "http://sports.core.api.espn.com/v2/sports/basketball/leagues/womens-college-basketball/athletes/4433773?lang=en&region=us",
+"id": "4433773",
+"uid": "s:40~l:54~a:4433773",
+"guid": "ff23d3a7-aef2-39a5-914e-b891d3ab6f6a",
+"type": "basketball",
+"alternateIds": {
+"sdr": "4433773"
+},
+"firstName": "Bella",
+"lastName": "Smuda",
+"fullName": "Bella Smuda",
+"displayName": "Bella Smuda",
+"shortName": "B. Smuda",
+"height": 78.0,
+"displayHeight": "6' 6\"",
+"links": [
+{
+"language": "en-US",
+"rel": [
+"playercard",
+"desktop",
+"athlete"
+],
+"href": "https://www.espn.com/womens-college-basketball/player/_/id/4433773/bella-smuda",
+"text": "Player Card",
+"shortText": "Player Card",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"stats",
+"desktop",
+"athlete"
+],
+"href": "https://www.espn.com/womens-college-basketball/player/stats/_/id/4433773/bella-smuda",
+"text": "Stats",
+"shortText": "Stats",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"stats",
+"sportscenter",
+"app",
+"athlete"
+],
+"href": "sportscenter://x-callback-url/showClubhouse?uid=s:40~l:54~a:4433773&section=stats",
+"text": "Stats",
+"shortText": "Stats",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"gamelog",
+"desktop",
+"athlete"
+],
+"href": "https://www.espn.com/womens-college-basketball/player/gamelog/_/id/4433773/bella-smuda",
+"text": "Game Log",
+"shortText": "Game Log",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"gamelog",
+"sportscenter",
+"app",
+"athlete"
+],
+"href": "sportscenter://x-callback-url/showClubhouse?uid=s:40~l:54~a:4433773&section=gamelog",
+"text": "Game Log",
+"shortText": "Game Log",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"news",
+"desktop",
+"athlete"
+],
+"href": "https://www.espn.com/womens-college-basketball/player/news/_/id/4433773/bella-smuda",
+"text": "News",
+"shortText": "News",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"news",
+"sportscenter",
+"app",
+"athlete"
+],
+"href": "sportscenter://x-callback-url/showClubhouse?uid=s:40~l:54~a:4433773&section=news",
+"text": "News",
+"shortText": "News",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"bio",
+"desktop",
+"athlete"
+],
+"href": "https://www.espn.com/womens-college-basketball/player/bio/_/id/4433773/bella-smuda",
+"text": "Bio",
+"shortText": "Bio",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"bio",
+"sportscenter",
+"app",
+"athlete"
+],
+"href": "sportscenter://x-callback-url/showClubhouse?uid=s:40~l:54~a:4433773&section=bio",
+"text": "Bio",
+"shortText": "Bio",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"overview",
+"desktop",
+"athlete"
+],
+"href": "https://www.espn.com/womens-college-basketball/player/_/id/4433773/bella-smuda",
+"text": "Overview",
+"shortText": "Overview",
+"isExternal": false,
+"isPremium": false
+},
+{
+"language": "en-US",
+"rel": [
+"overview",
+"sportscenter",
+"app",
+"athlete"
+],
+"href": "sportscenter://x-callback-url/showClubhouse?uid=s:40~l:54~a:4433773",
+"text": "Overview",
+"shortText": "Overview",
+"isExternal": false,
+"isPremium": false
+}
+],
+"birthPlace": {
+"city": "Exton",
+"state": "PA",
+"country": "USA"
+},
+"birthCountry": {
+"alternateId": "1",
+"abbreviation": "USA"
+},
+"slug": "bella-smuda",
+"headshot": {
+"href": "https://a.espncdn.com/i/headshots/womens-college-basketball/players/full/4433773.png",
+"alt": "Bella Smuda"
+},
+"jersey": "31",
+"flag": {
+"href": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+"alt": "USA",
+"rel": [
+"country-flag"
+]
+},
+"position": {
+"$ref": "http://sports.core.api.espn.com/v2/sports/basketball/leagues/womens-college-basketball/positions/1?lang=en&region=us",
+"id": "1",
+"name": "Center",
+"displayName": "Center",
+"abbreviation": "C",
+"leaf": false
+},
+"linked": true,
+"team": {
+"$ref": "http://sports.core.api.espn.com/v2/sports/basketball/leagues/womens-college-basketball/seasons/2025/teams/2335?lang=en&region=us"
+},
+"statistics": {
+"$ref": "http://sports.core.api.espn.com/v2/sports/basketball/leagues/womens-college-basketball/athletes/4433773/statistics?lang=en&region=us"
+},
+"experience": {
+"years": 4,
+"displayValue": "Senior",
+"abbreviation": "SR"
+},
+"active": false,
+"status": {
+"id": "2",
+"name": "Inactive",
+"type": "inactive",
+"abbreviation": "Inactive"
+},
+"statisticslog": {
+"$ref": "http://sports.core.api.espn.com/v2/sports/basketball/leagues/womens-college-basketball/athletes/4433773/statisticslog?lang=en&region=us"
+}
+}
