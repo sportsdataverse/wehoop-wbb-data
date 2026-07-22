@@ -145,3 +145,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .wbb_raw_cache/
+
+# Built rds/csv ship to the sportsdataverse-data releases, not to git.
+wbb/*/rds/
+wbb/*/csv/
