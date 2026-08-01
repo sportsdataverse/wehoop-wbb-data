@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_shots`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_shots) |
 | **File stem** | `shots_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2026 (23 seasons) |
-| **Last published** | 2026-07-29 (newest release asset) |
-| **Tag created** | 2026-05-11 |
-| **Release assets** | 74 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 
@@ -20,26 +20,26 @@
 
 | col_name | type | description |
 |---|---|---|
-| `game_id` | Int64 | Game identifier carried through from the input schedule. |
-| `season` | Int64 | Season identifier from the input games frame (named `sim` instead when the input used a `sim` column). |
-| `period_number` | Int64 |  |
-| `clock_display_value` | String |  |
-| `team_id` | Int64 | 247Sports signed-institution team key as a string (falls back to the committed institution when unsigned). |
-| `athlete_id_1` | Int64 |  |
-| `athlete_id_2` | Int64 |  |
-| `type_id` | Int64 |  |
-| `type_text` | String |  |
-| `scoring_play` | Boolean |  |
-| `score_value` | Int64 |  |
-| `coordinate_x` | Float64 |  |
-| `coordinate_y` | Float64 |  |
-| `coordinate_x_raw` | Float64 |  |
-| `coordinate_y_raw` | Float64 |  |
-| `athlete_name_1` | String |  |
-| `athlete_name_2` | String |  |
-| `team_name` | String | Team name/abbreviation the player is credited to for the range. |
-| `team_mascot` | String |  |
-| `team_abbrev` | String |  |
+| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
+| `period_number` | Int64 | Period number the play occurred in. |
+| `clock_display_value` | String | Game clock at the time of the play, formatted MM:SS. |
+| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `athlete_id_1` | Int64 | ESPN id of the primary athlete involved in the play (shooter, rebounder, fouler). |
+| `athlete_id_2` | Int64 | ESPN id of the secondary athlete involved in the play (assister, blocker, fouled). |
+| `type_id` | Int64 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
+| `type_text` | String | Play type as published by ESPN (e.g. "Jumpball"). |
+| `scoring_play` | Boolean | Whether the play resulted in points. |
+| `score_value` | Int64 | Points the play was worth (0, 1, 2 or 3). |
+| `coordinate_x` | Float64 | Shot x-coordinate translated to a half-court frame, in feet from the basket. |
+| `coordinate_y` | Float64 | Shot y-coordinate translated to a half-court frame, in feet from the basket. |
+| `coordinate_x_raw` | Float64 | Shot x-coordinate exactly as published by ESPN, before translation. |
+| `coordinate_y_raw` | Float64 | Shot y-coordinate exactly as published by ESPN, before translation. |
+| `athlete_name_1` | String | Display name of the primary athlete involved in the play. |
+| `athlete_name_2` | String | Display name of the secondary athlete involved in the play. |
+| `team_name` | String | Team nickname (e.g. "Bruins"). |
+| `team_mascot` | String | Team nickname/mascot. |
+| `team_abbrev` | String | Team abbreviation (e.g. "UCLA"). |
 
 ## Coverage
 

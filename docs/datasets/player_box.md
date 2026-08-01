@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_player_boxscores`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_player_boxscores) |
 | **File stem** | `player_box_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2013 (10 seasons) |
-| **Last published** | 2026-07-17 (newest release asset) |
-| **Tag created** | 2023-03-30 |
-| **Release assets** | 72 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 
@@ -20,61 +20,61 @@
 
 | col_name | type | description |
 |---|---|---|
-| `game_id` | Int64 | Game identifier carried through from the input schedule. |
-| `season` | Int64 | Season identifier from the input games frame (named `sim` instead when the input used a `sim` column). |
-| `season_type` | Int64 | Season segment for the row ('REG' for regular-season weeks and the week-0 aggregate, 'POST' for playoff weeks). |
-| `game_date` | Date | Calendar date of the game (YYYY-MM-DD). |
-| `game_date_time` | Datetime(time_unit='us', time_zone='America/New_York') |  |
+| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
+| `season_type` | Int64 | ESPN season segment code -- 2 regular season, 3 postseason. |
+| `game_date` | Date | Calendar date of the game. |
+| `game_date_time` | Datetime(time_unit='us', time_zone='America/New_York') | Tip-off timestamp in US Eastern time. |
 | `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
-| `athlete_display_name` | String |  |
-| `team_id` | Int64 | 247Sports signed-institution team key as a string (falls back to the committed institution when unsigned). |
-| `team_name` | String | Team name/abbreviation the player is credited to for the range. |
-| `team_location` | String |  |
-| `team_short_display_name` | String |  |
-| `minutes` | Float64 |  |
-| `field_goals_made` | Int64 |  |
-| `field_goals_attempted` | Int64 |  |
-| `three_point_field_goals_made` | Int64 |  |
-| `three_point_field_goals_attempted` | Int64 |  |
-| `free_throws_made` | Int64 |  |
-| `free_throws_attempted` | Int64 |  |
-| `offensive_rebounds` | Int64 |  |
-| `defensive_rebounds` | Int64 |  |
-| `rebounds` | Int64 |  |
-| `assists` | Int64 | Assisted tackles. |
-| `steals` | Int64 |  |
-| `blocks` | Int64 |  |
-| `turnovers` | Int64 |  |
-| `fouls` | Int64 |  |
-| `points` | Int64 | Competition points. |
-| `starter` | Boolean |  |
-| `ejected` | Boolean |  |
-| `did_not_play` | Boolean |  |
-| `active` | Boolean |  |
-| `athlete_jersey` | String |  |
-| `athlete_short_name` | String |  |
-| `athlete_headshot_href` | String |  |
-| `athlete_position_name` | String |  |
-| `athlete_position_abbreviation` | String |  |
-| `team_display_name` | String |  |
-| `team_uid` | String |  |
-| `team_slug` | String |  |
-| `team_logo` | String |  |
-| `team_abbreviation` | String | Team abbreviation. |
-| `team_color` | String |  |
-| `team_alternate_color` | String |  |
-| `home_away` | String |  |
-| `team_winner` | Boolean |  |
-| `team_score` | Int64 |  |
-| `opponent_team_id` | Int64 |  |
-| `opponent_team_name` | String |  |
-| `opponent_team_location` | String |  |
-| `opponent_team_display_name` | String |  |
-| `opponent_team_abbreviation` | String |  |
-| `opponent_team_logo` | String |  |
-| `opponent_team_color` | String |  |
-| `opponent_team_alternate_color` | String |  |
-| `opponent_team_score` | Int64 |  |
+| `athlete_display_name` | String | Athlete's full display name. |
+| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_name` | String | Team nickname (e.g. "Bruins"). |
+| `team_location` | String | School or city the team represents (e.g. "UCLA"). |
+| `team_short_display_name` | String | Shortened team display name. |
+| `minutes` | Float64 | Minutes played. |
+| `field_goals_made` | Int64 | Field goals made. |
+| `field_goals_attempted` | Int64 | Field goals attempted. |
+| `three_point_field_goals_made` | Int64 | Three-point field goals made. |
+| `three_point_field_goals_attempted` | Int64 | Three-point field goals attempted. |
+| `free_throws_made` | Int64 | Free throws made. |
+| `free_throws_attempted` | Int64 | Free throws attempted. |
+| `offensive_rebounds` | Int64 | Rebounds collected on the offensive end. |
+| `defensive_rebounds` | Int64 | Rebounds collected on the defensive end. |
+| `rebounds` | Int64 | Total rebounds. |
+| `assists` | Int64 | Assists recorded. |
+| `steals` | Int64 | Steals recorded. |
+| `blocks` | Int64 | Blocked shots recorded. |
+| `turnovers` | Int64 | Turnovers committed. |
+| `fouls` | Int64 | Personal fouls committed. |
+| `points` | Int64 | Points scored. |
+| `starter` | Boolean | Whether the athlete started the game. |
+| `ejected` | Boolean | Whether the athlete was ejected. |
+| `did_not_play` | Boolean | Whether the athlete was available but did not play. |
+| `active` | Boolean | Whether the athlete was active for the game. |
+| `athlete_jersey` | String | Athlete's jersey number, as a string to preserve leading zeros. |
+| `athlete_short_name` | String | Athlete's abbreviated name (first initial plus surname). |
+| `athlete_headshot_href` | String | URL of the athlete's ESPN headshot image. |
+| `athlete_position_name` | String | Athlete's full position name (e.g. "Forward"). |
+| `athlete_position_abbreviation` | String | Athlete's position abbreviation (e.g. "F"). |
+| `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |
+| `team_uid` | String | ESPN universal id for the team. |
+| `team_slug` | String | URL slug for the team on espn.com. |
+| `team_logo` | String | URL of the team's ESPN logo image. |
+| `team_abbreviation` | String | Team abbreviation (e.g. "UCLA"). |
+| `team_color` | String | Primary team colour as a hex string, without the leading '#'. |
+| `team_alternate_color` | String | Secondary team colour as a hex string, without the leading '#'. |
+| `home_away` | String | Whether the athlete's team was the home or away side. |
+| `team_winner` | Boolean | Whether this team won the game. |
+| `team_score` | Int64 | Final points scored by this team. |
+| `opponent_team_id` | Int64 | ESPN team id of the opponent in this game. |
+| `opponent_team_name` | String | Opponent nickname. |
+| `opponent_team_location` | String | School or city the opponent represents. |
+| `opponent_team_display_name` | String | Full opponent name including nickname. |
+| `opponent_team_abbreviation` | String | Opponent abbreviation. |
+| `opponent_team_logo` | String | URL of the opponent's ESPN logo image. |
+| `opponent_team_color` | String | Opponent primary colour as a hex string. |
+| `opponent_team_alternate_color` | String | Opponent secondary colour as a hex string. |
+| `opponent_team_score` | Int64 | Final points scored by the opponent. |
 
 ## Coverage
 

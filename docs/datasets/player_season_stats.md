@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_player_season_stats`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_player_season_stats) |
 | **File stem** | `player_season_stats_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2006–2026 (3 seasons) |
-| **Last published** | 2026-07-17 (newest release asset) |
-| **Tag created** | 2026-05-11 |
-| **Release assets** | 61 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 
@@ -20,22 +20,22 @@
 
 | col_name | type | description |
 |---|---|---|
-| `season` | Int64 | Season identifier from the input games frame (named `sim` instead when the input used a `sim` column). |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
 | `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
-| `athlete_display_name` | String |  |
-| `athlete_first_name` | String |  |
-| `athlete_last_name` | String |  |
-| `athlete_position_abbreviation` | String |  |
-| `athlete_jersey` | String |  |
-| `team_id` | Int64 | 247Sports signed-institution team key as a string (falls back to the committed institution when unsigned). |
-| `team_display_name` | String |  |
-| `category` | String |  |
-| `stat_label` | String |  |
-| `stat_name` | String |  |
-| `stat_display_name` | String |  |
-| `stat_description` | String |  |
-| `display_value` | String |  |
-| `value` | Float64 | A class year for which the 247Sports RDB has data for the sport. |
+| `athlete_display_name` | String | Athlete's full display name. |
+| `athlete_first_name` | String | Athlete's given name. |
+| `athlete_last_name` | String | Athlete's family name. |
+| `athlete_position_abbreviation` | String | Athlete's position abbreviation (e.g. "F"). |
+| `athlete_jersey` | String | Athlete's jersey number, as a string to preserve leading zeros. |
+| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |
+| `category` | String | Statistic grouping the row belongs to (e.g. "averages", "totals"). |
+| `stat_label` | String | Short statistic label (e.g. "GP"). |
+| `stat_name` | String | Machine-readable statistic key (e.g. "gamesPlayed"). |
+| `stat_display_name` | String | Statistic name formatted for display. |
+| `stat_description` | String | Human-readable description of the statistic. |
+| `display_value` | String | Statistic value formatted for display, as published by ESPN. |
+| `value` | Float64 | Numeric value of the statistic. |
 
 ## Coverage
 

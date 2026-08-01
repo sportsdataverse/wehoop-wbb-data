@@ -9,13 +9,18 @@ Sources, all of them existing:
 
 * ``wbb_data_build.config.REGISTRY``  -- dataset, output stem, release tag
 * ``wbb_data_build.models``          -- column names and types
-* sdv-py ``manual_column_descriptions.yaml`` -- the canonical description store
+* ``column_descriptions.yaml`` (this package) -- authored for this league
 * ``wbb/<ds>/wbb_<ds>_in_data_repo.csv``     -- per-season row counts + build times
 * ``gh release view``                -- last published, asset count (opt-in)
 
-Nothing here invents a description. A column with no entry in the shared store
-gets an empty cell, because an empty cell is an honest TODO and an invented
-sentence is worse than nothing.
+Descriptions are authored for THIS league and live in this package, not
+borrowed from another repo. An earlier version flattened sdv-py's schema-keyed
+store by column name and produced confidently wrong text -- `assists` came back
+as "Assisted tackles" (NFL), `half` as "Half-inning" (baseball), `team_id` as a
+247Sports recruiting key. A borrowed description is an invented one.
+
+A column with no entry gets an empty cell, because an empty cell is an honest
+TODO and an invented sentence is worse than nothing.
 
 Example:
     Regenerate everything::
@@ -76,36 +81,6 @@ AUTOMATION = (
 )
 
 
-# Tokens marking a description as belonging to another sport or package.
-_FOREIGN = (
-    "cfb",
-    "nfl",
-    "nba",
-    "nhl",
-    "mlb",
-    "pwhl",
-    "ahl",
-    "wnba",
-    "mbb",
-    "nflverse",
-    "soccer",
-    "cricket",
-    "hockey",
-    "baseball",
-    "football",
-    "men's",
-    "lacrosse",
-)
-
-#: Schema keys in the shared store that describe THIS league.
-_LEAGUE_KEYS = ("espn_wbb", "wbb_")
-
-
-def _is_foreign(text: str) -> bool:
-    lowered = text.lower()
-    return any(token in lowered for token in _FOREIGN)
-
-
 @lru_cache(maxsize=1)
 def _descriptions() -> dict[str, str]:
     """Column name -> description, merged across every schema in the store.
@@ -114,33 +89,15 @@ def _descriptions() -> dict[str, str]:
     store is flattened by name. Longest description wins: entries differ in
     detail and the fuller one is the more useful cell.
     """
-    path = (
-        REPO_ROOT.parent.parent / "sdv-py" / "tools" / "codegen" / "manual_column_descriptions.yaml"
-    )
+    path = Path(__file__).with_name("column_descriptions.yaml")
     if not path.exists():
         return {}
     import yaml
 
     store = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    league: dict[str, str] = {}
-    generic: dict[str, str] = {}
-    for schema, columns in store.items():
-        if not isinstance(columns, dict):
-            continue
-        is_league = any(str(schema).startswith(p) for p in _LEAGUE_KEYS)
-        target = league if is_league else generic
-        for name, text in columns.items():
-            if not isinstance(text, str) or not text.strip():
-                continue
-            text = text.strip()
-            # A borrowed description is an invented one. Flattening the store
-            # by column name gave `season` a CFB simulation blurb and `game_id`
-            # an nflverse id example -- both confidently wrong here.
-            if not is_league and _is_foreign(text):
-                continue
-            if len(text) > len(target.get(name, "")):
-                target[name] = text
-    return {**generic, **league}
+    return {
+        name: text.strip() for name, text in store.items() if isinstance(text, str) and text.strip()
+    }
 
 
 def _manifest(dataset: str) -> pl.DataFrame | None:

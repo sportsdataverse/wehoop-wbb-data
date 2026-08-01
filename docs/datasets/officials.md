@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_officials`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_officials) |
 | **File stem** | `officials_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2026–2026 (1 seasons) |
-| **Last published** | 2026-07-17 (newest release asset) |
-| **Tag created** | 2026-05-11 |
-| **Release assets** | 37 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 
@@ -20,17 +20,17 @@
 
 | col_name | type | description |
 |---|---|---|
-| `season` | Int64 | Season identifier from the input games frame (named `sim` instead when the input used a `sim` column). |
-| `game_id` | Int64 | Game identifier carried through from the input schedule. |
-| `official_id` | Int64 |  |
-| `official_uid` | String |  |
-| `official_full_name` | String |  |
-| `official_display_name` | String |  |
-| `official_first_name` | String |  |
-| `official_last_name` | String |  |
-| `official_order` | Int64 |  |
-| `position_name` | String | Full position name (e.g. 'Point Guard', 'Goalkeeper'). |
-| `position_display_name` | String |  |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
+| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `official_id` | Int64 | ESPN numeric identifier for the game official. |
+| `official_uid` | String | ESPN universal id for the game official. |
+| `official_full_name` | String | Official's full name. |
+| `official_display_name` | String | Official's name formatted for display. |
+| `official_first_name` | String | Official's given name. |
+| `official_last_name` | String | Official's family name. |
+| `official_order` | Int64 | Position of the official in ESPN's listing for the game (1 is the referee). |
+| `position_name` | String | Full position name. |
+| `position_display_name` | String | Full position name (e.g. "Forward"). |
 
 ## Coverage
 

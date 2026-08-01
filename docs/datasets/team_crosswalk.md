@@ -8,9 +8,9 @@
 | **Release tag** | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) |
 | **File stem** | `wbb_team_crosswalk_{season}.{parquet,csv,rds}` |
 | **Seasons built** | — |
-| **Last published** | 2026-07-17 (newest release asset) |
-| **Tag created** | 2026-06-13 |
-| **Release assets** | 79 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 

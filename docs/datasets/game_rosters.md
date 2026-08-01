@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_game_rosters`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_game_rosters) |
 | **File stem** | `game_rosters_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2026 (5 seasons) |
-| **Last published** | 2026-07-17 (newest release asset) |
-| **Tag created** | 2026-05-11 |
-| **Release assets** | 71 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 
@@ -20,28 +20,28 @@
 
 | col_name | type | description |
 |---|---|---|
-| `season` | Int64 | Season identifier from the input games frame (named `sim` instead when the input used a `sim` column). |
-| `game_id` | Int64 | Game identifier carried through from the input schedule. |
-| `team_id` | Int64 | 247Sports signed-institution team key as a string (falls back to the committed institution when unsigned). |
-| `team_slug` | String |  |
-| `team_abbreviation` | String | Team abbreviation. |
-| `team_display_name` | String |  |
-| `home_away` | String |  |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
+| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_slug` | String | URL slug for the team on espn.com. |
+| `team_abbreviation` | String | Team abbreviation (e.g. "UCLA"). |
+| `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |
+| `home_away` | String | Whether the athlete's team was the home or away side. |
 | `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
-| `athlete_uid` | String |  |
-| `athlete_guid` | String |  |
-| `athlete_display_name` | String |  |
-| `athlete_short_name` | String |  |
-| `athlete_first_name` | String |  |
-| `athlete_last_name` | String |  |
-| `athlete_jersey` | String |  |
-| `athlete_position` | String |  |
-| `athlete_headshot` | String |  |
-| `starter` | Boolean |  |
-| `did_not_play` | Boolean |  |
-| `active` | Boolean |  |
-| `ejected` | Boolean |  |
-| `reason` | String |  |
+| `athlete_uid` | String | ESPN universal id for the athlete (e.g. "s:40~l:54~a:5315009"). |
+| `athlete_guid` | String | ESPN global GUID for the athlete, stable across seasons. |
+| `athlete_display_name` | String | Athlete's full display name. |
+| `athlete_short_name` | String | Athlete's abbreviated name (first initial plus surname). |
+| `athlete_first_name` | String | Athlete's given name. |
+| `athlete_last_name` | String | Athlete's family name. |
+| `athlete_jersey` | String | Athlete's jersey number, as a string to preserve leading zeros. |
+| `athlete_position` | String | Athlete's position abbreviation. |
+| `athlete_headshot` | String | URL of the athlete's ESPN headshot image. |
+| `starter` | Boolean | Whether the athlete started the game. |
+| `did_not_play` | Boolean | Whether the athlete was available but did not play. |
+| `active` | Boolean | Whether the athlete was active for the game. |
+| `ejected` | Boolean | Whether the athlete was ejected. |
+| `reason` | String | ESPN's stated reason the athlete did not play, when given. |
 
 ## Coverage
 

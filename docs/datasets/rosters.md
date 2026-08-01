@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_rosters`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_rosters) |
 | **File stem** | `rosters_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2026–2026 (12 seasons) |
-| **Last published** | 2026-07-26 (newest release asset) |
-| **Tag created** | 2026-05-11 |
-| **Release assets** | 8 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 
@@ -20,42 +20,42 @@
 
 | col_name | type | description |
 |---|---|---|
-| `season` | Int64 | Season identifier from the input games frame (named `sim` instead when the input used a `sim` column). |
-| `team_id` | Int64 | 247Sports signed-institution team key as a string (falls back to the committed institution when unsigned). |
-| `team_slug` | String |  |
-| `team_abbreviation` | String | Team abbreviation. |
-| `team_display_name` | String |  |
-| `team_short_display_name` | String |  |
-| `team_color` | String |  |
-| `team_alternate_color` | String |  |
-| `team_logo` | String |  |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
+| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_slug` | String | URL slug for the team on espn.com. |
+| `team_abbreviation` | String | Team abbreviation (e.g. "UCLA"). |
+| `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |
+| `team_short_display_name` | String | Shortened team display name. |
+| `team_color` | String | Primary team colour as a hex string, without the leading '#'. |
+| `team_alternate_color` | String | Secondary team colour as a hex string, without the leading '#'. |
+| `team_logo` | String | URL of the team's ESPN logo image. |
 | `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
-| `uid` | String | ESPN universal id for the athlete. |
-| `guid` | String |  |
-| `full_name` | String | Full name of the program (school plus nickname). |
-| `display_name` | String | Full display name of the team (e.g. 'Los Angeles Lakers'). |
-| `short_name` | String | Abbreviated name (typically first initial plus last name). |
-| `first_name` | String | Given name of the transfer player. |
-| `last_name` | String | Family (surname) of the transfer player. |
-| `jersey` | String | Athlete's jersey number as a string. |
-| `position_abbreviation` | String | Abbreviation of the ranked position (e.g. QB, EDGE). |
-| `position_name` | String | Full position name (e.g. 'Point Guard', 'Goalkeeper'). |
-| `position_id` | Int64 |  |
-| `height` | String | Recruit height (formatted string, e.g. "6-2"). |
-| `weight` | String | Player's listed weight in pounds. |
-| `age` | String | Athlete age in years. |
-| `date_of_birth` | String | Athlete date of birth (ISO 8601). |
-| `birth_place_city` | String |  |
-| `birth_place_state` | String |  |
-| `birth_place_country` | String |  |
-| `experience_years` | String |  |
-| `experience_display_value` | String |  |
-| `headshot_href` | String | URL of the quarterback's ESPN headshot image. |
-| `headshot_alt` | String |  |
-| `link_web` | String |  |
-| `status_id` | Int64 |  |
-| `status_name` | String |  |
-| `status_type` | String |  |
+| `uid` | String | ESPN universal id for the entity (e.g. "s:40~l:54~t:26"). |
+| `guid` | String | ESPN global GUID for the entity, stable across seasons. |
+| `full_name` | String | Full name of the entity. |
+| `display_name` | String | Full display name of the entity. |
+| `short_name` | String | Abbreviated name (typically first initial plus surname). |
+| `first_name` | String | Athlete's given name. |
+| `last_name` | String | Athlete's family name. |
+| `jersey` | String | Jersey number, as a string to preserve leading zeros. |
+| `position_abbreviation` | String | Position abbreviation. |
+| `position_name` | String | Full position name. |
+| `position_id` | Int64 | ESPN identifier for the athlete's listed position. |
+| `height` | String | Athlete's height in inches. |
+| `weight` | String | Athlete's listed weight in pounds. |
+| `age` | String | Athlete's age in years. |
+| `date_of_birth` | String | Athlete's date of birth. |
+| `birth_place_city` | String | City the athlete was born in. |
+| `birth_place_state` | String | State or province the athlete was born in. |
+| `birth_place_country` | String | Country the athlete was born in. |
+| `experience_years` | String | Seasons of collegiate eligibility used, as a string. |
+| `experience_display_value` | String | Class standing formatted for display (e.g. "Freshman"). |
+| `headshot_href` | String | URL of the athlete's ESPN headshot image. |
+| `headshot_alt` | String | Alt text for the athlete's headshot image. |
+| `link_web` | String | URL of the athlete's ESPN profile page. |
+| `status_id` | Int64 | ESPN identifier for the athlete's roster status. |
+| `status_name` | String | Athlete's roster status (e.g. "Active"). |
+| `status_type` | String | Athlete's roster status code. |
 
 ## Coverage
 

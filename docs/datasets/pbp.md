@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_pbp`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_pbp) |
 | **File stem** | `play_by_play_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2026 (23 seasons) |
-| **Last published** | 2026-07-29 (newest release asset) |
-| **Tag created** | 2023-03-30 |
-| **Release assets** | 73 |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
 
 ## Automation
 
@@ -20,71 +20,71 @@
 
 | col_name | type | description |
 |---|---|---|
-| `game_play_number` | Int64 |  |
-| `id` | Int64 | 247Sports tag id (prefixed key, e.g. Player_46151084). |
-| `sequence_number` | Int64 |  |
-| `type_id` | Int64 |  |
-| `type_text` | String |  |
-| `text` | String |  |
-| `away_score` | Int64 |  |
-| `home_score` | Int64 |  |
-| `period_number` | Int64 |  |
-| `period_display_value` | String |  |
-| `clock_display_value` | String |  |
-| `scoring_play` | Boolean |  |
-| `score_value` | Int64 |  |
-| `wallclock` | String |  |
-| `shooting_play` | Boolean |  |
-| `coordinate_x_raw` | Float64 |  |
-| `coordinate_y_raw` | Float64 |  |
-| `points_attempted` | Int64 |  |
-| `short_description` | String |  |
-| `team_id` | Int64 | 247Sports signed-institution team key as a string (falls back to the committed institution when unsigned). |
-| `athlete_id_1` | Int64 |  |
-| `athlete_id_2` | Int64 |  |
-| `game_id` | Int64 | Game identifier carried through from the input schedule. |
-| `season` | Int64 | Season identifier from the input games frame (named `sim` instead when the input used a `sim` column). |
-| `season_type` | Int64 | Season segment for the row ('REG' for regular-season weeks and the week-0 aggregate, 'POST' for playoff weeks). |
-| `home_team_id` | Int64 | Home team ESPN id (character; the ratings `team_id` join key). |
-| `home_team_name` | String |  |
-| `home_team_mascot` | String |  |
-| `home_team_abbrev` | String |  |
-| `home_team_name_alt` | String |  |
-| `away_team_id` | Int64 | Away team ESPN id (character; the ratings `team_id` join key). |
-| `away_team_name` | String |  |
-| `away_team_mascot` | String |  |
-| `away_team_abbrev` | String |  |
-| `away_team_name_alt` | String |  |
-| `game_spread` | Float64 |  |
-| `home_favorite` | Boolean |  |
-| `game_spread_available` | Boolean |  |
-| `home_team_spread` | Float64 |  |
-| `qtr` | Int64 |  |
-| `time` | String |  |
-| `clock_minutes` | Int64 |  |
-| `clock_seconds` | Int64 |  |
-| `home_timeout_called` | Boolean |  |
-| `away_timeout_called` | Boolean |  |
-| `half` | Int64 | Half-inning ("top" or "bottom") -- which side is on offense. |
-| `game_half` | Int64 |  |
-| `lag_qtr` | Int64 |  |
-| `lead_qtr` | Int64 |  |
-| `lag_half` | Int64 |  |
-| `lead_half` | Int64 |  |
-| `start_quarter_seconds_remaining` | Int64 |  |
-| `start_half_seconds_remaining` | Int64 |  |
-| `start_game_seconds_remaining` | Int64 |  |
-| `end_quarter_seconds_remaining` | Int64 |  |
-| `end_half_seconds_remaining` | Int64 |  |
-| `end_game_seconds_remaining` | Int64 |  |
-| `period` | Int64 |  |
-| `coordinate_x` | Float64 |  |
-| `coordinate_y` | Float64 |  |
-| `game_date` | Date | Calendar date of the game (YYYY-MM-DD). |
-| `game_date_time` | Datetime(time_unit='us', time_zone='America/New_York') |  |
-| `athlete_name_1` | String |  |
-| `athlete_name_2` | String |  |
-| `athlete_name_3` | String |  |
+| `game_play_number` | Int64 | 1-based ordinal of the play within the game, assigned during compilation. |
+| `id` | Int64 | ESPN identifier for the row's own entity (the play id in pbp, the game id in schedules). |
+| `sequence_number` | Int64 | ESPN's monotonically increasing sequence number for the play within the game. |
+| `type_id` | Int64 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
+| `type_text` | String | Play type as published by ESPN (e.g. "Jumpball"). |
+| `text` | String | Full narrative description of the play as published by ESPN. |
+| `away_score` | Int64 | Away team score at this point in the game (pbp) or final (schedules). |
+| `home_score` | Int64 | Home team score at this point in the game (pbp) or final (schedules). |
+| `period_number` | Int64 | Period number the play occurred in. |
+| `period_display_value` | String | Period formatted for display (e.g. "1st Quarter"). |
+| `clock_display_value` | String | Game clock at the time of the play, formatted MM:SS. |
+| `scoring_play` | Boolean | Whether the play resulted in points. |
+| `score_value` | Int64 | Points the play was worth (0, 1, 2 or 3). |
+| `wallclock` | String | Real-world UTC timestamp at which ESPN recorded the play. |
+| `shooting_play` | Boolean | Whether the play was a shot attempt. |
+| `coordinate_x_raw` | Float64 | Shot x-coordinate exactly as published by ESPN, before translation. |
+| `coordinate_y_raw` | Float64 | Shot y-coordinate exactly as published by ESPN, before translation. |
+| `points_attempted` | Int64 | Points the shot attempt would have been worth had it gone in. |
+| `short_description` | String | Abbreviated play description. |
+| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `athlete_id_1` | Int64 | ESPN id of the primary athlete involved in the play (shooter, rebounder, fouler). |
+| `athlete_id_2` | Int64 | ESPN id of the secondary athlete involved in the play (assister, blocker, fouled). |
+| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
+| `season_type` | Int64 | ESPN season segment code -- 2 regular season, 3 postseason. |
+| `home_team_id` | Int64 | ESPN team id of the home team. |
+| `home_team_name` | String | Home team location name. |
+| `home_team_mascot` | String | Home team nickname/mascot. |
+| `home_team_abbrev` | String | Home team abbreviation. |
+| `home_team_name_alt` | String | Alternate home team name as published in the play feed. |
+| `away_team_id` | Int64 | ESPN team id of the away team. |
+| `away_team_name` | String | Away team location name. |
+| `away_team_mascot` | String | Away team nickname/mascot. |
+| `away_team_abbrev` | String | Away team abbreviation. |
+| `away_team_name_alt` | String | Alternate away team name as published in the play feed. |
+| `game_spread` | Float64 | Absolute pre-game point spread used for win-probability inputs. |
+| `home_favorite` | Boolean | Whether the home team was the pre-game favourite. |
+| `game_spread_available` | Boolean | Whether a pre-game spread was published for this game. |
+| `home_team_spread` | Float64 | Pre-game point spread from the home team's perspective. |
+| `qtr` | Int64 | Quarter number the play occurred in. |
+| `time` | String | Game clock at the time of the play, formatted MM:SS. |
+| `clock_minutes` | Int64 | Whole minutes remaining on the game clock. |
+| `clock_seconds` | Int64 | Seconds component remaining on the game clock. |
+| `home_timeout_called` | Boolean | Whether the home team called a timeout on this play. |
+| `away_timeout_called` | Boolean | Whether the away team called a timeout on this play. |
+| `half` | Int64 | Half the play occurred in (1 or 2); the women's game is played in quarters, so this is derived from the period. |
+| `game_half` | Int64 | Half the play occurred in (1 or 2). |
+| `lag_qtr` | Int64 | Quarter of the preceding play; used for period-boundary logic. |
+| `lead_qtr` | Int64 | Quarter of the following play; used for period-boundary logic. |
+| `lag_half` | Int64 | Half of the preceding play; used for period-boundary logic. |
+| `lead_half` | Int64 | Half of the following play; used for period-boundary logic. |
+| `start_quarter_seconds_remaining` | Int64 | Seconds left in the quarter at the start of the play. |
+| `start_half_seconds_remaining` | Int64 | Seconds left in the half at the start of the play. |
+| `start_game_seconds_remaining` | Int64 | Seconds left in the game at the start of the play. |
+| `end_quarter_seconds_remaining` | Int64 | Seconds left in the quarter at the end of the play. |
+| `end_half_seconds_remaining` | Int64 | Seconds left in the half at the end of the play. |
+| `end_game_seconds_remaining` | Int64 | Seconds left in the game at the end of the play. |
+| `period` | Int64 | Period number the play occurred in. |
+| `coordinate_x` | Float64 | Shot x-coordinate translated to a half-court frame, in feet from the basket. |
+| `coordinate_y` | Float64 | Shot y-coordinate translated to a half-court frame, in feet from the basket. |
+| `game_date` | Date | Calendar date of the game. |
+| `game_date_time` | Datetime(time_unit='us', time_zone='America/New_York') | Tip-off timestamp in US Eastern time. |
+| `athlete_name_1` | String | Display name of the primary athlete involved in the play. |
+| `athlete_name_2` | String | Display name of the secondary athlete involved in the play. |
+| `athlete_name_3` | String | Display name of a third athlete involved in the play; rarely populated. |
 
 ## Coverage
 
