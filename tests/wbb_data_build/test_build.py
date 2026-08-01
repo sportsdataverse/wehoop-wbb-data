@@ -1,5 +1,4 @@
 import polars as pl
-
 from wbb_data_build.build import build_season
 
 

@@ -1,7 +1,6 @@
 import polars as pl
-
-from wbb_data_build.config import REGISTRY
 from wbb_data_build import io
+from wbb_data_build.config import REGISTRY
 
 
 def test_write_dataset_emits_parquet_csv_and_manifest(tmp_path):

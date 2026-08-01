@@ -1,7 +1,6 @@
 import polars as pl
-
-from wbb_data_build.config import REGISTRY
 from wbb_data_build import io, publish
+from wbb_data_build.config import REGISTRY
 
 
 def test_publish_uploads_each_file_with_clobber(tmp_path):

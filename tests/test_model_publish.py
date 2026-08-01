@@ -11,10 +11,8 @@ import json
 
 import polars as pl
 import pytest
-
 from wbb_model_publish.artifacts import upload_artifacts
 from wbb_model_publish.builders import (
-    MIN_SEASON,
     build_player_value,
     build_ratings,
     write_player_value_card,

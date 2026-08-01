@@ -6,7 +6,6 @@ so capsys sees exactly what the Actions console / season logfile would."""
 from pathlib import Path
 
 import polars as pl
-
 from wbb_data_build import io as build_io
 from wbb_data_build import publish
 from wbb_data_build.build import build_season

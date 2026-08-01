@@ -10,7 +10,6 @@ inputs via the retained R scripts, not from the raw repo).
 from pathlib import Path
 
 import pytest
-
 from wbb_data_build.build import build_season
 from wbb_data_build.config import REGISTRY
 

@@ -1,5 +1,4 @@
 import pytest
-
 from wbb_data_build.cli import main
 
 
