@@ -7,10 +7,10 @@
 | **Builder** | [`python/espn_wbb_05_schedules_creation.py`](../../python/espn_wbb_05_schedules_creation.py) |
 | **Release tag** | [`espn_womens_college_basketball_schedules`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_schedules) |
 | **File stem** | `wbb_schedule_{season}.{parquet,csv,rds}` |
-| **Seasons built** | — |
-| **Last published** | — (newest release asset) |
-| **Tag created** | — |
-| **Release assets** | — |
+| **Seasons built** | 2003–2026 (24 seasons) |
+| **Last published** | 2026-07-17 (newest release asset) |
+| **Tag created** | 2023-03-30 |
+| **Release assets** | 85 |
 
 ## Automation
 
@@ -109,4 +109,29 @@
 
 ## Coverage
 
-_No build manifest yet._
+| season | rows | built (UTC) |
+|---:|---:|---|
+| 2003 | 4,773 | 2026-08-01 15:29:41 UTC |
+| 2004 | 4,780 | 2026-08-01 15:29:41 UTC |
+| 2005 | 4,856 | 2026-08-01 15:29:42 UTC |
+| 2006 | 4,873 | 2026-08-01 15:29:42 UTC |
+| 2007 | 5,239 | 2026-08-01 15:29:42 UTC |
+| 2008 | 5,341 | 2026-08-01 15:29:43 UTC |
+| 2009 | 5,430 | 2026-08-01 15:29:43 UTC |
+| 2010 | 5,450 | 2026-08-01 15:29:43 UTC |
+| 2011 | 5,461 | 2026-08-01 15:29:44 UTC |
+| 2012 | 5,463 | 2026-08-01 15:29:44 UTC |
+| 2013 | 5,484 | 2026-08-01 15:29:45 UTC |
+| 2014 | 5,588 | 2026-08-01 15:29:45 UTC |
+| 2015 | 5,603 | 2026-08-01 15:29:45 UTC |
+| 2016 | 5,619 | 2026-08-01 15:29:46 UTC |
+| 2017 | 5,622 | 2026-08-01 15:29:46 UTC |
+| 2018 | 5,630 | 2026-08-01 15:29:46 UTC |
+| 2019 | 5,658 | 2026-08-01 15:29:47 UTC |
+| 2020 | 5,434 | 2026-08-01 15:29:47 UTC |
+| 2021 | 3,823 | 2026-08-01 15:29:47 UTC |
+| 2022 | 5,534 | 2026-08-01 15:29:48 UTC |
+| 2023 | 5,828 | 2026-08-01 15:29:48 UTC |
+| 2024 | 5,923 | 2026-08-01 15:29:49 UTC |
+| 2025 | 5,648 | 2026-08-01 15:29:51 UTC |
+| 2026 | 6,054 | 2026-08-01 15:29:52 UTC |

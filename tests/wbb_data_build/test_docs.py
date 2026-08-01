@@ -1,6 +1,5 @@
 """Generated dataset documentation.
 
-The interesting logic is the description lookup. The shared sdv-py store is
 Descriptions are authored for this league and ship with the package. They used
 to be borrowed from sdv-py's schema-keyed store by flattening it on column
 name, which produced `assists` = "Assisted tackles" (NFL), `half` =
@@ -12,11 +11,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import polars as pl
 import pytest
 from wbb_data_build.config import REGISTRY
 from wbb_data_build.docs import (
     BUILDER,
     _descriptions,
+    _seasons_built,
     column_table,
     dataset_page,
     summary_table,
@@ -69,6 +70,42 @@ def test_no_description_is_borrowed_from_another_sport(dataset):
     assert offenders == {}, f"{dataset}: descriptions from another sport: {offenders}"
 
 
+def _manifest_rows(seasons: list[int]) -> pl.DataFrame:
+    return pl.DataFrame({"season": seasons, "row_count": [1] * len(seasons)})
+
+
+def test_seasons_built_counts_distinct_seasons_not_manifest_rows():
+    """Some manifests are append-logs written one row per RUN: the weekly
+    roster refresh left 12 rows for a single season, which a row count
+    rendered as "2026-2026 (12 seasons)"."""
+    assert _seasons_built(_manifest_rows([2026] * 12)) == "2026 (1 season)"
+
+
+def test_seasons_built_is_singular_for_one_season():
+    assert _seasons_built(_manifest_rows([2026])) == "2026 (1 season)"
+
+
+def test_seasons_built_labels_a_sparse_range():
+    """game_rosters spans 2004-2026 but holds 5 seasons; a bare range implies a
+    completeness that isn't there."""
+    out = _seasons_built(_manifest_rows([2004, 2010, 2019, 2025, 2026]))
+    assert out == "2004–2026 (5 seasons, non-contiguous)"
+
+
+def test_seasons_built_leaves_a_contiguous_range_unqualified():
+    assert _seasons_built(_manifest_rows([2024, 2025, 2026])) == "2024–2026 (3 seasons)"
+
+
+def test_seasons_built_handles_no_manifest():
+    assert _seasons_built(None) == ""
+    assert _seasons_built(_manifest_rows([])) == ""
+
+
+def test_no_rendered_page_says_1_seasons():
+    for dataset in REGISTRY:
+        assert "(1 seasons)" not in dataset_page(dataset, live=False)
+
+
 def test_the_store_ships_with_the_package():
     """CI has no sibling sdv-py checkout. Reading the store from one made every
     doc page render blank there, which failed the drift gate on every PR."""
@@ -101,7 +138,6 @@ def test_summary_table_links_every_dataset():
     block = summary_table(live=False)
     for dataset in REGISTRY:
         assert f"docs/datasets/{dataset}.md" in block
-
 
 
 def test_no_rendered_cell_is_blank():

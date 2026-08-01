@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_team_boxscores`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_team_boxscores) |
 | **File stem** | `team_box_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2013 (10 seasons) |
-| **Last published** | — (newest release asset) |
-| **Tag created** | — |
-| **Release assets** | — |
+| **Last published** | 2026-07-17 (newest release asset) |
+| **Tag created** | 2023-03-30 |
+| **Release assets** | 72 |
 
 ## Automation
 
