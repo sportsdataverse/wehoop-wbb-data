@@ -22,15 +22,15 @@ SCRIPTS=(
     R/espn_wbb_01_pbp_creation.R
     R/espn_wbb_02_team_box_creation.R
     R/espn_wbb_03_player_box_creation.R
-    R/espn_wbb_04_rosters_creation.R
-    R/espn_wbb_05_player_season_stats_creation.R
-    R/espn_wbb_06_team_season_stats_creation.R
-    R/espn_wbb_07_standings_creation.R
-    R/espn_wbb_08_game_rosters_creation.R
-    R/espn_wbb_09_officials_creation.R
-    R/wbb_11_team_crosswalk_creation.R
-    R/wbb_12_schedule_crosswalk_creation.R
-    R/wbb_13_player_crosswalk_creation.R
+    R/espn_wbb_07_rosters_creation.R
+    R/espn_wbb_08_player_season_stats_creation.R
+    R/espn_wbb_09_team_season_stats_creation.R
+    R/espn_wbb_10_standings_creation.R
+    R/espn_wbb_11_game_rosters_creation.R
+    R/espn_wbb_12_officials_creation.R
+    R/wbb_13_team_crosswalk_creation.R
+    R/wbb_14_schedule_crosswalk_creation.R
+    R/wbb_15_player_crosswalk_creation.R
 )
 
 mkdir -p logs
