@@ -14,7 +14,7 @@ from pathlib import Path
 import polars as pl
 from wbb_data_build.build import build_season
 
-from tests.wbb_data_build._parity_helpers import assert_parquet_parity
+from tests.wbb_data_build._parity_helpers import assert_parquet_parity, id_dtype_upgrades
 
 FX = Path(__file__).parent.parent / "fixtures"
 
@@ -37,4 +37,11 @@ def test_shots_parity_2026(tmp_path):
     assert py["team_abbrev"].null_count() == 0
     oracle = FX / "released" / "shots_2026.parquet"
     keys = list(pl.read_parquet_schema(str(oracle)))
-    assert_parquet_parity(py, oracle, keys=keys, sample_cols=[], py_only_additive=ADDITIVE_COLS)
+    assert_parquet_parity(
+        py,
+        oracle,
+        keys=keys,
+        sample_cols=[],
+        py_only_additive=ADDITIVE_COLS,
+        dtype_upgrades=id_dtype_upgrades(oracle),
+    )

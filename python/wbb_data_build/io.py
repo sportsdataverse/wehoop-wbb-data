@@ -22,6 +22,7 @@ from wbb_data_build.config import (
     RDS_TYPE_TEMPLATE,
     DatasetSpec,
 )
+from wbb_data_build.ids import canonicalize_ids
 
 _LEAGUE = "wbb"
 
@@ -52,8 +53,15 @@ def _append_manifest(spec: DatasetSpec, season: int, row_count: int, base: Path)
 def write_dataset(
     df: pl.DataFrame, spec: DatasetSpec, season: int, *, base: str | Path = "wbb"
 ) -> list[Path]:
-    """Write parquet + csv + manifest for one dataset/season; return parquet+csv paths."""
+    """Write parquet + csv + manifest for one dataset/season; return parquet+csv paths.
+
+    Ids are canonicalized to Int64 here, at the single write boundary, so every
+    dataset agrees. They did not: ``game_id`` shipped Int32 in pbp and String in
+    officials, ``athlete_id`` shipped Int32/Int64/String across three datasets,
+    and joining them raised ``SchemaError`` on the released data.
+    """
     base = Path(base)
+    df = canonicalize_ids(df)
     pq_dir = base / spec.dataset / "parquet"
     csv_dir = base / spec.dataset / "csv"
     pq_dir.mkdir(parents=True, exist_ok=True)

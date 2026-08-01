@@ -11,6 +11,29 @@ from pathlib import Path
 import polars as pl
 
 
+def id_dtype_upgrades(r_parquet: Path) -> dict[str, tuple[pl.DataType, pl.DataType]]:
+    """Id columns the producer now widens to Int64, keyed to the oracle's dtype.
+
+    The producer canonicalizes every id to Int64 at the write boundary (see
+    ``wbb_data_build.ids``), because the released datasets shipped the same id
+    as Int32 in one and String in another -- joining them raised SchemaError.
+
+    Derived from the oracle rather than hardcoded per test, so a new id column
+    is covered automatically. Values are still compared under the oracle's
+    dtype by ``assert_parquet_parity``, so an unintended drift cannot hide here.
+    Non-numeric ids (an ESPN slug in an ``*_id`` field) are left alone by the
+    producer and so are excluded here.
+    """
+    schema = pl.read_parquet_schema(str(r_parquet))
+    upgrades: dict[str, tuple[pl.DataType, pl.DataType]] = {}
+    for name, dtype in schema.items():
+        if name != "id" and not name.endswith("_id"):
+            continue
+        if dtype in (pl.Int8, pl.Int16, pl.Int32, pl.UInt8, pl.UInt16, pl.UInt32):
+            upgrades[name] = (pl.Int64, dtype)
+    return upgrades
+
+
 def assert_parquet_parity(
     py: pl.DataFrame,
     r_parquet: Path,
