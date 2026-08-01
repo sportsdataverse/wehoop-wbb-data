@@ -53,10 +53,87 @@ def _game_athlete_names(final: dict) -> pl.DataFrame:
     )
 
 
+#: Columns the win-probability join contributes to pbp.
+WP_COLUMNS = ("espn_home_wp", "espn_away_wp", "espn_tie_percentage")
+
+_WP_SCHEMA = {
+    "playId": pl.Utf8,
+    "homeWinPercentage": pl.Float64,
+    "tiePercentage": pl.Float64,
+}
+
+
+def wp_frame(final: dict) -> pl.DataFrame:
+    """ESPN's ``winprobability`` section as a frame; empty when absent.
+
+    The section is a list in most payloads and a dict in a few (the sdv-py raw
+    schema declares it as a ``list|dict`` union for that reason), so anything
+    that is not a non-empty list yields the zero-row frame.
+    """
+    rows = final.get("winprobability")
+    if not isinstance(rows, list) or not rows:
+        return pl.DataFrame(schema=_WP_SCHEMA)
+    return pl.DataFrame(
+        [
+            {
+                "playId": None if r.get("playId") is None else str(r.get("playId")),
+                "homeWinPercentage": r.get("homeWinPercentage"),
+                "tiePercentage": r.get("tiePercentage"),
+            }
+            for r in rows
+            if isinstance(r, dict)
+        ],
+        schema=_WP_SCHEMA,
+    )
+
+
+def join_win_probability(plays: pl.DataFrame, wp: pl.DataFrame) -> pl.DataFrame:
+    """Left-join ESPN's win probability onto the plays frame.
+
+    ``away = 1 - home - tie``. Row count of ``plays`` is invariant across the
+    join; games with no section get nulls, not zeros, because a 0.0 win
+    probability is a claim and a null is an absence.
+
+    ESPN sends ``playId`` as a JSON string while ``plays.id`` is Int64. The
+    cast happens here, once, and both sides are asserted equal before joining:
+    a dtype mismatch matches nothing and produces an all-null column that reads
+    exactly like "ESPN published no win probability for this game".
+    """
+    out = plays.with_columns(pl.col("id").cast(pl.Int64))
+    nulls = [pl.lit(None, dtype=pl.Float64).alias(c) for c in WP_COLUMNS]
+    if wp.is_empty():
+        return out.with_columns(nulls)
+
+    right = (
+        wp.with_columns(pl.col("playId").cast(pl.Int64, strict=False))
+        .drop_nulls("playId")
+        .unique(subset=["playId"], keep="first", maintain_order=True)
+        .select(
+            pl.col("playId").alias("id"),
+            pl.col("homeWinPercentage").cast(pl.Float64).alias("espn_home_wp"),
+            pl.col("tiePercentage").cast(pl.Float64).alias("espn_tie_percentage"),
+        )
+        .with_columns(
+            (1.0 - pl.col("espn_home_wp") - pl.col("espn_tie_percentage")).alias("espn_away_wp")
+        )
+    )
+    if right.is_empty():
+        return out.with_columns(nulls)
+
+    assert out.schema["id"] == right.schema["id"], (
+        f"join-key dtype mismatch: plays.id={out.schema['id']}, wp.id={right.schema['id']}"
+    )
+    before = out.height
+    out = out.join(right, on="id", how="left")
+    assert out.height == before, f"win-probability join changed row count: {before} -> {out.height}"
+    return out
+
+
 def pbp_reshaper(final: dict, *, season: int, game_id: int) -> pl.DataFrame:
     pbp = helper_wbb_play_by_play(final)
     if pbp.is_empty():
         return pbp
+    pbp = join_win_probability(pbp, wp_frame(final))
     lookup = _game_athlete_names(final)
     for i in (1, 2, 3):
         idc, nmc = f"athlete_id_{i}", f"athlete_name_{i}"

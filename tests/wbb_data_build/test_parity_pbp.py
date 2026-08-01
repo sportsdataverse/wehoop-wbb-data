@@ -23,6 +23,12 @@ FX = Path(__file__).parent.parent / "fixtures"
 KEYS = ["game_id", "game_play_number"]
 
 NAME_COLS = ("athlete_name_1", "athlete_name_2", "athlete_name_3")
+# Deliberately additive (2026-08): ESPN's winprobability section joined onto
+# each play. The released oracle predates it, so it cannot carry these. Listed
+# explicitly rather than widened to a wildcard -- an UNintended new column must
+# still fail the set assertion.
+WP_COLS = ("espn_home_wp", "espn_away_wp", "espn_tie_percentage")
+ADDITIVE_COLS = NAME_COLS + WP_COLS
 
 
 @pytest.mark.parametrize("season", [2025, 2026])
@@ -44,7 +50,7 @@ def test_pbp_parity(season, tmp_path):
         keys=KEYS,
         sample_cols=sample,
         r_only_all_null_ok=("media_id",),
-        py_only_additive=NAME_COLS,
+        py_only_additive=ADDITIVE_COLS,
         # pbp column order is payload-first-seen; the raw repo has been
         # re-scraped since the oracle was compiled (the released 2025 and
         # 2026 assets already disagree on order), so order is not asserted.
