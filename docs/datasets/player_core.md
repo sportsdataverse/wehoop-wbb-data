@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_player_core`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_player_core) |
 | **File stem** | `player_core_{season}.{parquet,csv,rds}` |
 | **Seasons built** | — |
-| **Last published** | — (newest release asset) |
-| **Tag created** | — |
-| **Release assets** | — |
+| **Last published** | 2026-07-17 (newest release asset) |
+| **Tag created** | 2026-07-17 |
+| **Release assets** | 66 |
 
 ## Automation
 

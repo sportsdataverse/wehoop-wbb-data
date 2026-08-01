@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_team_season_stats`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_team_season_stats) |
 | **File stem** | `team_season_stats_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2026–2026 (1 seasons) |
-| **Last published** | — (newest release asset) |
-| **Tag created** | — |
-| **Release assets** | — |
+| **Last published** | 2026-07-17 (newest release asset) |
+| **Tag created** | 2026-05-11 |
+| **Release assets** | 49 |
 
 ## Automation
 
