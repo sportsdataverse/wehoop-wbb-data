@@ -9,6 +9,7 @@ rows was counting RUNS, which is how the generated docs came to claim
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import polars as pl
@@ -46,10 +47,38 @@ def test_at_least_one_manifest_exists():
 
 def test_no_r_script_appends_to_a_manifest():
     """The writers must upsert. A blind append is what produced the duplicates,
-    and it would reintroduce them the next time a season is rebuilt."""
+    and it would reintroduce them the next time a season is rebuilt.
+
+    Scoped to fwrite calls that target a manifest path, so an unrelated
+    `append = TRUE` elsewhere in a script is not a false positive.
+    """
+    pattern = re.compile(
+        r"fwrite\((?:[^()]|\([^()]*\))*manifest(?:[^()]|\([^()]*\))*append\s*=\s*TRUE",
+        re.S | re.I,
+    )
     offenders = [
         p.name
         for p in sorted((REPO_ROOT / "R").glob("*.R"))
-        if "append = TRUE" in p.read_text(encoding="utf-8")
+        if pattern.search(p.read_text(encoding="utf-8"))
     ]
     assert offenders == [], f"R scripts still appending to a manifest: {offenders}"
+
+
+def test_every_manifest_writer_uses_the_shared_helper():
+    """Ten copies of the upsert is how the scope bug happened: four of them
+    referenced `y` while sitting inside a function whose argument was
+    `season`."""
+    writers = [
+        p
+        for p in sorted((REPO_ROOT / "R").glob("*.R"))
+        if "manifest_path" in p.read_text(encoding="utf-8")
+        or "shots_manifest_path" in p.read_text(encoding="utf-8")
+    ]
+    assert writers, "no manifest-writing R scripts found"
+    missing = [
+        p.name
+        for p in writers
+        if "upsert_manifest_row(" not in p.read_text(encoding="utf-8")
+        and p.name != "manifest_upload_helper.R"
+    ]
+    assert missing == [], f"manifest writers not using the helper: {missing}"

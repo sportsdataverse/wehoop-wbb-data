@@ -12,6 +12,8 @@ suppressPackageStartupMessages(suppressMessages(library(glue)))
 suppressPackageStartupMessages(suppressMessages(library(optparse)))
 suppressPackageStartupMessages(suppressMessages(library(tibble)))
 suppressPackageStartupMessages(suppressMessages(library(rlang)))
+# Sourced up-front: upsert_manifest_row() is called inside the season loop.
+source(file.path("R", "manifest_upload_helper.R"))
 
 option_list <- list(
   make_option(
@@ -290,18 +292,9 @@ build_season_rosters <- function(y) {
     generated_at_utc = format(Sys.time(), tz = "UTC", usetz = TRUE),
     source_endpoint  = glue::glue("{raw_base}/{y}/<team_id>.json")
   )
-  # Upsert, not append: one row per season. A blind append left 12 rows for
-  # season 2026 in the rosters manifest (one per weekly refresh), so anything
-  # counting rows counted RUNS. Drop any existing row for this season first.
-  if (file.exists(manifest_path)) {
-    prior <- data.table::fread(manifest_path)
-    prior <- prior[prior$season != as.integer(y), , drop = FALSE]
-    manifest_row <- data.table::rbindlist(
-      list(prior, manifest_row), use.names = TRUE, fill = TRUE
-    )
-    manifest_row <- manifest_row[order(manifest_row$season), , drop = FALSE]
-  }
-  data.table::fwrite(manifest_row, manifest_path)
+  # One row per season; see upsert_manifest_row() in
+  # R/manifest_upload_helper.R.
+  upsert_manifest_row(manifest_path, manifest_row, y)
 
   rm(rosters)
   gc()
