@@ -1,0 +1,70 @@
+# `shots`
+
+
+
+| | |
+|---|---|
+| **Builder** | [`python/espn_wbb_06_shots_creation.py`](../../python/espn_wbb_06_shots_creation.py) |
+| **Release tag** | [`espn_womens_college_basketball_shots`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_shots) |
+| **File stem** | `shots_{season}.{parquet,csv,rds}` |
+| **Seasons built** | 2004–2026 (23 seasons) |
+| **Last published** | — (newest release asset) |
+| **Tag created** | — |
+| **Release assets** | — |
+
+## Automation
+
+`.github/workflows/daily_wbb.yml` — cron 07:00 UTC in season (late Oct, Nov–Dec, Jan–Mar, early Apr), plus `repository_dispatch` from `wehoop-wbb-raw`. Runs `scripts/daily_wbb_data_processor.sh` (`-l python` default, `-l R` rollback).
+
+## Columns
+
+| col_name | type | description |
+|---|---|---|
+| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
+| `period_number` | Int64 | Period number the play occurred in. |
+| `clock_display_value` | String | Game clock at the time of the play, formatted MM:SS. |
+| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `athlete_id_1` | Int64 | ESPN id of the primary athlete involved in the play (shooter, rebounder, fouler). |
+| `athlete_id_2` | Int64 | ESPN id of the secondary athlete involved in the play (assister, blocker, fouled). |
+| `type_id` | Int64 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
+| `type_text` | String | Play type as published by ESPN (e.g. "Jumpball"). |
+| `scoring_play` | Boolean | Whether the play resulted in points. |
+| `score_value` | Int64 | Points the play was worth (0, 1, 2 or 3). |
+| `coordinate_x` | Float64 | Shot x-coordinate translated to a half-court frame, in feet from the basket. |
+| `coordinate_y` | Float64 | Shot y-coordinate translated to a half-court frame, in feet from the basket. |
+| `coordinate_x_raw` | Float64 | Shot x-coordinate exactly as published by ESPN, before translation. |
+| `coordinate_y_raw` | Float64 | Shot y-coordinate exactly as published by ESPN, before translation. |
+| `athlete_name_1` | String | Display name of the primary athlete involved in the play. |
+| `athlete_name_2` | String | Display name of the secondary athlete involved in the play. |
+| `team_name` | String | Team nickname (e.g. "Bruins"). |
+| `team_mascot` | String | Team nickname/mascot. |
+| `team_abbrev` | String | Team abbreviation (e.g. "UCLA"). |
+
+## Coverage
+
+| season | rows | built (UTC) |
+|---:|---:|---|
+| 2004 | 9,431 | 2026-07-29 10:18:51 UTC |
+| 2005 | 17,113 | 2026-07-29 10:18:59 UTC |
+| 2006 | 37,699 | 2026-07-29 10:19:08 UTC |
+| 2007 | 71,911 | 2026-07-29 10:19:23 UTC |
+| 2008 | 275,637 | 2026-07-29 10:19:47 UTC |
+| 2009 | 195,912 | 2026-07-29 10:20:53 UTC |
+| 2010 | 143,088 | 2026-07-29 10:21:50 UTC |
+| 2011 | 108,937 | 2026-07-29 10:22:28 UTC |
+| 2012 | 223,250 | 2026-07-29 10:23:00 UTC |
+| 2013 | 280,321 | 2026-07-29 10:23:59 UTC |
+| 2014 | 239,798 | 2026-07-29 10:24:49 UTC |
+| 2015 | 231,742 | 2026-07-29 10:25:53 UTC |
+| 2016 | 255,435 | 2026-07-29 10:26:56 UTC |
+| 2017 | 243,424 | 2026-07-29 10:28:08 UTC |
+| 2018 | 237,615 | 2026-07-29 10:29:18 UTC |
+| 2019 | 234,861 | 2026-07-29 10:30:28 UTC |
+| 2020 | 750,351 | 2026-07-29 10:31:43 UTC |
+| 2021 | 542,119 | 2026-07-29 10:34:55 UTC |
+| 2022 | 799,239 | 2026-07-29 10:37:06 UTC |
+| 2023 | 855,000 | 2026-07-29 10:40:20 UTC |
+| 2024 | 867,657 | 2026-07-29 10:43:08 UTC |
+| 2025 | 804,750 | 2026-07-29 10:46:39 UTC |
+| 2026 | 907,805 | 2026-07-29 10:49:50 UTC |

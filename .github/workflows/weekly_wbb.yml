@@ -67,7 +67,7 @@ jobs:
             git pull >> /dev/null
             git config --local user.email "action@github.com"
             git config --local user.name "Github Action"
-            Rscript R/espn_wbb_04_rosters_creation.R -s $i -e $i
+            Rscript R/espn_wbb_07_rosters_creation.R -s $i -e $i
             git pull >> /dev/null
             git add wbb/rosters/* >> /dev/null || true
             git pull >> /dev/null

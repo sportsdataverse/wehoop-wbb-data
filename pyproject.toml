@@ -1,0 +1,68 @@
+[project]
+name = "wehoop-wbb-data-build"
+version = "0.1.0"
+description = "Python producer for the ESPN WBB release datasets (parity port of the R creation scripts)."
+requires-python = ">=3.11"
+dependencies = [
+    "sportsdataverse>=0.0.71",
+    "polars>=1.0,<2.0",
+    "pyarrow>=15.0",
+    "requests>=2.28",
+    "tqdm>=4.66",
+    "pydantic>=2.13.4",
+    "pyyaml>=6.0.3",
+]
+
+[dependency-groups]
+# ruff is declared, not assumed: CI runs `uv run ruff` inside the synced
+# project env, which cannot see a globally-installed tool.
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+# sdv-py main carries the helper_wbb_* producers (PRs #243/#245); PyPI 0.0.71
+# does not. CI-resolvable on a fresh runner. Pin to the released version once
+# one ships.
+[tool.uv.sources]
+sportsdataverse = { git = "https://github.com/sportsdataverse/sportsdataverse-py", branch = "main" }
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+# python/ is the source dir, symmetric with R/. The numbered
+# espn_wbb_NN_*_creation.py entrypoints sit beside the packages and are run by
+# path; the packages themselves are what gets installed.
+[tool.setuptools.packages.find]
+where = ["python"]
+
+[tool.setuptools.package-data]
+# The description store must ship with the package: the docs generator reads it
+# at runtime, and CI has no sibling checkout to fall back on.
+wbb_data_build = ["column_descriptions.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["python"]
+markers = [
+    # Reads the committed wbb/ parquet tree or hits a release URL. Deselected
+    # in PR CI so a code change is gated by offline tests only.
+    "archive: requires the committed wbb/ dataset tree",
+    "live: hits the network (release assets, ESPN)",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# Pin the rule set explicitly. Relying on ruff's defaults makes the gate
+# version-sensitive -- a newer ruff can turn a green tree red with no code
+# change. Local and CI must agree.
+select = [
+    "E4",  # pycodestyle: imports
+    "E7",  # pycodestyle: statement errors
+    "E9",  # pycodestyle: runtime/syntax errors
+    "F",   # pyflakes: dead imports, undefined names, unused locals
+    "I",   # isort: import order
+]
+# Explicit polars bool masks (pl.col("c") == True/False) are the project
+# convention (see sdv-py CLAUDE.md "Polars version"); E712 fights that.
+ignore = ["E712"]

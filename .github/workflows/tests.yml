@@ -1,0 +1,44 @@
+name: tests
+
+# Without this the offline suite only ran inside the nightly build, so it gated
+# nothing: a broken import, a reintroduced id-dtype divergence, or stale
+# generated docs would ship and surface at 07:00 UTC as a failed cron.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+          cache-dependency-glob: uv.lock
+
+      - name: Install
+        # --frozen: a PR must not silently re-resolve. It is also what catches
+        # an uncommitted lock bump that a local .venv would otherwise mask.
+        run: uv sync --frozen --dev
+
+      - name: Tests
+        # `archive` tests read the committed wbb/ parquet tree; they run in the
+        # daily workflow, which already has it.
+        run: uv run pytest -q -m "not archive"
+
+      - name: Lint
+        run: uv run ruff check python tests
+
+      - name: Generated docs are in sync
+        # --no-live skips the `gh release view` calls; the check ignores the
+        # publish-status values either way, so a daily publish cannot redden a
+        # PR that did not cause it.
+        run: uv run python -m wbb_data_build.docs --check --no-live

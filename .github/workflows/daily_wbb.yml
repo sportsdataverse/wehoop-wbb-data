@@ -83,8 +83,15 @@ jobs:
           # upstream `WBB Raw Update (Start: YYYY End: YYYY)` commit
           # message so embedded numbers (PR ids, run ids, error codes)
           # don't shadow the year extraction.
-          start=$(printf '%s' "$COMMIT_MESSAGE" | grep -oP 'Start:\s*\K[0-9]{4}' | head -1)
-          end=$(printf '%s' "$COMMIT_MESSAGE"   | grep -oP 'End:\s*\K[0-9]{4}'   | head -1)
+          # `|| true` is load-bearing. Actions runs `shell: bash` as
+          # `bash -eo pipefail`, so a grep that matches nothing exits 1,
+          # pipefail propagates it, and THIS STEP DIES -- which means the
+          # "Default year inputs if empty" step below can never run. Any
+          # dispatch whose commit message is not the canonical
+          # `WBB Raw Update (Start: YYYY End: YYYY)` (a human merge to main,
+          # say) therefore failed the whole run instead of falling back.
+          start=$(printf '%s' "$COMMIT_MESSAGE" | grep -oP 'Start:\s*\K[0-9]{4}' | head -1 || true)
+          end=$(printf '%s' "$COMMIT_MESSAGE"   | grep -oP 'End:\s*\K[0-9]{4}'   | head -1 || true)
           echo "START_YEAR=$start" >> $GITHUB_ENV
           echo "END_YEAR=$end"     >> $GITHUB_ENV
 
@@ -104,10 +111,12 @@ jobs:
           SPORTSDATAVERSE.UPLOAD.MAX_TIMES: 20
         run: |
           # Python is the production default (unchanged). use_python_build=false
-          # rolls back to the R processor -- kept in-repo for exactly this purpose.
+          # selects the R path within the SAME processor -- there is no longer a
+          # separate daily_wbb_R_processor.sh, so the two paths cannot drift in
+          # season handling, logging, or the load-bearing commit format.
           # Cron / repository_dispatch pass no inputs, so they take the python path.
           if [ "${{ inputs.use_python_build }}" = "false" ]; then
-            bash scripts/daily_wbb_R_processor.sh -s ${{ env.START_YEAR }} -e ${{ env.END_YEAR }}
+            bash scripts/daily_wbb_data_processor.sh -s ${{ env.START_YEAR }} -e ${{ env.END_YEAR }} -l R
           else
-            bash scripts/daily_wbb_data_processor.sh -s ${{ env.START_YEAR }} -e ${{ env.END_YEAR }}
+            bash scripts/daily_wbb_data_processor.sh -s ${{ env.START_YEAR }} -e ${{ env.END_YEAR }} -l python
           fi
