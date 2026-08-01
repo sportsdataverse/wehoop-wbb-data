@@ -253,15 +253,19 @@ wbb_pbp_games <- function(y) {
         generated_at_utc = format(Sys.time(), tz = "UTC", usetz = TRUE),
         source_endpoint = "derived from espn_wbb pbp"
       )
+      # Upsert, not append: one row per season (see the other creation
+      # scripts -- a blind append counted runs, not seasons).
       if (file.exists(shots_manifest_path)) {
-        data.table::fwrite(
-          shots_manifest_row,
-          shots_manifest_path,
-          append = TRUE
+        prior <- data.table::fread(shots_manifest_path)
+        prior <- prior[prior$season != as.integer(y), , drop = FALSE]
+        shots_manifest_row <- data.table::rbindlist(
+          list(prior, shots_manifest_row), use.names = TRUE, fill = TRUE
         )
-      } else {
-        data.table::fwrite(shots_manifest_row, shots_manifest_path)
+        shots_manifest_row <- shots_manifest_row[
+          order(shots_manifest_row$season), , drop = FALSE
+        ]
       }
+      data.table::fwrite(shots_manifest_row, shots_manifest_path)
 
       rm(shots_df)
     } else {

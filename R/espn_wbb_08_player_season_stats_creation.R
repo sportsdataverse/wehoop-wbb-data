@@ -395,11 +395,18 @@ build_season_player_stats <- function(y) {
     generated_at_utc = format(Sys.time(), tz = "UTC", usetz = TRUE),
     source_endpoint  = glue::glue("{raw_base}/{y}/<athlete_id>.json")
   )
+  # Upsert, not append: one row per season. A blind append left 12 rows for
+  # season 2026 in the rosters manifest (one per weekly refresh), so anything
+  # counting rows counted RUNS. Drop any existing row for this season first.
   if (file.exists(manifest_path)) {
-    data.table::fwrite(manifest_row, manifest_path, append = TRUE)
-  } else {
-    data.table::fwrite(manifest_row, manifest_path)
+    prior <- data.table::fread(manifest_path)
+    prior <- prior[prior$season != as.integer(y), , drop = FALSE]
+    manifest_row <- data.table::rbindlist(
+      list(prior, manifest_row), use.names = TRUE, fill = TRUE
+    )
+    manifest_row <- manifest_row[order(manifest_row$season), , drop = FALSE]
   }
+  data.table::fwrite(manifest_row, manifest_path)
 
   rm(stats)
   gc()
