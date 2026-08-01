@@ -233,11 +233,29 @@ def schedules_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFram
     raw = pl.read_parquet(
         raw_root / "wbb" / "schedules" / "parquet" / f"wbb_schedule_{season}.parquet"
     )
-    return helper_wbb_schedule(
+    schedule = helper_wbb_schedule(
         raw,
         pbp_game_ids=_built_game_ids(base, "pbp", "play_by_play", season),
         team_box_game_ids=_built_game_ids(base, "team_box", "team_box", season),
         player_box_game_ids=_built_game_ids(base, "player_box", "player_box", season),
+    )
+    # helper_wbb_schedule stamps PBP / team_box / player_box -- wehoop's
+    # PUBLISHED column names, which load_wbb_schedule() consumers read, so they
+    # are left exactly as they are. The remaining game-level datasets get
+    # in_<dataset> flags here; the master normalizes both families into one
+    # in_* set so downstream sees a single convention.
+    return schedule.with_columns(
+        [
+            pl.col("game_id")
+            .cast(pl.Int64)
+            .is_in(_built_game_ids(base, dataset, stem, season))
+            .alias(f"in_{dataset}")
+            for dataset, stem in (
+                ("shots", "shots"),
+                ("game_rosters", "game_rosters"),
+                ("officials", "officials"),
+            )
+        ]
     )
 
 
