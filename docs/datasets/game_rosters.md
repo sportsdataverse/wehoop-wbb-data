@@ -7,7 +7,7 @@
 | **Builder** | [`python/espn_wbb_11_game_rosters_creation.py`](../../python/espn_wbb_11_game_rosters_creation.py) |
 | **Release tag** | [`espn_womens_college_basketball_game_rosters`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_game_rosters) |
 | **File stem** | `game_rosters_{season}.{parquet,csv,rds}` |
-| **Seasons built** | 2004–2026 (5 seasons) |
+| **Seasons built** | 2004–2026 (5 seasons, non-contiguous) |
 | **Last published** | 2026-07-17 (newest release asset) |
 | **Tag created** | 2026-05-11 |
 | **Release assets** | 71 |

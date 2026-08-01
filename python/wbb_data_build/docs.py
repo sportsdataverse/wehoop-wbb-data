@@ -163,14 +163,38 @@ def coverage_table(dataset: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _seasons_built(manifest: pl.DataFrame | None) -> str:
+    """Human summary of which seasons a dataset has been built for.
+
+    Counts DISTINCT seasons, not manifest rows. Some of these files are
+    append-logs written one row per run rather than per season -- the weekly
+    roster refresh has left 12 rows for a single season -- so a row count
+    reported "2026-2026 (12 seasons)".
+
+    A sparse range is labelled as such: `game_rosters` spans 2004-2026 but
+    holds only 5 seasons, and rendering that as a bare range implies a
+    completeness that isn't there.
+    """
+    if manifest is None or manifest.is_empty() or "season" not in manifest.columns:
+        return ""
+    seasons = manifest["season"].drop_nulls().unique().sort()
+    count = seasons.len()
+    if count == 0:
+        return ""
+    low, high = seasons.min(), seasons.max()
+    noun = "season" if count == 1 else "seasons"
+    if count == 1:
+        return f"{low} (1 season)"
+    contiguous = count == (int(high) - int(low) + 1)
+    span = f"{low}–{high}"
+    return f"{span} ({count} {noun})" if contiguous else f"{span} ({count} {noun}, non-contiguous)"
+
+
 def dataset_page(dataset: str, *, live: bool) -> str:
     spec = REGISTRY[dataset]
     status = release_status(spec.tag, live=live)
     manifest = _manifest(dataset)
-    seasons = ""
-    if manifest is not None and not manifest.is_empty():
-        s = manifest["season"]
-        seasons = f"{s.min()}–{s.max()} ({s.len()} seasons)"
+    seasons = _seasons_built(manifest)
 
     return f"""# `{dataset}`
 
