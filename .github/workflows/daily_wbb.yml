@@ -30,8 +30,8 @@ env:
 
 jobs:
   update_wbb_data:
-    # Python (wbb_data_build) owns the 11 raw-derived datasets; R is retained
-    # for the crosswalks (wbb_11-13), serialize_rds.R, and run_summary.R.
+    # Python (wbb_data_build) owns the 12 raw-derived datasets; R is retained
+    # for the crosswalks (wbb_13-15).
     # ubuntu matches daily_cfb (the previous windows matrix predates the cutover).
     runs-on: ubuntu-latest
     name: Update WBB Data ${{ inputs.start_year }}-${{ inputs.end_year }}

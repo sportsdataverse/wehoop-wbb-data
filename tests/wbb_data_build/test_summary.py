@@ -1,4 +1,4 @@
-"""Run summary: Python port of R/run_summary.R.
+"""Run summary: Python port of the retired R/run_summary.R.
 
 The log format is the contract. The R producer emits
 ``Updated YYYY ESPN LEAGUE <ds> GitHub Release``; the Python producer emits

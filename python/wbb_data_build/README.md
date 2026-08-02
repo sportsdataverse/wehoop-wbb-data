@@ -51,12 +51,12 @@ All 11 raw-derived datasets are parity-green against the released assets:
 `pbp`, `schedules`, `shots`, `team_box`, `player_box`, `rosters`,
 `player_season_stats`, `team_season_stats`, `standings`, `game_rosters`,
 `officials`. The three `*_crosswalk` datasets still build via the R scripts
-(`wbb_1{1,2,3}_*_creation.R`) — they consume live ESPN + Torvik + Fox inputs,
+(`wbb_1{3,4,5}_*_creation.R`) — they consume live ESPN + Torvik + Fox inputs,
 not the raw repo, and move to Python when those source surfaces land in
 sportsdataverse.
 
 The daily cron (`.github/workflows/daily_wbb.yml` →
-`scripts/daily_wbb_data_processor.sh`) runs this producer for all 11
-datasets, then R serializes each parquet to `.rds` (`R/serialize_rds.R`,
-rds-only upload — wehoop's `load_wbb_*` reads rds) and runs the crosswalks
-and `run_summary.R`.
+`scripts/daily_wbb_data_processor.sh`) runs this producer for all 12
+datasets (`.rds` is written natively alongside parquet/csv — wehoop's
+`load_wbb_*` reads rds), then R runs the crosswalks and Python the schedule
+master + run summary (`wbb_data_build.summary`).

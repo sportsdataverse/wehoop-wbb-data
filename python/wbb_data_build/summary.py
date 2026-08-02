@@ -1,6 +1,6 @@
 """Run summary: what a build published and what still went wrong.
 
-Python port of ``R/run_summary.R``. Parses the per-season tracked logs the
+Python port of the retired ``R/run_summary.R``. Parses the per-season tracked logs the
 daily processor writes and emits (a) a summary to stdout, visible in the
 Actions log, and (b) a markdown summary to ``$GITHUB_STEP_SUMMARY`` when set,
 so the run's Summary tab shows which releases updated plus any remaining

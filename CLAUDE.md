@@ -11,34 +11,34 @@ Pipeline: `ESPN -> wehoop-wbb-raw --push--> wehoop-wbb-data [HERE] --release--> 
 
 ## Commands (verified)
 
-Driven by `scripts/daily_wbb_data_processor.sh` (getopts `-s -e`; Python
-`wbb_data_build` builds + publishes the 11 raw-derived datasets, then R runs
-the crosswalks, `serialize_rds.R`, and `run_summary.R`; commits + pushes).
+Driven by `scripts/daily_wbb_data_processor.sh` (getopts `-s -e -l`; Python
+`wbb_data_build` builds + publishes the 12 raw-derived datasets, then R runs
+the crosswalks and Python the schedule master + run summary; commits + pushes).
 Reads raw JSON from `raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw`
 over HTTP (the 58GB raw repo is never cloned), caching under `.wbb_raw_cache/`.
 
 ```sh
-bash scripts/daily_wbb_data_processor.sh -s 2025 -e 2025   # full daily compile (CI entry point)
-bash scripts/daily_wbb_R_processor.sh -s 2025 -e 2025      # legacy full-R fallback (manual only)
-Rscript R/espn_wbb_01_pbp_creation.R -s 2025 -e 2025        # any single R creation script
-Rscript R/serialize_rds.R -s 2025 -e 2025 --no-upload       # parquet -> rds, local only
+bash scripts/daily_wbb_data_processor.sh -s 2025 -e 2025       # full daily compile (CI entry point)
+bash scripts/daily_wbb_data_processor.sh -s 2025 -e 2025 -l R  # full-R fallback path (manual only)
+Rscript R/espn_wbb_01_pbp_creation.R -s 2025 -e 2025           # any single R creation script
 ```
 
-Creation scripts run in order: `espn_wbb_01_pbp` (also writes schedules + the
-`shots` filtered subset), `_02_team_box`, `_03_player_box`, `_04_rosters`,
-`_05_player_season_stats`, `_06_team_season_stats`, `_07_standings`,
-`_08_game_rosters`, `_09_officials`, then `wbb_11_team_crosswalk`,
-`wbb_12_schedule_crosswalk`, `wbb_13_player_crosswalk`. One-time bootstraps (run from the repo root):
+Creation scripts run in dataset order 01-12 (see the Datasets table); the R
+fallback keeps `espn_wbb_01`-`03` + `07`-`12` (no R counterpart for
+player_core/schedules/shots). The crosswalks `wbb_13_team_crosswalk`,
+`wbb_14_schedule_crosswalk`, `wbb_15_player_crosswalk` run in R in both modes.
+One-time bootstraps (run from the repo root):
 `ops/init/0000_create_wehoop_releases_init.R` (creates release tags idempotently),
-`ops/init/0001_push_existing_release_data.R`. `R/run_summary.R` writes a CI summary.
+`ops/init/0001_push_existing_release_data.R`. `wbb_data_build.summary` writes
+the CI run summary.
 
 `GITHUB_PAT` is required for uploads (CI injects `secrets.SDV_GH_TOKEN`).
 
 The **Python producer** (`python/wbb_data_build/`, uv + polars, parity-tested
-against the released parquets) owns the 11 raw-derived datasets in the daily
-cron — see `python/wbb_data_build/README.md`. R is retained for the three
-crosswalk datasets (live ESPN+Torvik+Fox inputs), the `.rds` serialization
-(`R/serialize_rds.R` — wehoop's `load_wbb_*` reads rds), and `run_summary.R`.
+against the released parquets) owns the 12 raw-derived datasets in the daily
+cron and writes `.rds` natively (wehoop's `load_wbb_*` reads rds) — see
+`python/wbb_data_build/README.md`. R is retained only for the three
+crosswalk datasets (live ESPN+Torvik+Fox inputs).
 
 ```sh
 cd python && uv run pytest        # offline parity + smoke suite
@@ -66,7 +66,7 @@ game_rosters / officials / shots / crosswalk tags (one per creation script).
   `repository_dispatch` type `daily_wbb_data` (fired by the raw repo) +
   `workflow_dispatch`; Windows runner. Extracts years from the dispatch commit
   message (`Start:`/`End:` regex), defaulting to `wehoop::most_recent_wbb_season()`.
-- `.github/workflows/weekly_wbb.yml` — Sunday `0 6 UTC` roster refresh (runs `espn_wbb_04_rosters_creation.R`).
+- `.github/workflows/weekly_wbb.yml` — Sunday `0 6 UTC` roster refresh (runs `espn_wbb_07_rosters_creation.R`).
 
 ## Gotchas
 

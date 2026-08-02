@@ -19,7 +19,7 @@ Package name in `DESCRIPTION` is `wehoop.wbb`. Not on CRAN. License is
 
 - Branch from `main`; `main` is the default branch.
 - The CI entry point is
-  `scripts/daily_wbb_R_processor.sh -s <START> -e <END> -r <true|false>`.
+  `scripts/daily_wbb_data_processor.sh -s <START> -e <END> [-l python|R]`.
 - Compile scripts orchestrate `wehoop` helpers — fix ESPN parser bugs
   upstream in `sportsdataverse/wehoop`, not here.
 - Do not reorganize the `wbb/` output tree without aligning the matching
@@ -28,7 +28,7 @@ Package name in `DESCRIPTION` is `wehoop.wbb`. Not on CRAN. License is
 ## Build & Development Commands
 
 ```sh
-bash scripts/daily_wbb_R_processor.sh -s 2026 -e 2026 -r false
+bash scripts/daily_wbb_data_processor.sh -s 2026 -e 2026 -l python
 
 Rscript R/espn_wbb_01_pbp_creation.R               -s 2026 -e 2026
 Rscript R/espn_wbb_02_team_box_creation.R          -s 2026 -e 2026
@@ -84,7 +84,7 @@ Release tags are load-bearing — renaming a tag breaks downstream
   therefore load-bearing.
 - `workflow_dispatch` inputs: `start_year`, `end_year` strings.
 - Empty inputs fall back to `wehoop::most_recent_wbb_season()`.
-- Calls `bash scripts/daily_wbb_R_processor.sh -s $START_YEAR -e $END_YEAR`.
+- Calls `bash scripts/daily_wbb_data_processor.sh -s $START_YEAR -e $END_YEAR -l <python|R>`.
 
 ## Cross-Repo References
 
