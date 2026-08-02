@@ -68,6 +68,21 @@ game_rosters / officials / shots / crosswalk tags (one per creation script).
   message (`Start:`/`End:` regex), defaulting to `wehoop::most_recent_wbb_season()`.
 - `.github/workflows/weekly_wbb.yml` — Sunday `0 6 UTC` roster refresh (runs `espn_wbb_07_rosters_creation.R`).
 
+## Model registry
+
+Model datasets are built by `python/wbb_model_publish` (thin orchestration over
+sdv-py's `sportsdataverse.wbb` compute surface; both compute fns load the
+released ESPN inputs themselves, so no local data tree) and published to
+`sportsdataverse-data` by `.github/workflows/wbb_models_cron.yml` — daily
+in-season cron (Nov–Apr, `0 13 UTC`) + `workflow_dispatch` (`seasons` range,
+`dry_run` plan-only input). Rows are mandatory for new published
+models/artifacts; "frozen" is a valid cadence but must be explicit.
+
+| model | artifact(s) | release tag | training data (seasons/source) | fitting script | gates at publish | last retrain | cadence |
+|---|---|---|---|---|---|---|---|
+| `wbb_ratings` (opponent-adjusted AdjO/AdjD/AdjEM/AdjTempo per team-season) | `wbb_ratings_{season}.parquet` + `wbb_ratings_card.json` | [`wbb_ratings`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_ratings) | 2008+ (wehoop end-year); released ESPN WBB schedules + team boxscores via sdv-py `wbb_team_ratings()` | `python/wbb_model_publish/builders.py` (`build_ratings`) | season floor 2008 (`MIN_SEASON_RATINGS`) + refuse-empty 0-row publish; adjustment fixed point/constants oracle-gated in sdv-py's T1.1 suite | recomputed each publish; 2008–2026 backfill published 2026-07-17 | daily in-season cron |
+| `wbb_player_value` (team-constrained box Plus/Minus per player-season) | `wbb_player_value_{season}.parquet` + `wbb_player_value_card.json` | [`wbb_player_value`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_player_value) | 2014+ (full-coverage seasons only); released ESPN WBB player boxscores via sdv-py `wbb_box_bpm()`; coefficients = the team-constrained artifact bundled in sdv-py | `python/wbb_model_publish/builders.py` (`build_player_value`); coefficient fit lives in sdv-py (T1.2) | season floor 2014 (`MIN_SEASON_PLAYER_VALUE`) + refuse-empty 0-row publish; coefficients oracle-gated in sdv-py's T1.2 suite | dataset recomputed each publish; 2014–2026 backfill published 2026-07-17; bundled coefficient retrain date TODO (tracked in sdv-py) | daily in-season cron |
+
 ## Gotchas
 
 - Daily CI commit subject `"WBB Data update (Start: <yr> End: <yr>)"` is load-bearing — don't restyle.
