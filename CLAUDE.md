@@ -28,9 +28,9 @@ Creation scripts run in order: `espn_wbb_01_pbp` (also writes schedules + the
 `shots` filtered subset), `_02_team_box`, `_03_player_box`, `_04_rosters`,
 `_05_player_season_stats`, `_06_team_season_stats`, `_07_standings`,
 `_08_game_rosters`, `_09_officials`, then `wbb_11_team_crosswalk`,
-`wbb_12_schedule_crosswalk`, `wbb_13_player_crosswalk`. One-time bootstraps:
-`R/0000_create_wehoop_releases_init.R` (creates release tags idempotently),
-`R/0001_push_existing_release_data.R`. `R/run_summary.R` writes a CI summary.
+`wbb_12_schedule_crosswalk`, `wbb_13_player_crosswalk`. One-time bootstraps (run from the repo root):
+`ops/init/0000_create_wehoop_releases_init.R` (creates release tags idempotently),
+`ops/init/0001_push_existing_release_data.R`. `R/run_summary.R` writes a CI summary.
 
 `GITHUB_PAT` is required for uploads (CI injects `secrets.SDV_GH_TOKEN`).
 
