@@ -472,6 +472,24 @@ def standings_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFram
     return helper_wbb_standings(payload, season=season)
 
 
+def team_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
+    """ESPN/Fox/Torvik team crosswalk -- ``sportsdataverse.wbb.wbb_team_crosswalk``.
+
+    Reads LIVE ESPN + Fox + Torvik, not the raw repo, so ``raw_root``/``base``
+    are accepted and ignored (the ``SEASON_BUILDERS`` signature). The sdv-py
+    function raises ``CrosswalkSourceError`` when a source returns nothing, so
+    a silently-empty crosswalk cannot reach the tree; the error propagates and
+    the stage fails loudly.
+
+    The schedule and player crosswalks have no builder here on purpose -- see
+    ``config.REGISTRY``; they stay on R until sdv-py's ESPN scoreboard and
+    roster sources cover them.
+    """
+    from sportsdataverse.wbb import wbb_team_crosswalk
+
+    return wbb_team_crosswalk(season=season)
+
+
 SEASON_BUILDERS: dict = {
     "schedules": schedules_builder,
     "shots": shots_builder,
@@ -482,4 +500,9 @@ SEASON_BUILDERS: dict = {
     "player_season_stats": player_season_stats_builder,
     "player_core": player_core_builder,
     "standings": standings_builder,
+    "team_crosswalk": team_crosswalk_builder,
 }
+
+#: Datasets whose builder never opens the raw repo (live-source crosswalks).
+#: ``build_season`` skips the raw-root resolution for these.
+NO_RAW_INPUT: frozenset = frozenset({"team_crosswalk"})
