@@ -18,13 +18,16 @@ from wbb_data_build.models import MODELS, check_frame, polars_schema
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-# The three crosswalks are still R-only (they need Fox + Bart Torvik surfaces
-# sdv-py does not carry), so they have no Python model.
-R_ONLY = {"team_crosswalk", "schedule_crosswalk", "player_crosswalk"}
+# Datasets with no Python model. schedule/player_crosswalk are still R-built.
+# team_crosswalk IS Python-built but is deliberately model-less: its id columns
+# are the PUBLISHED contract (espn_team_id Int32, fox_team_id/yahoo_team_id
+# String), so declaring one would either lie about the dtypes or force the
+# Int64 invariant below onto an asset that never had it.
+NO_MODEL = {"team_crosswalk", "schedule_crosswalk", "player_crosswalk"}
 
 
-def test_every_python_built_dataset_has_a_model():
-    assert set(MODELS) == set(REGISTRY) - R_ONLY
+def test_every_modelled_dataset_is_in_the_registry():
+    assert set(MODELS) == set(REGISTRY) - NO_MODEL
 
 
 @pytest.mark.parametrize("dataset", sorted(MODELS), ids=sorted(MODELS))

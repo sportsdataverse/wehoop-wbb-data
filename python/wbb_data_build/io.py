@@ -1,8 +1,10 @@
 """Dataset IO -- polars port of the R write + ``.append_manifest`` steps.
 
-Writes ``{base}/{dataset}/parquet/{stem}_{season}.parquet`` and
-``{base}/{dataset}/csv/{stem}_{season}.csv`` (plain csv, matching the released
+Writes ``{base}/{dir}/parquet/{stem}_{season}.parquet`` and
+``{base}/{dir}/csv/{stem}_{season}.csv`` (plain csv, matching the released
 WBB assets), and upserts the ``{league}_{dataset}_in_data_repo.csv`` manifest.
+``{dir}`` is the dataset name except for the crosswalks, which share one
+``crosswalk/`` dir and commit no tree csv (see ``DatasetSpec``).
 ``.rds`` is R's native format and is produced by the retained R serialize step
 (Plan 2); the parity bar here is the parquet.
 """
@@ -33,16 +35,32 @@ def _utc_now_str() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
 
+def dataset_dir(spec: DatasetSpec, base: Path) -> Path:
+    """Where this dataset's ``parquet/``/``rds/``/``csv/`` + manifest live.
+
+    Almost always ``{base}/{dataset}``; the three crosswalks share one
+    ``{base}/crosswalk`` dir (``spec.out_dir``).
+    """
+    return base / (spec.out_dir or spec.dataset)
+
+
+def manifest_path(spec: DatasetSpec, base: Path) -> Path:
+    return dataset_dir(spec, base) / f"{_LEAGUE}_{spec.dataset}_in_data_repo.csv"
+
+
 def _append_manifest(spec: DatasetSpec, season: int, row_count: int, base: Path) -> Path:
-    f = base / spec.dataset / f"{_LEAGUE}_{spec.dataset}_in_data_repo.csv"
+    f = manifest_path(spec, base)
     f.parent.mkdir(parents=True, exist_ok=True)
-    row = pl.DataFrame(
-        {
-            "season": [int(season)],
-            "row_count": [int(row_count)],
-            "generated_at_utc": [_utc_now_str()],
-        }
-    )
+    cols: dict[str, list] = {
+        "season": [int(season)],
+        "row_count": [int(row_count)],
+        "generated_at_utc": [_utc_now_str()],
+    }
+    if spec.manifest_endpoint is not None:
+        # Only the crosswalk manifests carry this column; adding it to the
+        # others would change a published asset's schema.
+        cols["source_endpoint"] = [spec.manifest_endpoint]
+    row = pl.DataFrame(cols)
     if f.exists():
         old = pl.read_csv(f).filter(pl.col("season") != int(season))
         row = pl.concat([old, row], how="diagonal_relaxed")
@@ -61,20 +79,24 @@ def write_dataset(
     and joining them raised ``SchemaError`` on the released data.
     """
     base = Path(base)
-    df = canonicalize_ids(df)
-    pq_dir = base / spec.dataset / "parquet"
-    csv_dir = base / spec.dataset / "csv"
+    if spec.canonicalize:
+        df = canonicalize_ids(df)
+    root = dataset_dir(spec, base)
+    pq_dir = root / "parquet"
     pq_dir.mkdir(parents=True, exist_ok=True)
-    csv_dir.mkdir(parents=True, exist_ok=True)
     pq = pq_dir / f"{spec.stem}_{season}.parquet"
-    csv = csv_dir / f"{spec.stem}_{season}.csv"
     df.write_parquet(pq)
-    df.write_csv(csv)
+    csv = None
+    if spec.write_tree_csv:
+        csv_dir = root / "csv"
+        csv_dir.mkdir(parents=True, exist_ok=True)
+        csv = csv_dir / f"{spec.stem}_{season}.csv"
+        df.write_csv(csv)
     # .rds is wehoop::load_wbb_*'s ONLY read path -- written natively here, in
     # the same pass as the parquet, so the two can never drift apart. The NBA
     # sibling proved they do: its rds was left to a retained R step it never
     # had, so the parquet updated daily while the rds froze.
-    rds_dir = base / spec.dataset / "rds"
+    rds_dir = root / "rds"
     rds_dir.mkdir(parents=True, exist_ok=True)
     rds = rds_dir / f"{spec.stem}_{season}.rds"
     stamped = datetime.now(timezone.utc)
@@ -86,22 +108,22 @@ def write_dataset(
         # its pair first, sportsdataverse_save appends its own).
         attributes={
             f"{RDS_ATTR_PREFIX}_timestamp": stamped,
-            f"{RDS_ATTR_PREFIX}_type": RDS_TYPE_TEMPLATE.format(dataset=spec.dataset),
-            "sportsdataverse_type": f"{spec.dataset} data",
+            f"{RDS_ATTR_PREFIX}_type": spec.rds_type
+            or RDS_TYPE_TEMPLATE.format(dataset=spec.dataset),
+            "sportsdataverse_type": spec.sdv_type or f"{spec.dataset} data",
             "sportsdataverse_timestamp": stamped,
         },
     )
     manifest = _append_manifest(spec, season, df.height, base)
     log.info(
-        "wrote %s (%s) + %s (%s) + %s (%s), %d rows x %d cols; manifest %s upserted",
+        "wrote %s (%s) + %s (%s)%s, %d rows x %d cols; manifest %s upserted",
         pq,
         human_size(pq.stat().st_size),
-        csv.name,
-        human_size(csv.stat().st_size),
         rds.name,
         human_size(rds.stat().st_size),
+        f" + {csv.name} ({human_size(csv.stat().st_size)})" if csv is not None else "",
         df.height,
         df.width,
         manifest.name,
     )
-    return [pq, rds, csv]
+    return [p for p in (pq, rds, csv) if p is not None]

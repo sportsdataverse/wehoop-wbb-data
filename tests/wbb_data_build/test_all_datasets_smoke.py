@@ -2,9 +2,11 @@
 
 Per-game datasets use the 3-game fixture seasons; season-level datasets use
 whichever fixture season carries their raw inputs (2025 for the four with
-2025 releases, 2026 for the tags that only publish 2026). The three
-crosswalks raise NotImplementedError (they build from live ESPN+Torvik+Fox
-inputs via the retained R scripts, not from the raw repo).
+2025 releases, 2026 for the tags that only publish 2026). The schedule and
+player crosswalks raise NotImplementedError (they build from live
+ESPN+Torvik+Fox inputs via the retained R scripts, not from the raw repo);
+team_crosswalk is Python-built but from those same live sources, so it is
+skipped here rather than faked against a fixture.
 """
 
 from pathlib import Path
@@ -34,8 +36,15 @@ _SEASON = {
 }
 
 
+# team_crosswalk IS Python-built, but from LIVE ESPN/Fox/Torvik -- there is no
+# raw fixture to build it from, so this offline smoke test skips it.
+_LIVE_ONLY = {"team_crosswalk"}
+
+
 @pytest.mark.parametrize("dataset", sorted(REGISTRY))
 def test_each_dataset_builds(dataset, tmp_path):
+    if dataset in _LIVE_ONLY:
+        pytest.skip(f"{dataset} builds from live sources; no raw fixture")
     if dataset.endswith("_crosswalk"):
         with pytest.raises(NotImplementedError):
             build_season(dataset, 2026, base=tmp_path, raw_root=FX / "raw")

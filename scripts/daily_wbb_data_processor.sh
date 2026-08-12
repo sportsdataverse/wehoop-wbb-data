@@ -4,7 +4,8 @@
 # The 11 raw-derived datasets are built by `wbb_data_build` (parity-validated
 # port of espn_wbb_01..09). Build order matters: shots project the built pbp
 # parquet; schedules stamp flags from the built pbp/team_box/player_box
-# parquets. Crosswalks (wbb_11-13) stay on R (live ESPN+Torvik+Fox inputs),
+# parquets. The team crosswalk (wbb_13) is Python; the schedule + player
+# crosswalks (wbb_14-15) stay on R (live ESPN+Torvik+Fox inputs),
 # and R also serializes every Python parquet to .rds (wehoop's load_* reads
 #
 # Usage: bash scripts/daily_wbb_data_processor.sh -s 2026 -e 2026
@@ -41,7 +42,13 @@ export PYTHONIOENCODING=utf-8
 # Dependency order: pbp/team_box/player_box first (schedules reads their
 # game-id sets; shots read the pbp parquet), then the rest.
 PY_DATASETS="pbp team_box player_box player_core schedules shots rosters player_season_stats team_season_stats standings game_rosters officials"
-R_CROSSWALKS=(R/wbb_13_team_crosswalk_creation.R R/wbb_14_schedule_crosswalk_creation.R R/wbb_15_player_crosswalk_creation.R)
+# team_crosswalk (stage 13) is Python in the default path; `-l R` still runs
+# R/wbb_13_*.R unchanged (design D20 rollback). The schedule (14) and player
+# (15) crosswalks are R in BOTH modes -- the live Python builders fail the
+# parity gate against the committed R goldens (see config.REGISTRY).
+PY_CROSSWALKS="team_crosswalk"
+R_CROSSWALKS=(R/wbb_14_schedule_crosswalk_creation.R R/wbb_15_player_crosswalk_creation.R)
+R_ALL_CROSSWALKS=(R/wbb_13_team_crosswalk_creation.R "${R_CROSSWALKS[@]}")
 # The `-l R` rollback path. R has no counterpart for player_core (04),
 # schedules (05) or shots (06) -- hence the gaps, which are deliberate.
 R_DATASETS=(
@@ -91,13 +98,15 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
 
     if [ "$LANG_MODE" = "R" ]; then
       for SCRIPT in "${R_DATASETS[@]}"; do run_r "$SCRIPT"; done
+      # Rollback path: every crosswalk, including stage 13, runs in R.
+      for SCRIPT in "${R_ALL_CROSSWALKS[@]}"; do run_r "$SCRIPT"; done
     else
       for ds in $PY_DATASETS; do run_py "$ds"; done
+      for ds in $PY_CROSSWALKS; do run_py "$ds"; done
+      # Still R: the schedule + player crosswalks need ESPN scoreboard and
+      # roster coverage sdv-py does not carry yet.
+      for SCRIPT in "${R_CROSSWALKS[@]}"; do run_r "$SCRIPT"; done
     fi
-
-    # Crosswalks are R in BOTH modes: they need Fox + Bart Torvik surfaces
-    # sdv-py does not carry yet.
-    for SCRIPT in "${R_CROSSWALKS[@]}"; do run_r "$SCRIPT"; done
 
     # Last: the schedule master, games_in_data_repo manifest and coverage
     # index, which union the season schedules AFTER every dataset above has

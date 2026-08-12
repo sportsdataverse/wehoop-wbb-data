@@ -31,11 +31,13 @@ NUMBERED = {
     "standings": 10,
     "game_rosters": 11,
     "officials": 12,
+    "team_crosswalk": 13,
 }
 
-# Still R-only: the crosswalks need Fox + Bart Torvik surfaces that sdv-py does
-# not yet have. They keep numbers 13/14/15 on the R side.
-R_ONLY = {"team_crosswalk": 13, "schedule_crosswalk": 14, "player_crosswalk": 15}
+# Still R-only: the schedule and player crosswalks need ESPN scoreboard and
+# roster coverage sdv-py does not yet have. They keep numbers 14/15 on the R
+# side.
+R_ONLY = {"schedule_crosswalk": 14, "player_crosswalk": 15}
 
 
 def _path(dataset: str) -> Path:

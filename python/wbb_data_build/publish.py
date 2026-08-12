@@ -8,9 +8,13 @@ injectable for hermetic tests.
 from __future__ import annotations
 
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Callable
 
+import polars as pl
+
+from wbb_data_build import io as build_io
 from wbb_data_build._logging import get_logger, human_size
 from wbb_data_build.config import DatasetSpec
 
@@ -35,15 +39,30 @@ def _gh_release_exists(tag: str, repo: str) -> bool:
 
 
 def _dataset_files(spec: DatasetSpec, season: int, base: Path) -> list[Path]:
-    root = base / spec.dataset
+    root = build_io.dataset_dir(spec, base)
+    pq = root / "parquet" / f"{spec.stem}_{season}.parquet"
     cands = [
-        root / "parquet" / f"{spec.stem}_{season}.parquet",
+        pq,
         # .rds is wehoop::load_wbb_*'s ONLY read path -- publishing the parquet
         # without it silently freezes every downstream loader.
         root / "rds" / f"{spec.stem}_{season}.rds",
         root / "csv" / f"{spec.stem}_{season}.csv",
     ]
-    return [f for f in cands if f.exists()]
+    files = [f for f in cands if f.exists()]
+    if not spec.write_tree_csv and pq.exists():
+        # Crosswalks commit no tree csv (their crosswalk/*.csv IS the
+        # manifest), but R's file_types = c("rds", "csv", "parquet") still
+        # ships a plain .csv asset -- generate it from the parquet.
+        tmp = Path(tempfile.mkdtemp(prefix="wbb_publish_")) / f"{spec.stem}_{season}.csv"
+        pl.read_parquet(pq).write_csv(tmp)
+        files.append(tmp)
+    if spec.publish_manifest:
+        # R's upload_wbb_manifest ships the manifest csv to the same release
+        # tag; only the crosswalk scripts call it. Asset name == file name.
+        manifest = build_io.manifest_path(spec, base)
+        if manifest.exists():
+            files.append(manifest)
+    return files
 
 
 def publish_dataset(

@@ -54,7 +54,10 @@ RELEASE_URL = f"https://github.com/{RELEASE_REPO}/releases/tag"
 BEGIN = "<!-- BEGIN GENERATED: datasets -->"
 END = "<!-- END GENERATED: datasets -->"
 
-#: dataset -> the numbered script that builds it. R-only datasets name the R one.
+#: dataset -> the numbered script that builds it. R-only datasets name the R
+#: one: the schedule and player crosswalks are still R-built in production (see
+#: scripts/daily_wbb_data_processor.sh); team_crosswalk is Python in both modes'
+#: default path, with R/wbb_13_*.R kept as the `-l R` rollback.
 BUILDER = {
     "pbp": "python/espn_wbb_01_pbp_creation.py",
     "team_box": "python/espn_wbb_02_team_box_creation.py",
@@ -68,7 +71,7 @@ BUILDER = {
     "standings": "python/espn_wbb_10_standings_creation.py",
     "game_rosters": "python/espn_wbb_11_game_rosters_creation.py",
     "officials": "python/espn_wbb_12_officials_creation.py",
-    "team_crosswalk": "R/wbb_13_team_crosswalk_creation.R",
+    "team_crosswalk": "python/espn_wbb_13_team_crosswalk_creation.py",
     "schedule_crosswalk": "R/wbb_14_schedule_crosswalk_creation.R",
     "player_crosswalk": "R/wbb_15_player_crosswalk_creation.R",
 }
