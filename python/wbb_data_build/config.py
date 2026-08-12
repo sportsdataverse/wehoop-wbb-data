@@ -119,14 +119,18 @@ REGISTRY: dict[str, DatasetSpec] = {
     # release asset, and carry a bespoke wehoop_type -- all verbatim from
     # R/wbb_1{3,4,5}_*_crosswalk_creation.R.
     #
-    # Only team_crosswalk is Python-built. schedule_crosswalk and
-    # player_crosswalk stay on R and therefore carry no build metadata here:
-    # against the committed 2026 R goldens the live Python builders fail the
-    # parity gate outright -- schedule matches 1,037 ESPN games where R matched
-    # 6,054 (match_method `both` 991 vs 5,562), and player returns 0 rows with
-    # every column null against R's 5,018. Both are sdv-py source-layer gaps
-    # (ESPN scoreboard coverage / off-season ESPN rosters), not wiring, so
-    # flipping them would publish a gutted asset.
+    # team_crosswalk and schedule_crosswalk are Python-built. player_crosswalk
+    # stays on R and therefore carries no build metadata here: against the
+    # committed 2026 R golden the live Python builder returns 0 rows with every
+    # column null against R's 5,018 -- an sdv-py source-layer gap (off-season
+    # ESPN rosters), not wiring, so flipping it would publish a gutted asset.
+    #
+    # schedule_crosswalk was blocked on the same class of gap until sdv-py #359
+    # (e9fbc16f): espn_scoreboard_games() swept ESPN's college scoreboard with
+    # no `groups`, which answers a featured/ranked subset rather than the D-I
+    # slate, so the ESPN side collapsed to 991 `both`. With groups=50 the live
+    # ESPN game-id set is an EXACT match with the golden's (6,054 ids, 0 missing
+    # / 0 extra); see the parity numbers on the spec below.
     "team_crosswalk": DatasetSpec(
         "team_crosswalk",
         "wbb_team_crosswalk",
@@ -140,8 +144,24 @@ REGISTRY: dict[str, DatasetSpec] = {
         rds_type="WBB team crosswalk (ESPN / Fox / Torvik)",
         sdv_type="team crosswalk data",
     ),
+    # canonicalize=False for the SAME reason as team_crosswalk but a DIFFERENT
+    # contract: this one's ids are home/away_espn_team_id Int32 and
+    # espn_game_id String (read off wbb/crosswalk/parquet/
+    # wbb_schedule_crosswalk_2026.parquet). Canonicalizing would widen the team
+    # ids to Int64 AND coerce the String espn_game_id to Int64, so downstream
+    # joins against the released asset would stop matching on both keys.
     "schedule_crosswalk": DatasetSpec(
-        "schedule_crosswalk", "wbb_schedule_crosswalk", "wbb_crosswalk", "schedule_crosswalk"
+        "schedule_crosswalk",
+        "wbb_schedule_crosswalk",
+        "wbb_crosswalk",
+        "schedule_crosswalk",
+        out_dir="crosswalk",
+        write_tree_csv=False,
+        manifest_endpoint="wehoop::wbb_schedule_crosswalk()",
+        publish_manifest=True,
+        canonicalize=False,
+        rds_type="WBB schedule crosswalk (ESPN / Torvik)",
+        sdv_type="schedule crosswalk data",
     ),
     "player_crosswalk": DatasetSpec(
         "player_crosswalk", "wbb_player_crosswalk", "wbb_crosswalk", "player_crosswalk"

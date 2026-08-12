@@ -54,14 +54,13 @@ def build_season(
     """
     spec = REGISTRY[dataset]
     if dataset not in reshapers.SEASON_BUILDERS and spec.reshaper not in reshapers.RESHAPERS:
-        # schedule_crosswalk / player_crosswalk build from LIVE ESPN+Torvik+Fox
-        # inputs (not the raw repo) and stay on the R scripts
-        # (wbb_1{4,5}_*_creation.R) until sdv-py's ESPN scoreboard + roster
-        # sources cover them; see config.REGISTRY for the parity numbers.
+        # player_crosswalk builds from LIVE ESPN+Fox inputs (not the raw repo)
+        # and stays on R/wbb_15_*_creation.R until sdv-py's off-season ESPN
+        # roster source covers it; see config.REGISTRY for the parity numbers.
         raise NotImplementedError(f"{dataset}: no builder registered (still built by R)")
-    # team_crosswalk reads LIVE ESPN/Fox/Torvik, never the raw repo -- resolving
-    # the raw root for it would make the build fail on a machine with no
-    # wehoop-wbb-raw checkout, for an input it never opens.
+    # The crosswalks read LIVE ESPN/Fox/Torvik, never the raw repo -- resolving
+    # the raw root for them would make the build fail on a machine with no
+    # wehoop-wbb-raw checkout, for an input they never open.
     root = None if dataset in reshapers.NO_RAW_INPUT else ingest.raw_root(raw_root)
     started = time.monotonic()
     mode = "http" if isinstance(root, str) else "disk"

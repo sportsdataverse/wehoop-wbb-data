@@ -14,6 +14,7 @@ from wbb_data_build import io, publish
 from wbb_data_build.config import REGISTRY
 
 SPEC = REGISTRY["team_crosswalk"]
+SCHEDULE_SPEC = REGISTRY["schedule_crosswalk"]
 REPO = Path(__file__).resolve().parents[2]
 
 FRAME = pl.DataFrame(
@@ -23,6 +24,19 @@ FRAME = pl.DataFrame(
         "fox_team_id": pl.Series(["198"], dtype=pl.Utf8),
         "yahoo_team_id": pl.Series([None], dtype=pl.Utf8),
         "match_method": pl.Series(["fox+bart"], dtype=pl.Utf8),
+    }
+)
+
+# The schedule crosswalk shares the dir but NOT the dtype contract: its team
+# ids are Int32 and its espn_game_id is a STRING (read off
+# wbb/crosswalk/parquet/wbb_schedule_crosswalk_2026.parquet).
+SCHEDULE_FRAME = pl.DataFrame(
+    {
+        "season": pl.Series([2026], dtype=pl.Int32),
+        "home_espn_team_id": pl.Series([2000], dtype=pl.Int32),
+        "away_espn_team_id": pl.Series([2001], dtype=pl.Int32),
+        "espn_game_id": pl.Series(["401807774"], dtype=pl.Utf8),
+        "match_method": pl.Series(["both"], dtype=pl.Utf8),
     }
 )
 
@@ -36,6 +50,25 @@ def test_writes_into_the_shared_crosswalk_dir_and_commits_no_tree_csv(tmp_path):
     assert not (tmp_path / "crosswalk" / "csv").exists()
     assert not (tmp_path / SPEC.dataset).exists()
     assert [p.suffix for p in paths] == [".parquet", ".rds"]
+
+
+def test_schedule_crosswalk_ids_are_not_canonicalized(tmp_path):
+    """Int32 team ids and a STRING espn_game_id are the published contract.
+
+    Canonicalizing would widen the team ids to Int64 AND coerce espn_game_id
+    from Utf8 to Int64, so a downstream join against the released asset would
+    stop matching on both keys.
+    """
+    io.write_dataset(SCHEDULE_FRAME, SCHEDULE_SPEC, 2026, base=tmp_path)
+    got = pl.read_parquet(
+        tmp_path / "crosswalk" / "parquet" / "wbb_schedule_crosswalk_2026.parquet"
+    )
+    assert got.schema["home_espn_team_id"] == pl.Int32
+    assert got.schema["away_espn_team_id"] == pl.Int32
+    assert got.schema["espn_game_id"] == pl.Utf8
+    assert io.manifest_path(SCHEDULE_SPEC, tmp_path) == (
+        tmp_path / "crosswalk" / "wbb_schedule_crosswalk_in_data_repo.csv"
+    )
 
 
 def test_ids_are_not_canonicalized(tmp_path):

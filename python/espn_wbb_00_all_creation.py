@@ -6,11 +6,11 @@ Order is load-bearing, not cosmetic:
 * ``schedules`` stamp build-state flags from the built pbp/team_box/player_box
   parquets, so those three must exist first.
 
-``team_crosswalk`` (13) runs last: it reads LIVE ESPN/Fox/Torvik rather than
-the raw tree, so nothing downstream depends on it and a live-source outage
-cannot cost the raw-derived datasets. The schedule and player crosswalks
-(14/15) stay on R and are run by the daily processor after this script; they
-need ESPN scoreboard and roster coverage sdv-py does not yet carry.
+``team_crosswalk`` (13) and ``schedule_crosswalk`` (14) run last: they read
+LIVE ESPN/Fox/Torvik rather than the raw tree, so nothing downstream depends on
+them and a live-source outage cannot cost the raw-derived datasets. The player
+crosswalk (15) stays on R and is run by the daily processor after this script;
+it needs off-season ESPN roster coverage sdv-py does not yet carry.
 
 Example:
     One season, everything::
@@ -44,6 +44,7 @@ ORDER = [
     "game_rosters",
     "officials",
     "team_crosswalk",
+    "schedule_crosswalk",
 ]
 
 
