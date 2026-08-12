@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Builder** | [`R/wbb_15_player_crosswalk_creation.R`](../../R/wbb_15_player_crosswalk_creation.R) |
+| **Builder** | [`python/espn_wbb_15_player_crosswalk_creation.py`](../../python/espn_wbb_15_player_crosswalk_creation.py) |
 | **Release tag** | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) |
 | **File stem** | `wbb_player_crosswalk_{season}.{parquet,csv,rds}` |
 | **Seasons built** | — |

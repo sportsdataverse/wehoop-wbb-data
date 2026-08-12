@@ -15,6 +15,7 @@ from wbb_data_build.config import REGISTRY
 
 SPEC = REGISTRY["team_crosswalk"]
 SCHEDULE_SPEC = REGISTRY["schedule_crosswalk"]
+PLAYER_SPEC = REGISTRY["player_crosswalk"]
 REPO = Path(__file__).resolve().parents[2]
 
 FRAME = pl.DataFrame(
@@ -37,6 +38,19 @@ SCHEDULE_FRAME = pl.DataFrame(
         "away_espn_team_id": pl.Series([2001], dtype=pl.Int32),
         "espn_game_id": pl.Series(["401807774"], dtype=pl.Utf8),
         "match_method": pl.Series(["both"], dtype=pl.Utf8),
+    }
+)
+
+
+# A THIRD dtype contract in the same dir: espn_team_id Int32 but BOTH athlete
+# ids String (read off wbb/crosswalk/parquet/wbb_player_crosswalk_2026.parquet).
+PLAYER_FRAME = pl.DataFrame(
+    {
+        "season": pl.Series([2026], dtype=pl.Int32),
+        "espn_team_id": pl.Series([2000], dtype=pl.Int32),
+        "espn_athlete_id": pl.Series(["5324124"], dtype=pl.Utf8),
+        "fox_athlete_id": pl.Series(["1234567"], dtype=pl.Utf8),
+        "match_method": pl.Series(["exact_name"], dtype=pl.Utf8),
     }
 )
 
@@ -68,6 +82,23 @@ def test_schedule_crosswalk_ids_are_not_canonicalized(tmp_path):
     assert got.schema["espn_game_id"] == pl.Utf8
     assert io.manifest_path(SCHEDULE_SPEC, tmp_path) == (
         tmp_path / "crosswalk" / "wbb_schedule_crosswalk_in_data_repo.csv"
+    )
+
+
+def test_player_crosswalk_ids_are_not_canonicalized(tmp_path):
+    """Int32 team id and STRING athlete ids are the published contract.
+
+    Canonicalizing would widen espn_team_id to Int64 AND coerce both
+    numeric-looking athlete ids from Utf8 to Int64, breaking every downstream
+    join against the released asset.
+    """
+    io.write_dataset(PLAYER_FRAME, PLAYER_SPEC, 2026, base=tmp_path)
+    got = pl.read_parquet(tmp_path / "crosswalk" / "parquet" / "wbb_player_crosswalk_2026.parquet")
+    assert got.schema["espn_team_id"] == pl.Int32
+    assert got.schema["espn_athlete_id"] == pl.Utf8
+    assert got.schema["fox_athlete_id"] == pl.Utf8
+    assert io.manifest_path(PLAYER_SPEC, tmp_path) == (
+        tmp_path / "crosswalk" / "wbb_player_crosswalk_in_data_repo.csv"
     )
 
 

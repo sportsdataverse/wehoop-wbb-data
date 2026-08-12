@@ -33,11 +33,11 @@ NUMBERED = {
     "officials": 12,
     "team_crosswalk": 13,
     "schedule_crosswalk": 14,
+    "player_crosswalk": 15,
 }
 
-# Still R-only: the player crosswalk needs off-season ESPN roster coverage
-# sdv-py does not yet have. It keeps number 15 on the R side.
-R_ONLY = {"player_crosswalk": 15}
+# Nothing is R-only any more; R/wbb_1{3,4,5}_*.R remain as the `-l R` rollback.
+R_ONLY: dict[str, int] = {}
 
 
 def _path(dataset: str) -> Path:

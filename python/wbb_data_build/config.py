@@ -119,13 +119,9 @@ REGISTRY: dict[str, DatasetSpec] = {
     # release asset, and carry a bespoke wehoop_type -- all verbatim from
     # R/wbb_1{3,4,5}_*_crosswalk_creation.R.
     #
-    # team_crosswalk and schedule_crosswalk are Python-built. player_crosswalk
-    # stays on R and therefore carries no build metadata here: against the
-    # committed 2026 R golden the live Python builder returns 0 rows with every
-    # column null against R's 5,018 -- an sdv-py source-layer gap (off-season
-    # ESPN rosters), not wiring, so flipping it would publish a gutted asset.
+    # All three are Python-built; R/wbb_1{3,4,5}_*.R stay as the `-l R` rollback.
     #
-    # schedule_crosswalk was blocked on the same class of gap until sdv-py #359
+    # schedule_crosswalk was blocked on a source-layer gap until sdv-py #359
     # (e9fbc16f): espn_scoreboard_games() swept ESPN's college scoreboard with
     # no `groups`, which answers a featured/ranked subset rather than the D-I
     # slate, so the ESPN side collapsed to 991 `both`. With groups=50 the live
@@ -163,7 +159,34 @@ REGISTRY: dict[str, DatasetSpec] = {
         rds_type="WBB schedule crosswalk (ESPN / Torvik)",
         sdv_type="schedule crosswalk data",
     ),
+    # canonicalize=False for the SAME reason again, and a THIRD contract, read
+    # off wbb/crosswalk/parquet/wbb_player_crosswalk_2026.parquet: espn_team_id
+    # is Int32 while espn_athlete_id / fox_athlete_id are String. Canonicalizing
+    # would widen the team id AND coerce both numeric-looking athlete ids to
+    # Int64, breaking every downstream join against the released asset.
+    #
+    # This one was blocked on off-season ESPN roster coverage. It is not: a
+    # fresh wehoop::wbb_player_crosswalk(2026) run on 2026-08-12 returns the
+    # SAME 4,988 rows as the Python builder, the same id set, the same
+    # match_method split (exact_name 4,895 / unmatched 85 / fuzzy_jw 8) and ZERO
+    # differing cells across all 17 columns under eq_missing. The gap against
+    # the committed 2026-06-13 golden (5,018 rows, 4,941 exact) is entirely
+    # upstream drift R reproduces: ESPN renamed 62 Rainbow Wahine -> Rainbow
+    # Warriors, 2110 Sugar Bears -> Bears and 2900 St. Thomas-Minnesota ->
+    # St. Thomas, which drops their Fox link at stage 13 and unmatches all 44 of
+    # their players in BOTH languages; 2598 (Saint Francis) left the ESPN D-I
+    # directory (-12 rows) and 2698 (West Georgia) joined it (+13).
     "player_crosswalk": DatasetSpec(
-        "player_crosswalk", "wbb_player_crosswalk", "wbb_crosswalk", "player_crosswalk"
+        "player_crosswalk",
+        "wbb_player_crosswalk",
+        "wbb_crosswalk",
+        "player_crosswalk",
+        out_dir="crosswalk",
+        write_tree_csv=False,
+        manifest_endpoint="wehoop::wbb_player_crosswalk()",
+        publish_manifest=True,
+        canonicalize=False,
+        rds_type="WBB player crosswalk (ESPN / Fox)",
+        sdv_type="player crosswalk data",
     ),
 }

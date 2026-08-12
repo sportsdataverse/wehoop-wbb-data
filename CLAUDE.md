@@ -26,7 +26,8 @@ Rscript R/espn_wbb_01_pbp_creation.R -s 2025 -e 2025           # any single R cr
 Creation scripts run in dataset order 01-12 (see the Datasets table); the R
 fallback keeps `espn_wbb_01`-`03` + `07`-`12` (no R counterpart for
 player_core/schedules/shots). The crosswalks `wbb_13_team_crosswalk`,
-`wbb_14_schedule_crosswalk`, `wbb_15_player_crosswalk` run in R in both modes.
+`wbb_14_schedule_crosswalk` and `wbb_15_player_crosswalk` are Python in the
+default path; their R scripts stay as the `-l R` rollback.
 One-time bootstraps (run from the repo root):
 `ops/init/0000_create_wehoop_releases_init.R` (creates release tags idempotently),
 `ops/init/0001_push_existing_release_data.R`. `wbb_data_build.summary` writes
@@ -110,5 +111,5 @@ models/artifacts; "frozen" is a valid cadence but must be explicit.
 | [`python/espn_wbb_12_officials_creation.py`](python/espn_wbb_12_officials_creation.py) | [`officials`](docs/datasets/officials.md) | [`espn_womens_college_basketball_officials`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_officials) | 2026-07-17 |
 | [`python/espn_wbb_13_team_crosswalk_creation.py`](python/espn_wbb_13_team_crosswalk_creation.py) | [`team_crosswalk`](docs/datasets/team_crosswalk.md) | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) | 2026-07-17 |
 | [`python/espn_wbb_14_schedule_crosswalk_creation.py`](python/espn_wbb_14_schedule_crosswalk_creation.py) | [`schedule_crosswalk`](docs/datasets/schedule_crosswalk.md) | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) | 2026-07-17 |
-| [`R/wbb_15_player_crosswalk_creation.R`](R/wbb_15_player_crosswalk_creation.R) | [`player_crosswalk`](docs/datasets/player_crosswalk.md) | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) | 2026-07-17 |
+| [`python/espn_wbb_15_player_crosswalk_creation.py`](python/espn_wbb_15_player_crosswalk_creation.py) | [`player_crosswalk`](docs/datasets/player_crosswalk.md) | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) | 2026-07-17 |
 <!-- END GENERATED: datasets -->

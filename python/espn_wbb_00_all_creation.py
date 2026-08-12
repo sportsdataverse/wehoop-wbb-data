@@ -45,6 +45,7 @@ ORDER = [
     "officials",
     "team_crosswalk",
     "schedule_crosswalk",
+    "player_crosswalk",
 ]
 
 

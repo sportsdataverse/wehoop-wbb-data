@@ -480,10 +480,6 @@ def team_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.Dat
     function raises ``CrosswalkSourceError`` when a source returns nothing, so
     a silently-empty crosswalk cannot reach the tree; the error propagates and
     the stage fails loudly.
-
-    The player crosswalk has no builder here on purpose -- see
-    ``config.REGISTRY``; it stays on R until sdv-py's off-season ESPN roster
-    source covers it.
     """
     from sportsdataverse.wbb import wbb_team_crosswalk
 
@@ -507,6 +503,24 @@ def schedule_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl
     return wbb_schedule_crosswalk(season=season)
 
 
+def player_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
+    """ESPN/Fox player crosswalk -- ``sportsdataverse.wbb.wbb_player_crosswalk``.
+
+    Reads LIVE ESPN + Fox, not the raw repo, so ``raw_root``/``base`` are
+    accepted and ignored (the ``SEASON_BUILDERS`` signature). It calls
+    ``wbb_team_crosswalk`` internally for the per-team ``fox_team_id``, so it
+    inherits stage 13's ``CrosswalkSourceError`` guard: a source that returns
+    nothing fails the stage instead of emitting an all-null crosswalk.
+
+    A team whose ESPN display name no longer matches Fox resolves a null
+    ``fox_team_id`` and its whole roster comes back ``unmatched``. That is the
+    R behaviour too, not a Python shortfall -- see ``config.REGISTRY``.
+    """
+    from sportsdataverse.wbb import wbb_player_crosswalk
+
+    return wbb_player_crosswalk(season=season)
+
+
 SEASON_BUILDERS: dict = {
     "schedules": schedules_builder,
     "shots": shots_builder,
@@ -519,8 +533,9 @@ SEASON_BUILDERS: dict = {
     "standings": standings_builder,
     "team_crosswalk": team_crosswalk_builder,
     "schedule_crosswalk": schedule_crosswalk_builder,
+    "player_crosswalk": player_crosswalk_builder,
 }
 
 #: Datasets whose builder never opens the raw repo (live-source crosswalks).
 #: ``build_season`` skips the raw-root resolution for these.
-NO_RAW_INPUT: frozenset = frozenset({"team_crosswalk", "schedule_crosswalk"})
+NO_RAW_INPUT: frozenset = frozenset({"team_crosswalk", "schedule_crosswalk", "player_crosswalk"})

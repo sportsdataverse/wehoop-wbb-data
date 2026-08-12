@@ -42,16 +42,13 @@ export PYTHONIOENCODING=utf-8
 # Dependency order: pbp/team_box/player_box first (schedules reads their
 # game-id sets; shots read the pbp parquet), then the rest.
 PY_DATASETS="pbp team_box player_box player_core schedules shots rosters player_season_stats team_season_stats standings game_rosters officials"
-# team_crosswalk (13) + schedule_crosswalk (14) are Python in the default path;
-# `-l R` still runs R/wbb_1{3,4}_*.R unchanged (design D20 rollback). The player
-# crosswalk (15) is R in BOTH modes -- the live Python builder returns 0 rows
-# against the committed R golden (see config.REGISTRY).
-PY_CROSSWALKS="team_crosswalk schedule_crosswalk"
-R_CROSSWALKS=(R/wbb_15_player_crosswalk_creation.R)
+# All three crosswalks (13/14/15) are Python in the default path; `-l R` still
+# runs R/wbb_1{3,4,5}_*.R unchanged (design D20 rollback).
+PY_CROSSWALKS="team_crosswalk schedule_crosswalk player_crosswalk"
 R_ALL_CROSSWALKS=(
   R/wbb_13_team_crosswalk_creation.R
   R/wbb_14_schedule_crosswalk_creation.R
-  "${R_CROSSWALKS[@]}"
+  R/wbb_15_player_crosswalk_creation.R
 )
 # The `-l R` rollback path. R has no counterpart for player_core (04),
 # schedules (05) or shots (06) -- hence the gaps, which are deliberate.
@@ -107,9 +104,6 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
     else
       for ds in $PY_DATASETS; do run_py "$ds"; done
       for ds in $PY_CROSSWALKS; do run_py "$ds"; done
-      # Still R: the player crosswalk needs off-season ESPN roster coverage
-      # sdv-py does not carry yet.
-      for SCRIPT in "${R_CROSSWALKS[@]}"; do run_r "$SCRIPT"; done
     fi
 
     # Last: the schedule master, games_in_data_repo manifest and coverage

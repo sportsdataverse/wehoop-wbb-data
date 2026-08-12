@@ -54,9 +54,8 @@ def build_season(
     """
     spec = REGISTRY[dataset]
     if dataset not in reshapers.SEASON_BUILDERS and spec.reshaper not in reshapers.RESHAPERS:
-        # player_crosswalk builds from LIVE ESPN+Fox inputs (not the raw repo)
-        # and stays on R/wbb_15_*_creation.R until sdv-py's off-season ESPN
-        # roster source covers it; see config.REGISTRY for the parity numbers.
+        # Every registry entry has a builder today; this guards a future entry
+        # added to config.REGISTRY before its builder lands.
         raise NotImplementedError(f"{dataset}: no builder registered (still built by R)")
     # The crosswalks read LIVE ESPN/Fox/Torvik, never the raw repo -- resolving
     # the raw root for them would make the build fail on a machine with no
