@@ -7,8 +7,8 @@
 | **Builder** | [`python/espn_wbb_03_player_box_creation.py`](../../python/espn_wbb_03_player_box_creation.py) |
 | **Release tag** | [`espn_womens_college_basketball_player_boxscores`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_player_boxscores) |
 | **File stem** | `player_box_{season}.{parquet,csv,rds}` |
-| **Seasons built** | 2004–2013 (10 seasons) |
-| **Last published** | 2026-07-17 (newest release asset) |
+| **Seasons built** | 2004–2026 (11 seasons, non-contiguous) |
+| **Last published** | 2026-08-24 (newest release asset) |
 | **Tag created** | 2023-03-30 |
 | **Release assets** | 72 |
 
@@ -90,3 +90,4 @@
 | 2011 | 12,235 | 2026-07-17 05:08:46 UTC |
 | 2012 | 14,452 | 2026-07-17 05:08:54 UTC |
 | 2013 | 18,239 | 2026-07-17 05:09:04 UTC |
+| 2026 | 168,228 | 2026-08-24 02:27:07 UTC |
