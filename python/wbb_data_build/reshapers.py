@@ -228,11 +228,18 @@ def _built_game_ids(base: Path, dataset: str, stem: str, season: int) -> list[in
     )
 
 
-def schedules_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
+def schedules_builder(season: int, *, raw_root: Path | str, base: Path) -> pl.DataFrame:
     """Released schedule = raw schedule + casts/dates + PBP/team_box/player_box flags."""
-    raw = pl.read_parquet(
-        raw_root / "wbb" / "schedules" / "parquet" / f"wbb_schedule_{season}.parquet"
-    )
+    # Every other builder reaches the raw tree through ingest, which resolves a
+    # local checkout and the raw HTTP root alike. This one indexed the root
+    # directly, so a scheduled run -- which passes the HTTP root as a str --
+    # died on `unsupported operand type(s) for /: 'str' and 'str'`.
+    from wbb_data_build import ingest
+
+    raw = ingest.season_schedule(season, raw_root=raw_root)
+    if raw is None:
+        log.warning("schedules %s: no raw season schedule at the configured root", season)
+        return pl.DataFrame()
     schedule = helper_wbb_schedule(
         raw,
         pbp_game_ids=_built_game_ids(base, "pbp", "play_by_play", season),

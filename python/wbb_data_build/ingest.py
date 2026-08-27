@@ -141,6 +141,17 @@ def _read_season_schedule(season: int, root: Path | str) -> pl.DataFrame | None:
     return pl.read_parquet(io.BytesIO(body))
 
 
+def season_schedule(season: int, *, raw_root: str | Path | None = None) -> pl.DataFrame | None:
+    """The raw season schedule frame, whichever kind of root is configured.
+
+    Public counterpart to the private reader, so callers outside this module
+    never have to know whether ``raw_root`` is a local checkout or the raw
+    HTTP root -- joining a URL with ``Path.__truediv__`` raises TypeError, and
+    that is exactly how the schedules builder broke.
+    """
+    return _read_season_schedule(season, _resolve_root(raw_root))
+
+
 def season_game_ids(season: int, *, raw_root: str | Path | None = None) -> list[int]:
     """Game ids for ``season`` that have a final.json (R: ``game_json == TRUE``)."""
     df = _read_season_schedule(season, _resolve_root(raw_root))
