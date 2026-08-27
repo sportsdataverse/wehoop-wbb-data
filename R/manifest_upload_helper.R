@@ -67,6 +67,22 @@ upsert_manifest_row <- function(manifest_path, manifest_row, season_value) {
   # and leaving one row behind. That silently destroyed 23 seasons of manifest
   # history in testing before it was caught.
   season_value <- as.integer(season_value)
+  manifest_row <- data.table::as.data.table(manifest_row)
+  # Drop character SUBCLASSES before the bind. Every creation script builds
+  # `source_endpoint` with glue::glue(), which returns c("glue", "character");
+  # fwrite writes it as text and fread reads it back as plain "character". So
+  # the first write of a manifest succeeds and every later one fails on
+  #   Class attribute on column 4 of item 2 does not match with column 4 of
+  #   item 1
+  # -- a mismatch between this row and the file this function itself wrote.
+  # Normalising here rather than at the seven call sites keeps a new script
+  # from reintroducing it.
+  for (col in names(manifest_row)) {
+    v <- manifest_row[[col]]
+    if (is.character(v) && !identical(class(v), "character")) {
+      data.table::set(manifest_row, j = col, value = as.character(v))
+    }
+  }
   if (file.exists(manifest_path)) {
     prior <- data.table::fread(manifest_path)
     keep <- prior$season != season_value
