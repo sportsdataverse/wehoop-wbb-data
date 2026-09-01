@@ -194,3 +194,37 @@ On the raw side `05` (draft) is WNBA-only and intentionally vacant;
 | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) | 79 | 12.2 MB | 2026-07-17 |
 
 <!-- END GENERATED: status -->
+
+## Consumers
+
+The packages that read what this repo produces:
+
+- **R:** [wehoop](https://wehoop.sportsdataverse.org) — docs at <https://wehoop.sportsdataverse.org>
+- **Python:** [`sportsdataverse.wbb`](https://github.com/sportsdataverse/sportsdataverse-py) — docs at <https://py.sportsdataverse.org>
+
+## Stage inventory
+
+Every numbered pipeline stage in `python/` (auto-listed; run subsets with the `scripts/*.sh` drivers by number or name):
+
+- `python/espn_wbb_00_all_creation.py`
+- `python/espn_wbb_01_pbp_creation.py`
+- `python/espn_wbb_02_team_box_creation.py`
+- `python/espn_wbb_03_player_box_creation.py`
+- `python/espn_wbb_04_player_core_creation.py`
+- `python/espn_wbb_05_schedules_creation.py`
+- `python/espn_wbb_06_shots_creation.py`
+- `python/espn_wbb_07_rosters_creation.py`
+- `python/espn_wbb_08_player_season_stats_creation.py`
+- `python/espn_wbb_09_team_season_stats_creation.py`
+- `python/espn_wbb_10_standings_creation.py`
+- `python/espn_wbb_11_game_rosters_creation.py`
+- `python/espn_wbb_12_officials_creation.py`
+- `python/espn_wbb_13_team_crosswalk_creation.py`
+- `python/espn_wbb_14_schedule_crosswalk_creation.py`
+- `python/espn_wbb_15_player_crosswalk_creation.py`
+- `python/espn_wbb_99_schedule_master_creation.py`
+- `python/wbb_model_01_ratings.py`
+- `python/wbb_model_02_player_value.py`
+- `python/wbb_model_03_wp_enrich.py`
+
+Model release tags published from here: `espn_womens_college_basketball_pbp`, `wbb_player_value`, `wbb_ratings`
