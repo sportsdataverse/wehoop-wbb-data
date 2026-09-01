@@ -161,7 +161,7 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
     # loop (it needs team_box, which builds after pbp) and is best-effort --
     # the plain pbp published above is still valid data if this fails.
     # Without it every nightly strips the WP columns off the release.
-    uv run python -m wbb_data_build.wp_enrich -s "$i" -e "$i" || \
+    uv run python -m wbb_model_03_wp_enrich -s "$i" -e "$i" || \
       echo "::warning ::wp_enrich for season $i exited with code $? (non-fatal; release keeps plain pbp)"
     echo "RSCRIPT_RC=$SEASON_RC" > "/tmp/_rc_${i}"
     # Grep-able terminal line for the season logfile (scrape-log convention).
