@@ -118,6 +118,81 @@ On the raw side `05` (draft) is WNBA-only and intentionally vacant;
 [ESPN WNBA Player Boxscores](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_wnba_player_boxscores)
 
 
+## Repository layout
+
+<!-- BEGIN GENERATED: layout -->
+
+```
+wehoop-wbb-data/
+├── R/   # R pipeline stages and publish toolchain
+│   ├── espn_wbb_01_pbp_creation.R
+│   ├── espn_wbb_02_team_box_creation.R
+│   ├── espn_wbb_03_player_box_creation.R
+│   ├── espn_wbb_04_player_core_creation.R
+│   ├── espn_wbb_07_rosters_creation.R
+│   ├── espn_wbb_08_player_season_stats_creation.R
+│   ├── espn_wbb_09_team_season_stats_creation.R
+│   ├── espn_wbb_10_standings_creation.R
+│   ├── espn_wbb_11_game_rosters_creation.R
+│   ├── espn_wbb_12_officials_creation.R
+│   ├── manifest_upload_helper.R
+│   ├── wbb_13_team_crosswalk_creation.R
+│   ├── wbb_14_schedule_crosswalk_creation.R
+│   └── wbb_15_player_crosswalk_creation.R
+├── docs/   # explainers, model reports and dataset docs
+│   ├── datasets/
+│   └── models/
+├── logs/   # per-run logs (gitignored where large)
+├── models/   # model artifacts, cards and the registry
+├── ops/   # cron definitions and runbooks
+│   ├── init/
+│   ├── _r_no_publish.R
+│   └── output_parity.sh
+├── python/   # Python pipeline stages, numbered in build order
+│   ├── wbb_data_build/
+│   ├── wbb_model_publish/
+│   ├── wehoop_wbb_data_build.egg-info/
+│   ├── espn_wbb_00_all_creation.py
+│   ├── espn_wbb_01_pbp_creation.py
+│   ├── espn_wbb_02_team_box_creation.py
+│   ├── espn_wbb_03_player_box_creation.py
+│   ├── espn_wbb_04_player_core_creation.py
+│   ├── espn_wbb_05_schedules_creation.py
+│   ├── espn_wbb_06_shots_creation.py
+│   ├── espn_wbb_07_rosters_creation.py
+│   ├── espn_wbb_08_player_season_stats_creation.py
+│   ├── espn_wbb_09_team_season_stats_creation.py
+│   ├── espn_wbb_10_standings_creation.py
+│   ├── espn_wbb_11_game_rosters_creation.py
+│   ├── espn_wbb_12_officials_creation.py
+│   └── … 7 more
+├── scripts/   # bash drivers (the daily/weekly entry points)
+│   ├── daily_wbb_data_processor.sh
+│   └── wbb_models.sh
+├── tests/   # test suite
+│   ├── fixtures/
+│   ├── wbb_data_build/
+│   ├── __init__.py
+│   ├── test_builder_scripts.py
+│   ├── test_manifest_upsert.R
+│   ├── test_model_manifest.py
+│   ├── test_model_publish.py
+│   ├── test_model_registry.py
+│   └── test_r_python_parity.py
+└── wbb/
+    ├── crosswalk/
+    ├── game_rosters/
+    ├── officials/
+    ├── pbp/
+    ├── player_box/
+    ├── player_core/
+    ├── player_season_stats/
+    ├── rosters/
+    └── … 5 more
+```
+
+<!-- END GENERATED: layout -->
+
 ## Datasets
 
 <!-- BEGIN GENERATED: datasets -->
