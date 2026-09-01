@@ -23,7 +23,24 @@ preserved. It runs post-publish in `scripts/daily_wbb_data_processor.sh`
 because the nightly publish otherwise silently strips the WP columns (that
 incident is why the stage exists).
 
-## Figures
+## Evaluation on the published releases (2026-09-01)
 
-None committed yet — recorded follow-up; release card sidecars carry per-run
-numbers in the meantime.
+### Ratings (2025)
+
+618 teams on `wbb_ratings`.
+
+![Top 25 ratings](figures/ratings_top25_2025.png)
+
+### Player value (2025)
+
+7,841 players on `wbb_player_value`.
+
+![Player value distribution](figures/player_value_distribution_2025.png)
+
+### WP enrichment calibration (2025)
+
+1,973,907 enriched plays from the published pbp: Brier **0.1059**, 20-bin calibration MAE **0.0144** (predicted `home_win_prob` vs the game's realized outcome — a real out-of-band check of the applied model).
+
+![WP calibration](figures/wp_calibration_2025.png)
+
+Card: [`wbb_models_eval_card.json`](wbb_models_eval_card.json)

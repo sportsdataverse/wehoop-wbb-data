@@ -1,0 +1,20 @@
+{
+  "generated": "2026-09-01T15:35:17+00:00",
+  "source": "published sportsdataverse-data release assets",
+  "ratings": {
+    "season": 2025,
+    "teams": 618,
+    "value_col": "adj_em"
+  },
+  "player_value": {
+    "season": 2025,
+    "players": 7841,
+    "value_col": "box_bpm"
+  },
+  "wp_enrichment": {
+    "season": 2025,
+    "plays": 1973907,
+    "brier": 0.1059,
+    "calibration_mae_20bin": 0.0144
+  }
+}
