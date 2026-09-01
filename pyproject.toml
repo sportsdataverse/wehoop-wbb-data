@@ -17,6 +17,13 @@ dependencies = [
 # ruff is declared, not assumed: CI runs `uv run ruff` inside the synced
 # project env, which cannot see a globally-installed tool.
 dev = ["pytest>=8.0", "ruff>=0.6"]
+docs = [
+    "great-tables>=0.24.0",
+    "ipykernel>=7.3.0",
+    "nbclient>=0.11.0",
+    "nbformat>=5.11.1",
+    "plotnine>=0.15.8",
+]
 
 # sdv-py main carries the helper_wbb_* producers (PRs #243/#245); PyPI 0.0.71
 # does not. CI-resolvable on a fresh runner. Pin to the released version once
