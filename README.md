@@ -159,7 +159,7 @@ On the raw side `05` (draft) is WNBA-only and intentionally vacant;
 | Report | What it is | Last updated |
 |---|---|---|
 | [Model registry](models/REGISTRY.md) | model | artifact | gates | retrain, one row per published model | 2026-09-01 |
-| [Model reports & cards](docs/models/) | 1 files, one per item | 2026-09-01 |
+| [Model reports & cards](docs/models/) | 4 files, one per item | 2026-09-01 |
 | [Dataset docs (column-level, generated)](docs/datasets/) | 15 files, one per item | 2026-08-24 |
 
 <!-- END GENERATED: reports -->
