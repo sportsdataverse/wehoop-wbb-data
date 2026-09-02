@@ -105,3 +105,22 @@ def test_all_builder_runs_datasets_in_dependency_order():
     assert order.index("pbp") < order.index("schedules")
     assert order.index("team_box") < order.index("schedules")
     assert order.index("player_box") < order.index("schedules")
+
+
+DAILY_SH = Path(__file__).resolve().parents[1] / "scripts" / "daily_wbb_data_processor.sh"
+
+
+def test_wp_enrich_is_gated_on_every_input_it_reads():
+    """wp_enrich reads pbp + schedules + team_box out of the tree.
+
+    A failed auxiliary build leaves the PREVIOUS run's parquet in place, so
+    gating only on pbp let enrichment run on stale schedules/team_box and
+    publish them as fresh. The guard has to cover all three.
+    """
+    sh = DAILY_SH.read_text(encoding="utf-8")
+    assert "PBP_RC" not in sh, "the pbp-only guard is back; wp_enrich needs all three inputs"
+    for ds in ("pbp", "schedules", "team_box"):
+        assert ds in sh
+    assert 'case "$ds" in pbp|schedules|team_box) WP_INPUT_RC=$rc;; esac' in sh
+    assert "*01_pbp*|*02_team_box*) WP_INPUT_RC=$rc" in sh
+    assert 'if [ "${WP_INPUT_RC:-0}" != "0" ]; then' in sh
