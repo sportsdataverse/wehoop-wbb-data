@@ -38,7 +38,7 @@ export WEHOOP_WBB_RAW_ROOT=https://raw.githubusercontent.com/sportsdataverse/weh
 
 ```sh
 uv run python -m wbb_data_build --dataset team_box -s 2025 -e 2025 --dry-run
-uv run python -m wbb_data_build --dataset pbp      -s 2025 -e 2026 --publish
+uv run python -m wbb_data_build --dataset pbp      -s 2025 -e 2026            # tree only: pbp is published by wbb_model_03_wp_enrich (publish.py refuses un-enriched pbp)
 ```
 
 Build `pbp` before `shots` (shots project the built pbp parquet) and before

@@ -10,6 +10,7 @@ are skipped here rather than faked against a fixture.
 from pathlib import Path
 
 import pytest
+from wbb_data_build import publish
 from wbb_data_build.build import build_season
 from wbb_data_build.config import REGISTRY
 
@@ -48,7 +49,15 @@ def test_each_dataset_builds(dataset, tmp_path):
         build_season("pbp", season, base=tmp_path, raw_root=FX / "raw")
     if dataset == "player_core":  # player_core reads the built player_box parquet
         build_season("player_box", season, base=tmp_path, raw_root=FX / "raw")
-    df = build_season(dataset, season, base=tmp_path, raw_root=FX / "raw", dry_run=True)
+    if dataset == "pbp":
+        # pbp reaches the release only through wp_enrich: a publish of the plain
+        # build is refused by design, dry runs included (see test_wp_enrich.py),
+        # so this builds the tree and asserts that refusal instead.
+        df = build_season(dataset, season, base=tmp_path, raw_root=FX / "raw")
+        with pytest.raises(publish.UnenrichedPbpError):
+            publish.publish_dataset(REGISTRY["pbp"], season, base=tmp_path, dry_run=True)
+    else:
+        df = build_season(dataset, season, base=tmp_path, raw_root=FX / "raw", dry_run=True)
     assert df.height > 0
     spec = REGISTRY[dataset]
     assert (tmp_path / spec.dataset / "parquet" / f"{spec.stem}_{season}.parquet").exists()
