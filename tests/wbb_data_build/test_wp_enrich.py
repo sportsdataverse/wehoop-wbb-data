@@ -87,9 +87,7 @@ def test_publish_refuses_string_typed_wp_columns(tmp_path):
     io.write_dataset(frame, spec, 2025, base=tmp_path)
     pq = tmp_path / "pbp" / "parquet" / "play_by_play_2025.parquet"
     # the old cast-based check would have scored these as 100% finite
-    assert (
-        pl.read_parquet(pq)["home_win_prob"].cast(pl.Float64, strict=False).is_finite().all()
-    )
+    assert pl.read_parquet(pq)["home_win_prob"].cast(pl.Float64, strict=False).is_finite().all()
     with pytest.raises(publish.UnenrichedPbpError, match="not float-typed"):
         publish.publish_dataset(spec, 2025, base=tmp_path, dry_run=True)
 
@@ -164,6 +162,20 @@ def test_enrich_refuses_a_compile_that_changes_the_row_count(tmp_path, monkeypat
     calls = _stub_gh(monkeypatch)
     shorter = lambda p, s, t: _compile(p, s, t).head(3)  # noqa: E731
     assert wp_enrich.enrich_and_publish(2025, base=tmp_path, compile=shorter) is False
+    assert calls == []
+
+
+def test_enrich_refuses_a_compile_that_swaps_one_play_for_a_duplicate(tmp_path, monkeypatch):
+    # The row count, the schema and the dtypes all survive a drop-plus-duplicate, so only
+    # the play-identity multiset catches it.
+    _write_tree(tmp_path)
+    calls = _stub_gh(monkeypatch)
+
+    def swapper(p, s, t):
+        out = _compile(p, s, t)
+        return pl.concat([out.head(3), out.head(1)])  # drops (2, 2), duplicates (1, 1)
+
+    assert wp_enrich.enrich_and_publish(2025, base=tmp_path, compile=swapper) is False
     assert calls == []
 
 
