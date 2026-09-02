@@ -18,7 +18,7 @@ import numpy as np
 import polars as pl
 import requests
 from plotnine import (
-    ggplot, aes, geom_point, geom_histogram, geom_col, geom_hline, coord_flip,
+    ggplot, aes, geom_point, geom_histogram, geom_col, geom_hline, geom_vline, coord_flip,
     labs, theme_minimal,
 )
 from great_tables import GT
@@ -48,6 +48,11 @@ else:
     # Assets published before the flag shipped: derive it identically.
     pv = pv.with_columns((pl.col("min") >= QUALIFIED_MIN_MINUTES).alias("qualified"))
     qualified_src = f"derived at render time as min >= {QUALIFIED_MIN_MINUTES:g} (the published frames predate the flag)"
+# 2015's box_bpm is NaN for 974 of its 3,954 rows (the all-NaN wbb_ratings_2015
+# asset the values are constrained to). NaN is not null in polars and it POISONS
+# std()/corr(), so every cross-season statistic below is computed on `pvf`, the
+# finite view; `pv` stays whole for per-player views and corpus counts.
+pvf = pv.filter(pl.col("box_bpm").is_not_null() & pl.col("box_bpm").is_finite())
 SEASONS = sorted(pv["season"].unique().to_list())
 latest = SEASONS[-1]
 
@@ -139,7 +144,7 @@ shr = cur.with_columns(pl.col("box_bpm").abs().alias("abs_bpm"))
 (
     ggplot(shr.to_pandas(), aes("min", "abs_bpm"))
     + geom_point(alpha=0.1, color="#2a6f97", size=0.6)
-    + geom_point(aes(x=QUALIFIED_MIN_MINUTES, y=0), alpha=0)
+    + geom_vline(xintercept=QUALIFIED_MIN_MINUTES, linetype="dashed", color="gray")
     + labs(x="minutes", y="|box BPM|",
            title=f"Every player is published; `qualified` marks min >= {QUALIFIED_MIN_MINUTES:g}")
     + theme_minimal()
@@ -150,7 +155,7 @@ shr = cur.with_columns(pl.col("box_bpm").abs().alias("abs_bpm"))
 edges = [0, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 500, 600, 800, 1000, 1400]
 labels = [f"{a}-{b}" for a, b in zip(edges[:-1], edges[1:])]
 fun = (
-    pv.with_columns(pl.col("min").cut(edges[1:-1], labels=labels).alias("minutes_bin"))
+    pvf.with_columns(pl.col("min").cut(edges[1:-1], labels=labels).alias("minutes_bin"))
     .group_by("minutes_bin", maintain_order=True)
     .agg(pl.len().alias("players"), pl.col("box_bpm").std().alias("sd_box_bpm"),
          pl.col("box_bpm").abs().quantile(0.99).alias("abs_bpm_p99"))
@@ -246,7 +251,7 @@ from the published per-100 features.
 ## Evaluation
 
 ```{python}
-qual = pv.filter(pl.col("qualified") == True)
+qual = pvf.filter(pl.col("qualified") == True)  # finite view: NaN poisons corr()
 stab = (
     qual.select("player_id", "season", "box_bpm")
     .join(qual.select("player_id", (pl.col("season") - 1).alias("season"),
@@ -312,9 +317,13 @@ gt_show(
   assets (derivation table above; constant `QUALIFIED_MIN_MINUTES` in
   `python/wbb_model_publish/builders.py`, recorded in `models/REGISTRY.md`).
   No row is filtered.
-- **Known gap:** every 2015 row carries a NaN box BPM (974 players),
+- **Known gap:** 974 of the 3,954 2015 rows (24.6%) carry a NaN box BPM,
   inherited from the all-NaN `wbb_ratings_2015` asset the values are
-  constrained to; the figures and tables above compute over the finite rows.
+  constrained to — it is a large minority of the season, not all of it (589
+  of 2015's 597 qualified players are affected). NaN is not null in polars and
+  it poisons `std()` / `corr()`, so every cross-season statistic above is
+  computed on the finite view; per-player views and corpus counts use the
+  whole frame.
 - **Pipeline:** `scripts/wbb_models.sh 02` → stage
   `python/wbb_model_02_player_value.py`; card sidecar
   [`wbb_models_eval_card.json`](wbb_models_eval_card.json). Single home:

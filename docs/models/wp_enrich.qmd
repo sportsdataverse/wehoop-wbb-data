@@ -65,7 +65,11 @@ def evaluate(pbp):
         "df": df, "final": final, "cal": cal,
         "brier": float(np.mean((p - y) ** 2)),
         "cal_mae": float((cal["pred"] - cal["obs"]).abs().mean()),
-        "base_brier": float(np.mean((final["home_won"].mean() - y) ** 2)),
+        # Play-weighted: `brier` scores every PLAY, so the constant baseline must be
+        # the base rate of that same population. Using the per-GAME home-win rate
+        # (games have unequal play counts) scored a constant drawn from one
+        # population against another, and skill_vs_baseline compared the two.
+        "base_brier": float(np.mean((y.mean() - y) ** 2)),
         "pre_brier": float(pre.select(((pl.col("pregame_home_prob") - pl.col("home_won")) ** 2).mean()).item()),
     }
 
@@ -76,14 +80,14 @@ df, final, cal, brier, cal_mae = ev["df"], ev["final"], ev["cal"], ev["brier"], 
 
 hold_raw = fetch_pbp(HOLDOUT)
 if "home_win_prob" in hold_raw.columns:
-    hold_src = "the published release columns"
+    hold_src = "from the published release columns"
     hold_pbp = hold_raw
 else:
     # The release asset currently lacks the WP columns (the 2026-08 strip
     # incident, see Provenance). Apply the same bundled booster here so the
     # unseen era is still evaluated on the shipped plays.
     from sportsdataverse.wbb import build_wbb_season_wp
-    hold_src = "probabilities computed at render time -- the release asset lacks the WP columns"
+    hold_src = "computed at render time -- the release asset lacks the WP columns"
     hold_pbp = build_wbb_season_wp(HOLDOUT)
 del hold_raw
 hv = evaluate(hold_pbp)
@@ -151,7 +155,7 @@ strongest in sports and both numbers reflect it.
 gt_show(
     GT(pl.DataFrame({
         "metric": ["Brier score (all plays)", "20-bin calibration MAE",
-                   "baseline Brier (constant home-win rate)"],
+                   "baseline Brier (constant = play-weighted home-win rate)"],
         "value": [brier, cal_mae, ev["base_brier"]],
     }).to_pandas())
     .tab_header(title=f"Out-of-band calibration — {season} published season")
@@ -229,7 +233,7 @@ comeback without any narrative input.
 ```{python}
 display(Markdown(
     f"Holdout season **{HOLDOUT}** — {hv['df'].height:,} plays in "
-    f"{hv['df']['game_id'].n_unique():,} games; probabilities from {hold_src}."
+    f"{hv['df']['game_id'].n_unique():,} games; probabilities {hold_src}."
 ))
 eras = pl.DataFrame({
     "era": [f"{season} (in-era)", f"{HOLDOUT} (unseen: halves era, before the 2016 move to quarters)"],
