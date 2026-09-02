@@ -47,6 +47,13 @@ op and its schedule.
     2010/2012 player sums reach only 11.5–11.9 vs the modern 15.8–16.4 team level. So 2008–2012 are **not ratable**;
     sdv-py raises `InsufficientInputError` and the floor is 2013. The published 2008–2012 assets are wrong-unit
     (points per 100 non-turnover possessions) and are a maintainer decision to unpublish/replace.
+  - *2018 (a quieter instance of the same shell defect)*: three games (`400998743`, `400994687`,
+    `400998215`) carry a shell on ONE side only, so the pairwise possession average stayed positive and no
+    gate fired — but both teams were scored against half the real possessions. Measured on the published
+    asset: four per-game efficiencies over 200 (272.7, 258.6, 1176.5, 1452.2) and a season `raw_o` of 137.6.
+    sdv-py now requires BOTH sides' possession estimates to be positive: 6 rows dropped from 3 games, max
+    season raw_o 137.6 → 123.2, mean adj_o 93.040 → 92.768, tempo 70.000 → 70.021. The published 2018 asset
+    is mildly wrong until a republish.
   - *Gate note (not lowered):* the applicability floor (>= 150 qualified teams) meant only 2008 tripped the band —
     2009–2012, equally distorted, logged "not applied" (66–78 core teams). A level band cannot police a season the
     band never runs on; the input-schema guard is what closes that.
