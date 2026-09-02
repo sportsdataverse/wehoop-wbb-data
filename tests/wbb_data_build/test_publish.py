@@ -1,9 +1,13 @@
 import subprocess
+from pathlib import Path
 
 import polars as pl
 import pytest
 from wbb_data_build import io, publish
 from wbb_data_build.config import REGISTRY
+
+#: release metadata sidecars -- asserted separately, not a data asset
+SIDECARS = ("timestamp.", "package_function.")
 
 
 def test_publish_uploads_each_file_with_clobber(tmp_path):
@@ -17,7 +21,11 @@ def test_publish_uploads_each_file_with_clobber(tmp_path):
         runner=lambda args: calls.append(args),
         exists_check=lambda tag, repo: True,  # release already exists
     )
-    uploads = [c for c in calls if c[:2] == ["release", "upload"]]
+    uploads = [
+        c
+        for c in calls
+        if c[:2] == ["release", "upload"] and not Path(c[3]).name.startswith(SIDECARS)
+    ]
     assert len(uploads) == 3  # parquet + rds + csv (rds is the R loader's read path)
     assert all("--clobber" in c for c in uploads)
     assert res["tag"] == spec.tag
@@ -85,6 +93,10 @@ def test_publish_tolerates_create_race(tmp_path):
         runner=runner,
         exists_check=lambda tag, repo: False,
     )
-    uploads = [c for c in calls if c[:2] == ["release", "upload"]]
+    uploads = [
+        c
+        for c in calls
+        if c[:2] == ["release", "upload"] and not Path(c[3]).name.startswith(SIDECARS)
+    ]
     assert len(uploads) == 3
     assert res["uploaded"] == 3

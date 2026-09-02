@@ -190,3 +190,31 @@ REGISTRY: dict[str, DatasetSpec] = {
         sdv_type="player crosswalk data",
     ),
 }
+
+
+# --- release sidecar metadata -------------------------------------------------
+# Every published tag carries package_function.txt/.json naming the loader a
+# consumer reaches the data through -- the half of R's sportsdataverse_save()
+# the Python publisher used to drop. Values are NOT invented: where the R
+# producer already published a package_function to the tag, that exact string
+# is reused, so re-stamping from Python does not change what a consumer sees.
+# Python-only tags that never had one name the sdv-py loader instead.
+#
+# Keyed by tag, not dataset -- several datasets can share one tag.
+# The publish tests assert every REGISTRY tag has an entry, so a new dataset
+# cannot ship an unnamed tag.
+PKG_FUNCTION: dict[str, str] = {
+    "espn_womens_college_basketball_game_rosters": "wehoop::load_wbb_pbp()",
+    "espn_womens_college_basketball_officials": "wehoop::load_wbb_pbp()",
+    "espn_womens_college_basketball_pbp": "wehoop::load_wbb_pbp()",
+    "espn_womens_college_basketball_player_boxscores": "wehoop::load_wbb_player_box()",
+    "espn_womens_college_basketball_player_core": "sportsdataverse.wbb.load_wbb_player_core()",
+    "espn_womens_college_basketball_player_season_stats": "wehoop::load_wbb_player_stats()",
+    "espn_womens_college_basketball_rosters": "wehoop::load_wbb_rosters_manifest()",
+    "espn_womens_college_basketball_schedules": "wehoop::load_wbb_schedule()",
+    "espn_womens_college_basketball_shots": "wehoop::load_wbb_pbp()",
+    "espn_womens_college_basketball_standings": "wehoop::load_wbb_standings()",
+    "espn_womens_college_basketball_team_boxscores": "wehoop::load_wbb_team_box()",
+    "espn_womens_college_basketball_team_season_stats": "wehoop::load_wbb_team_stats()",
+    "wbb_crosswalk": "wehoop::wbb_team_crosswalk()",
+}
