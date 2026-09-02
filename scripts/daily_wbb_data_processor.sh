@@ -116,15 +116,26 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
     git config --local user.email "action@github.com"
     git config --local user.name "Github Action"
     SEASON_RC=0
+    # Every input wp_enrich reads out of the tree (pbp, schedules, team_box).
+    # A failed build leaves the PREVIOUS run's file in place, so enriching on
+    # top of it would publish stale auxiliary data as fresh.
+    WP_INPUT_RC=0
 
     # ::group:: markers collapse each dataset in the Actions UI; in the tee'd
     # season logfile they read as plain section headers.
     run_py() {
       local ds="$1"
+      # pbp is written to the tree here but published ONLY by the WP enrichment
+      # step below (its single writer). publish.py refuses an un-enriched pbp
+      # asset, so a plain pbp can never reach the release.
+      local pub="--publish"
+      [ "$ds" = "pbp" ] && pub=""
       echo "::group::wbb_data_build $ds $i"
       # Packaging moved to the repo root, so no `cd python` and no ../wbb.
-      uv run python -m wbb_data_build --dataset "$ds" --base wbb -s "$i" -e "$i" --publish || {
+      # shellcheck disable=SC2086
+      uv run python -m wbb_data_build --dataset "$ds" --base wbb -s "$i" -e "$i" $pub || {
         rc=$?; echo "::warning ::wbb_data_build $ds for season $i exited with code $rc"; SEASON_RC=$rc
+        case "$ds" in pbp|schedules|team_box) WP_INPUT_RC=$rc;; esac
       }
       echo "::endgroup::"
     }
@@ -133,6 +144,7 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
       echo "::group::$script $i"
       Rscript "$script" -s "$i" -e "$i" || {
         rc=$?; echo "::warning ::$script for season $i exited with code $rc"; SEASON_RC=$rc
+        case "$script" in *01_pbp*|*02_team_box*) WP_INPUT_RC=$rc;; esac
       }
       echo "::endgroup::"
     }
@@ -156,13 +168,28 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
     }
     echo "::endgroup::"
 
-    # Win-probability enrichment: republishes play_by_play_$i.parquet with
-    # pregame_home_prob + home_win_prob appended. MUST run after the dataset
-    # loop (it needs team_box, which builds after pbp) and is best-effort --
-    # the plain pbp published above is still valid data if this fails.
-    # Without it every nightly strips the WP columns off the release.
-    uv run python -m wbb_model_03_wp_enrich -s "$i" -e "$i" || \
-      echo "::warning ::wp_enrich for season $i exited with code $? (non-fatal; release keeps plain pbp)"
+    # Win-probability enrichment -- the ONLY publisher of play_by_play_$i:
+    # reads the tree pbp/schedules/team_box built above, appends
+    # pregame_home_prob + home_win_prob, rewrites parquet/csv/rds and uploads.
+    # MUST run after the dataset loop (it needs schedules + team_box) and is
+    # FATAL: a pbp that is not enriched is a pbp that is not published (the
+    # release keeps the previous enriched asset; the tree still commits the
+    # plain build). The old publish-plain-then-re-enrich order stripped the WP
+    # columns off the release on every nightly + the 2026-08 history republish,
+    # which broke the platform's win-probability page. In `-l R` mode R still
+    # uploads the plain pbp itself (piggyback, unguarded), so there this step
+    # is the repair, not the writer.
+    echo "::group::wp_enrich $i"
+    if [ "${WP_INPUT_RC:-0}" != "0" ]; then
+      # Never enrich a tree whose inputs failed to rebuild: it holds the
+      # previous run's (or a partial) season and would ship as fresh.
+      echo "::error ::a wp_enrich input (pbp/schedules/team_box) failed (rc=$WP_INPUT_RC); skipping wp_enrich -- release keeps the previous enriched asset"
+    else
+      uv run python -m wbb_model_03_wp_enrich -s "$i" -e "$i" || {
+        rc=$?; echo "::error ::wp_enrich for season $i exited with code $rc -- pbp NOT published this run"; SEASON_RC=$rc
+      }
+    fi
+    echo "::endgroup::"
     echo "RSCRIPT_RC=$SEASON_RC" > "/tmp/_rc_${i}"
     # Grep-able terminal line for the season logfile (scrape-log convention).
     echo "season $i EXIT=$SEASON_RC"

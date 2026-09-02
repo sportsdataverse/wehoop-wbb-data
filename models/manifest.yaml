@@ -34,4 +34,4 @@ suites:
         wraps_token: wp_enrich
         release_tag: espn_womens_college_basketball_pbp
         wired_via: scripts/daily_wbb_data_processor.sh
-        notes: "Runs post-publish in the daily data processor (the nightly publish otherwise strips the WP columns)."
+        notes: "Sole publisher of the pbp asset in the daily data processor; publish.py refuses an un-enriched pbp parquet (2026-08 strip incident)."

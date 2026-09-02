@@ -1,12 +1,13 @@
 """Stage 03 — WBB per-play WP enrichment of the published pbp.
 
 Thin numbered entry over ``wbb_data_build.wp_enrich``; args forward verbatim.
-Runs post-publish in the daily data processor (the nightly publish otherwise strips the WP columns).
+Sole publisher of the pbp asset in the daily data processor; publish.py refuses an un-enriched pbp parquet (2026-08 strip incident).
 Usage::
 
     python -m wbb_model_03_wp_enrich -s 2026 -e 2026
     scripts/wbb_models.sh 03
 """
+
 from __future__ import annotations
 
 import sys
