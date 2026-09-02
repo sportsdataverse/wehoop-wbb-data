@@ -26,13 +26,28 @@ from typing import Callable
 
 import polars as pl
 
-# Probed against the released assets AFTER the boxscoreAvailable-flag fix
-# (sdv-py#275) + the throttle-retry re-extraction (2026-07-17). The old
-# "2009-2013 hole" was those two bugs, not ESPN: recovered team counts are
-# 2008=354 (260 with >=5 games -- BETTER than the originally-published
-# 2014's 187), 2009-2013 = 240-348. 2004-2007 stay out (4-70 teams with
-# >=5 games: too sparse for opponent adjustment).
-MIN_SEASON_RATINGS = 2008
+# Team counts were probed against the released assets AFTER the
+# boxscoreAvailable-flag fix (sdv-py#275) + the throttle-retry re-extraction
+# (2026-07-17): 2008=354 teams, 2009-2013 = 240-348 -- enough teams to adjust.
+#
+# The floor is nonetheless 2013, and the binding constraint is not coverage but
+# the INPUT SCHEMA. Measured 2026-09-02 over the released wbb_team_box: the
+# ``turnovers`` column is 0 in 100% of team rows for every season through 2012
+# (2005/2008/2010/2012 all 100.0% zero, 0% null) and is populated from 2013
+# (mean 16.13). Zeros are not nulls, so nothing downstream saw it; the
+# possession estimate FGA - OREB + TO + 0.44*FTA then silently lost its whole
+# turnover term -- poss 54.6 instead of ~70.9 per team-game, i.e. efficiency
+# inflated ~1.29x. That is the entire "pre-2013 seasons are on another scale"
+# effect: replaying it on a REAL modern season (zero 2017/2026 turnovers and
+# re-rate) reproduces mean adj_o 91.9 -> 118.6 and adj_tempo 69.9 -> 54.1, next
+# to the observed 2008 values of 119.4 / 54.5. The published levels for those
+# seasons are therefore points per 100 NON-TURNOVER possessions -- not the
+# documented unit -- and no possession formula recovers them: every box
+# estimate needs TO, and the player box cannot supply it (2008 is 99.8% zeros
+# there too; 2010/2012 sum to only 11.5-11.9 per team-game against the modern
+# 15.8-16.4). sdv-py's engine now raises InsufficientInputError for such a
+# season rather than emitting a wrong-scale rating.
+MIN_SEASON_RATINGS = 2013
 
 # Player value floors HIGHER than ratings: wbb_box_bpm keeps only players
 # with >=10 games, and the partial archival coverage (2008-2013 averages
