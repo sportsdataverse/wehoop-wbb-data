@@ -15,6 +15,7 @@ suppressPackageStartupMessages(suppressMessages(library(glue)))
 suppressPackageStartupMessages(suppressMessages(library(optparse)))
 suppressPackageStartupMessages(suppressMessages(library(tibble)))
 # Sourced up-front: upsert_manifest_row() is called inside the season loop.
+source(file.path("R", "id_canonicalization.R"))
 source(file.path("R", "manifest_upload_helper.R"))
 
 option_list <- list(
@@ -63,7 +64,7 @@ wbb_pbp_games <- function(y) {
   )
   saveRDS(sched, glue::glue("wbb/schedules/rds/wbb_schedule_{y}.rds"))
   arrow::write_parquet(
-    sched,
+    canonicalize_ids(sched),
     glue::glue("wbb/schedules/parquet/wbb_schedule_{y}.parquet")
   )
 
@@ -141,7 +142,7 @@ wbb_pbp_games <- function(y) {
       FALSE
     )
     arrow::write_parquet(
-      espn_df,
+      canonicalize_ids(espn_df),
       glue::glue("wbb/pbp/parquet/play_by_play_{y}.parquet"),
       compression = "zstd",
       compression_level = 22
@@ -200,7 +201,7 @@ wbb_pbp_games <- function(y) {
       )
       saveRDS(shots_df, glue::glue("wbb/shots/rds/shots_{y}.rds"))
       arrow::write_parquet(
-        shots_df,
+        canonicalize_ids(shots_df),
         glue::glue("wbb/shots/parquet/shots_{y}.parquet"),
         compression = "zstd",
         compression_level = 22
@@ -328,7 +329,7 @@ wbb_pbp_games <- function(y) {
 
   saveRDS(final_sched, glue::glue("wbb/schedules/rds/wbb_schedule_{y}.rds"))
   arrow::write_parquet(
-    final_sched,
+    canonicalize_ids(final_sched),
     glue::glue("wbb/schedules/parquet/wbb_schedule_{y}.parquet")
   )
   rm(sched)
