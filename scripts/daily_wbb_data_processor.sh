@@ -149,13 +149,35 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
       echo "::endgroup::"
     }
 
+    # Crosswalks build from LIVE ESPN+Torvik(Bart)+Fox sources and are
+    # known-fragile (barttorvik.com bot-blocks automated fetches with a 403 as
+    # of 2026-08; see the schedule_crosswalk/player_crosswalk ColumnNotFoundError
+    # failures on runs 32204757070/32681421838). Best-effort, matching
+    # hoopR-nba-data / hoopR-mbb-data's daily processors: a crosswalk failure
+    # warns but does NOT fail the run -- the 11 core datasets are the daily
+    # deliverable and publish independently above. These do NOT reuse
+    # run_r/run_py, which set SEASON_RC.
+    run_r_crosswalk() {
+      local script="$1"
+      echo "::group::$script $i"
+      Rscript "$script" -s "$i" -e "$i" || echo "::warning ::$script for season $i exited with code $? (crosswalk; non-fatal, live external source)"
+      echo "::endgroup::"
+    }
+    run_py_crosswalk() {
+      local ds="$1"
+      echo "::group::wbb_data_build $ds $i"
+      uv run python -m wbb_data_build --dataset "$ds" --base wbb -s "$i" -e "$i" --publish \
+        || echo "::warning ::wbb_data_build $ds for season $i exited with code $? (crosswalk; non-fatal, live external source)"
+      echo "::endgroup::"
+    }
+
     if [ "$LANG_MODE" = "R" ]; then
       for SCRIPT in "${R_DATASETS[@]}"; do run_r "$SCRIPT"; done
       # Rollback path: every crosswalk, including stages 13-14, runs in R.
-      for SCRIPT in "${R_ALL_CROSSWALKS[@]}"; do run_r "$SCRIPT"; done
+      for SCRIPT in "${R_ALL_CROSSWALKS[@]}"; do run_r_crosswalk "$SCRIPT"; done
     else
       for ds in $PY_DATASETS; do run_py "$ds"; done
-      for ds in $PY_CROSSWALKS; do run_py "$ds"; done
+      for ds in $PY_CROSSWALKS; do run_py_crosswalk "$ds"; done
     fi
 
     # Last: the schedule master, games_in_data_repo manifest and coverage
