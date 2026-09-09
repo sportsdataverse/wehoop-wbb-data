@@ -21,13 +21,13 @@
 | col_name | type | description |
 |---|---|---|
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
-| `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
+| `athlete_id` | Int32 | ESPN numeric identifier for the athlete. |
 | `athlete_display_name` | String | Athlete's full display name. |
 | `athlete_first_name` | String | Athlete's given name. |
 | `athlete_last_name` | String | Athlete's family name. |
 | `athlete_position_abbreviation` | String | Athlete's position abbreviation (e.g. "F"). |
 | `athlete_jersey` | String | Athlete's jersey number, as a string to preserve leading zeros. |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |
 | `category` | String | Statistic grouping the row belongs to (e.g. "averages", "totals"). |
 | `stat_label` | String | Short statistic label (e.g. "GP"). |

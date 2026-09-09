@@ -21,11 +21,11 @@
 | col_name | type | description |
 |---|---|---|
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
-| `group_id` | Int64 | ESPN group (conference) id the standings row belongs to. |
+| `group_id` | Int32 | ESPN group (conference) id the standings row belongs to. |
 | `group_name` | String | Full conference name for the standings row. |
 | `group_abbreviation` | String | Conference abbreviation (e.g. "aeast"). |
 | `group_short_name` | String | Abbreviated conference name. |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `team_uid` | String | ESPN universal id for the team. |
 | `team_slug` | String | URL slug for the team on espn.com. |
 | `team_location` | String | School or city the team represents (e.g. "UCLA"). |

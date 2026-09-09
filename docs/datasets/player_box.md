@@ -20,14 +20,14 @@
 
 | col_name | type | description |
 |---|---|---|
-| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `game_id` | Int32 | ESPN game identifier; the join key across every per-game dataset. Int32. |
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
 | `season_type` | Int64 | ESPN season segment code -- 2 regular season, 3 postseason. |
 | `game_date` | Date | Calendar date of the game. |
 | `game_date_time` | Datetime(time_unit='us', time_zone='America/New_York') | Tip-off timestamp in US Eastern time. |
-| `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
+| `athlete_id` | Int32 | ESPN numeric identifier for the athlete. |
 | `athlete_display_name` | String | Athlete's full display name. |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `team_name` | String | Team nickname (e.g. "Bruins"). |
 | `team_location` | String | School or city the team represents (e.g. "UCLA"). |
 | `team_short_display_name` | String | Shortened team display name. |
@@ -66,7 +66,7 @@
 | `home_away` | String | Whether the athlete's team was the home or away side. |
 | `team_winner` | Boolean | Whether this team won the game. |
 | `team_score` | Int64 | Final points scored by this team. |
-| `opponent_team_id` | Int64 | ESPN team id of the opponent in this game. |
+| `opponent_team_id` | Int32 | ESPN team id of the opponent in this game. |
 | `opponent_team_name` | String | Opponent nickname. |
 | `opponent_team_location` | String | School or city the opponent represents. |
 | `opponent_team_display_name` | String | Full opponent name including nickname. |

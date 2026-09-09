@@ -21,7 +21,7 @@
 | col_name | type | description |
 |---|---|---|
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `team_slug` | String | URL slug for the team on espn.com. |
 | `team_abbreviation` | String | Team abbreviation (e.g. "UCLA"). |
 | `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |

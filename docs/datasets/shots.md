@@ -20,14 +20,14 @@
 
 | col_name | type | description |
 |---|---|---|
-| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `game_id` | Int32 | ESPN game identifier; the join key across every per-game dataset. Int32. |
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
 | `period_number` | Int64 | Period number the play occurred in. |
 | `clock_display_value` | String | Game clock at the time of the play, formatted MM:SS. |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `athlete_id_1` | Int64 | ESPN id of the primary athlete involved in the play (shooter, rebounder, fouler). |
 | `athlete_id_2` | Int64 | ESPN id of the secondary athlete involved in the play (assister, blocker, fouled). |
-| `type_id` | Int64 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
+| `type_id` | Int32 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
 | `type_text` | String | Play type as published by ESPN (e.g. "Jumpball"). |
 | `scoring_play` | Boolean | Whether the play resulted in points. |
 | `score_value` | Int64 | Points the play was worth (0, 1, 2 or 3). |

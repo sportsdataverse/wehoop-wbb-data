@@ -57,8 +57,8 @@ def test_master_is_the_union_of_seasons():
     assert set(master["season"].unique().to_list()) == {2025, 2026}
 
 
-def test_master_canonicalizes_ids_to_int64():
-    assert build_master([_season(2026, 2, 2)]).schema["game_id"] == pl.Int64
+def test_master_canonicalizes_ids_to_int32():
+    assert build_master([_season(2026, 2, 2)]).schema["game_id"] == pl.Int32
 
 
 def test_master_pins_column_order_across_ragged_seasons():

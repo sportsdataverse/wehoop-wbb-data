@@ -20,7 +20,7 @@
 
 | col_name | type | description |
 |---|---|---|
-| `id` | Int64 | ESPN identifier for the row's own entity (the play id in pbp, the game id in schedules). |
+| `id` | Int32 | ESPN identifier for the row's own entity (the play id in pbp, the game id in schedules). |
 | `uid` | String | ESPN universal id for the entity (e.g. "s:40~l:54~t:26"). |
 | `date` | String | Calendar date of the game. |
 | `attendance` | Float64 | Announced attendance for the game. |
@@ -36,9 +36,9 @@
 | `notes_headline` | String | ESPN headline describing the game's context (e.g. a tournament round). |
 | `broadcast_market` | String | Broadcast reach -- "national" or "home". |
 | `broadcast_name` | String | Primary broadcast network name. |
-| `type_id` | Int64 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
+| `type_id` | Int32 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
 | `type_abbreviation` | String | Abbreviation of the ESPN event type (e.g. "TRNMNT"). |
-| `venue_id` | Int64 | ESPN identifier for the venue hosting the game. |
+| `venue_id` | Int32 | ESPN identifier for the venue hosting the game. |
 | `venue_full_name` | String | Name of the arena hosting the game. |
 | `venue_address_city` | String | City the venue is located in. |
 | `venue_address_state` | String | State or province the venue is located in. |
@@ -46,7 +46,7 @@
 | `status_clock` | Float64 | Seconds remaining on the game clock at the time of capture. |
 | `status_display_clock` | String | Game clock at the time of capture, formatted MM:SS. |
 | `status_period` | Float64 | Period the game was in at the time of capture. |
-| `status_type_id` | Int64 | ESPN status-type identifier for the game state. |
+| `status_type_id` | Int32 | ESPN status-type identifier for the game state. |
 | `status_type_name` | String | ESPN status constant (e.g. "STATUS_FINAL"). |
 | `status_type_state` | String | Coarse game state -- "pre", "in" or "post". |
 | `status_type_completed` | Boolean | Whether the game has finished. |
@@ -54,7 +54,7 @@
 | `status_type_detail` | String | Detailed game status, including overtime notation. |
 | `status_type_short_detail` | String | Abbreviated game status. |
 | `format_regulation_periods` | Float64 | Number of regulation periods for the game (4 quarters, or 2 halves pre-2015). |
-| `home_id` | Int64 | ESPN team id of the home team. |
+| `home_id` | Int32 | ESPN team id of the home team. |
 | `home_uid` | String | ESPN universal id for the home team. |
 | `home_location` | String | School or city the home team represents. |
 | `home_name` | String | Home team nickname. |
@@ -64,15 +64,15 @@
 | `home_color` | String | Home team primary colour as a hex string. |
 | `home_alternate_color` | String | Home team secondary colour as a hex string. |
 | `home_is_active` | Boolean | Whether ESPN lists the home team as currently active. |
-| `home_venue_id` | Int64 | ESPN venue id of the home team's usual arena. |
+| `home_venue_id` | Int32 | ESPN venue id of the home team's usual arena. |
 | `home_logo` | String | URL of the home team's ESPN logo image. |
-| `home_conference_id` | Int64 | ESPN conference (group) id of the home team. |
+| `home_conference_id` | Int32 | ESPN conference (group) id of the home team. |
 | `home_score` | Int64 | Home team score at this point in the game (pbp) or final (schedules). |
 | `home_winner` | Boolean | Whether the home team won. |
 | `home_current_rank` | Float64 | AP/coaches poll ranking of the home team at game time. |
 | `home_linescores` | String | Home team points scored in each period, stringified. |
 | `home_records` | String | Home team win-loss record at game time, stringified. |
-| `away_id` | Int64 | ESPN team id of the away team. |
+| `away_id` | Int32 | ESPN team id of the away team. |
 | `away_uid` | String | ESPN universal id for the away team. |
 | `away_location` | String | School or city the away team represents. |
 | `away_name` | String | Away team nickname. |
@@ -82,20 +82,20 @@
 | `away_color` | String | Away team primary colour as a hex string. |
 | `away_alternate_color` | String | Away team secondary colour as a hex string. |
 | `away_is_active` | Boolean | Whether ESPN lists the away team as currently active. |
-| `away_venue_id` | Int64 | ESPN venue id of the away team's usual arena. |
+| `away_venue_id` | Int32 | ESPN venue id of the away team's usual arena. |
 | `away_logo` | String | URL of the away team's ESPN logo image. |
-| `away_conference_id` | Int64 | ESPN conference (group) id of the away team. |
+| `away_conference_id` | Int32 | ESPN conference (group) id of the away team. |
 | `away_score` | Int64 | Away team score at this point in the game (pbp) or final (schedules). |
 | `away_winner` | Boolean | Whether the away team won. |
 | `away_current_rank` | Float64 | AP/coaches poll ranking of the away team at game time. |
 | `away_linescores` | String | Away team points scored in each period, stringified. |
 | `away_records` | String | Away team win-loss record at game time, stringified. |
-| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `game_id` | Int32 | ESPN game identifier; the join key across every per-game dataset. Int32. |
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
 | `season_type` | Int64 | ESPN season segment code -- 2 regular season, 3 postseason. |
 | `status_type_alt_detail` | String | Alternate status detail, typically the overtime marker. |
-| `tournament_id` | Int64 | ESPN tournament identifier when the game is part of a bracket. |
-| `groups_id` | Int64 | ESPN group (conference) id the game is classified under. |
+| `tournament_id` | Int32 | ESPN tournament identifier when the game is part of a bracket. |
+| `groups_id` | Int32 | ESPN group (conference) id the game is classified under. |
 | `groups_name` | String | Full conference name the game is classified under. |
 | `groups_short_name` | String | Abbreviated conference name. |
 | `groups_is_conference` | Boolean | Whether the group represents a conference rather than a broader grouping. |

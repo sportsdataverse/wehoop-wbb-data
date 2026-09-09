@@ -21,8 +21,8 @@
 | col_name | type | description |
 |---|---|---|
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
-| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
-| `official_id` | Int64 | ESPN numeric identifier for the game official. |
+| `game_id` | Int32 | ESPN game identifier; the join key across every per-game dataset. Int32. |
+| `official_id` | Int32 | ESPN numeric identifier for the game official. |
 | `official_uid` | String | ESPN universal id for the game official. |
 | `official_full_name` | String | Official's full name. |
 | `official_display_name` | String | Official's name formatted for display. |

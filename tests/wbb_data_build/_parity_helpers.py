@@ -12,15 +12,20 @@ import polars as pl
 
 
 def id_dtype_upgrades(r_parquet: Path) -> dict[str, tuple[pl.DataType, pl.DataType]]:
-    """Id columns the producer now widens to Int64, keyed to the oracle's dtype.
+    """Id columns whose dtype the producer changes, keyed to the oracle's dtype.
 
-    The producer canonicalizes every id to Int64 at the write boundary (see
+    The producer canonicalizes every id to Int32 at the write boundary (see
     ``wbb_data_build.ids``), because the released datasets shipped the same id
     as Int32 in one and String in another -- joining them raised SchemaError.
 
-    Derived from the oracle rather than hardcoded per test, so a new id column
-    is covered automatically. Values are still compared under the oracle's
-    dtype by ``assert_parquet_parity``, so an unintended drift cannot hide here.
+    Int32 is the width the released assets already carry, so for a normal
+    oracle this returns NOTHING and the producer matches it exactly. It stays a
+    derived map rather than an empty stub because a genuinely narrower oracle
+    column (Int16, UInt8) is still a real upgrade, and deriving it from the
+    oracle means a new id column is covered automatically.
+
+    Values are still compared under the oracle's dtype by
+    ``assert_parquet_parity``, so an unintended drift cannot hide here.
     Non-numeric ids (an ESPN slug in an ``*_id`` field) are left alone by the
     producer and so are excluded here.
     """
@@ -29,8 +34,8 @@ def id_dtype_upgrades(r_parquet: Path) -> dict[str, tuple[pl.DataType, pl.DataTy
     for name, dtype in schema.items():
         if name != "id" and not name.endswith("_id"):
             continue
-        if dtype in (pl.Int8, pl.Int16, pl.Int32, pl.UInt8, pl.UInt16, pl.UInt32):
-            upgrades[name] = (pl.Int64, dtype)
+        if dtype in (pl.Int8, pl.Int16, pl.UInt8, pl.UInt16):
+            upgrades[name] = (pl.Int32, dtype)
     return upgrades
 
 

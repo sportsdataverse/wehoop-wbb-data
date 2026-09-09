@@ -21,7 +21,7 @@
 | col_name | type | description |
 |---|---|---|
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `team_slug` | String | URL slug for the team on espn.com. |
 | `team_abbreviation` | String | Team abbreviation (e.g. "UCLA"). |
 | `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |
@@ -29,7 +29,7 @@
 | `team_color` | String | Primary team colour as a hex string, without the leading '#'. |
 | `team_alternate_color` | String | Secondary team colour as a hex string, without the leading '#'. |
 | `team_logo` | String | URL of the team's ESPN logo image. |
-| `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
+| `athlete_id` | Int32 | ESPN numeric identifier for the athlete. |
 | `uid` | String | ESPN universal id for the entity (e.g. "s:40~l:54~t:26"). |
 | `guid` | String | ESPN global GUID for the entity, stable across seasons. |
 | `full_name` | String | Full name of the entity. |
@@ -40,7 +40,7 @@
 | `jersey` | String | Jersey number, as a string to preserve leading zeros. |
 | `position_abbreviation` | String | Position abbreviation. |
 | `position_name` | String | Full position name. |
-| `position_id` | Int64 | ESPN identifier for the athlete's listed position. |
+| `position_id` | Int32 | ESPN identifier for the athlete's listed position. |
 | `height` | String | Athlete's height in inches. |
 | `weight` | String | Athlete's listed weight in pounds. |
 | `age` | String | Athlete's age in years. |
@@ -53,7 +53,7 @@
 | `headshot_href` | String | URL of the athlete's ESPN headshot image. |
 | `headshot_alt` | String | Alt text for the athlete's headshot image. |
 | `link_web` | String | URL of the athlete's ESPN profile page. |
-| `status_id` | Int64 | ESPN identifier for the athlete's roster status. |
+| `status_id` | Int32 | ESPN identifier for the athlete's roster status. |
 | `status_name` | String | Athlete's roster status (e.g. "Active"). |
 | `status_type` | String | Athlete's roster status code. |
 

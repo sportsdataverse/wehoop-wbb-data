@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import polars as pl
 import pytest
-from wbb_data_build.ids import canonicalize_ids, is_id_column, to_int64
+from wbb_data_build.ids import _INT32_MAX, canonicalize_ids, is_id_column, to_int32
 
 
 @pytest.mark.parametrize(
@@ -21,24 +21,24 @@ from wbb_data_build.ids import canonicalize_ids, is_id_column, to_int64
     ],
     ids=["int32", "int64", "utf8", "float64"],
 )
-def test_every_source_dtype_lands_on_int64(values, dtype):
-    out = to_int64(pl.Series("game_id", values, dtype=dtype))
-    assert out.dtype == pl.Int64
+def test_every_source_dtype_lands_on_int32(values, dtype):
+    out = to_int32(pl.Series("game_id", values, dtype=dtype))
+    assert out.dtype == pl.Int32
     assert out[0] == 401811123
 
 
 def test_nulls_survive():
-    assert to_int64(pl.Series("game_id", [None, 1], dtype=pl.Int32)).null_count() == 1
+    assert to_int32(pl.Series("game_id", [None, 1], dtype=pl.Int32)).null_count() == 1
 
 
 def test_lossy_float_refuses():
     with pytest.raises(ValueError, match="lossy"):
-        to_int64(pl.Series("game_id", [401811123.5]))
+        to_int32(pl.Series("game_id", [401811123.5]))
 
 
 def test_non_numeric_string_refuses():
     with pytest.raises(ValueError, match="non-numeric"):
-        to_int64(pl.Series("game_id", ["not-an-id"]))
+        to_int32(pl.Series("game_id", ["not-an-id"]))
 
 
 @pytest.mark.parametrize(
@@ -67,9 +67,9 @@ def test_canonicalize_widens_every_id_column():
         },
     )
     out = canonicalize_ids(df)
-    assert out.schema["game_id"] == pl.Int64
-    assert out.schema["athlete_id"] == pl.Int64
-    assert out.schema["team_id"] == pl.Int64
+    assert out.schema["game_id"] == pl.Int32
+    assert out.schema["athlete_id"] == pl.Int32
+    assert out.schema["team_id"] == pl.Int32
     # Non-id columns are untouched -- season stays Int32, text stays Utf8.
     assert out.schema["season"] == pl.Int32
     assert out.schema["text"] == pl.Utf8
@@ -100,6 +100,30 @@ def test_a_non_numeric_id_is_left_alone_rather_than_failing_the_build():
     )
     out = canonicalize_ids(df)
     assert out.schema["group_id"] == pl.Utf8
-    assert out.schema["team_id"] == pl.Int64
+    assert out.schema["team_id"] == pl.Int32
     with pytest.raises(ValueError):
         canonicalize_ids(df, strict=True)
+
+
+def test_an_id_too_wide_for_int32_is_refused_not_wrapped():
+    """The target is Int32, so canonicalization now NARROWS from Int64 -- and a
+    narrowing cast wraps silently, producing a valid-looking id that joins to
+    the wrong row. That is the exact failure this module exists to prevent, so
+    the range check is what makes Int32 safe rather than merely smaller.
+
+    Real wbb ids are nowhere near the ceiling (measured across full history in
+    sdv-db: game_id 401,865,139, athlete_id 5,343,112, team_id 131,833), which
+    is why the target can be Int32 at all -- but "nowhere near today" is not a
+    guarantee, and this is the check that turns it into one.
+    """
+    too_wide = pl.Series("game_id", [_INT32_MAX + 1], dtype=pl.Int64)
+    with pytest.raises(ValueError, match="outside Int32 range"):
+        to_int32(too_wide)
+    # A string that parses but overflows must report the RANGE, not read as
+    # "non-numeric" -- which is why to_int32 parses via Int64 first.
+    with pytest.raises(ValueError, match="outside Int32 range"):
+        to_int32(pl.Series("game_id", [str(_INT32_MAX + 1)], dtype=pl.Utf8))
+    # Non-strict canonicalize leaves it alone rather than corrupting it.
+    df = pl.DataFrame({"game_id": too_wide})
+    assert canonicalize_ids(df).schema["game_id"] == pl.Int64
+    assert canonicalize_ids(df)["game_id"][0] == _INT32_MAX + 1

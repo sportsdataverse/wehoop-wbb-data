@@ -14,7 +14,7 @@
 # renders as an empty cell in the generated docs, which is an honest TODO.
 
 # --- identity / join keys -----------------------------------------------------
-game_id: ESPN game identifier; the join key across every per-game dataset. Int64.
+game_id: ESPN game identifier; the join key across every per-game dataset. Int32.
 id: ESPN identifier for the row's own entity (the play id in pbp, the game id in schedules).
 season: Season end-year (2026 = the 2025-26 season).
 season_type: ESPN season segment code -- 2 regular season, 3 postseason.

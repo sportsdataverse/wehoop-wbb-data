@@ -23,7 +23,7 @@
 | `game_play_number` | Int64 | 1-based ordinal of the play within the game, assigned during compilation. |
 | `id` | Int64 | ESPN identifier for the row's own entity (the play id in pbp, the game id in schedules). |
 | `sequence_number` | Int64 | ESPN's monotonically increasing sequence number for the play within the game. |
-| `type_id` | Int64 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
+| `type_id` | Int32 | ESPN play-type identifier (pbp) or event-type identifier (schedules). |
 | `type_text` | String | Play type as published by ESPN (e.g. "Jumpball"). |
 | `text` | String | Full narrative description of the play as published by ESPN. |
 | `away_score` | Int64 | Away team score at this point in the game (pbp) or final (schedules). |
@@ -39,18 +39,18 @@
 | `coordinate_y_raw` | Float64 | Shot y-coordinate exactly as published by ESPN, before translation. |
 | `points_attempted` | Int64 | Points the shot attempt would have been worth had it gone in. |
 | `short_description` | String | Abbreviated play description. |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `athlete_id_1` | Int64 | ESPN id of the primary athlete involved in the play (shooter, rebounder, fouler). |
 | `athlete_id_2` | Int64 | ESPN id of the secondary athlete involved in the play (assister, blocker, fouled). |
-| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `game_id` | Int32 | ESPN game identifier; the join key across every per-game dataset. Int32. |
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
 | `season_type` | Int64 | ESPN season segment code -- 2 regular season, 3 postseason. |
-| `home_team_id` | Int64 | ESPN team id of the home team. |
+| `home_team_id` | Int32 | ESPN team id of the home team. |
 | `home_team_name` | String | Home team location name. |
 | `home_team_mascot` | String | Home team nickname/mascot. |
 | `home_team_abbrev` | String | Home team abbreviation. |
 | `home_team_name_alt` | String | Alternate home team name as published in the play feed. |
-| `away_team_id` | Int64 | ESPN team id of the away team. |
+| `away_team_id` | Int32 | ESPN team id of the away team. |
 | `away_team_name` | String | Away team location name. |
 | `away_team_mascot` | String | Away team nickname/mascot. |
 | `away_team_abbrev` | String | Away team abbreviation. |

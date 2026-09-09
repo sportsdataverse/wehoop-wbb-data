@@ -20,12 +20,12 @@
 
 | col_name | type | description |
 |---|---|---|
-| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
+| `game_id` | Int32 | ESPN game identifier; the join key across every per-game dataset. Int32. |
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
 | `season_type` | Int64 | ESPN season segment code -- 2 regular season, 3 postseason. |
 | `game_date` | Date | Calendar date of the game. |
 | `game_date_time` | Datetime(time_unit='us', time_zone='America/New_York') | Tip-off timestamp in US Eastern time. |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `team_uid` | String | ESPN universal id for the team. |
 | `team_slug` | String | URL slug for the team on espn.com. |
 | `team_location` | String | School or city the team represents (e.g. "UCLA"). |
@@ -66,7 +66,7 @@
 | `total_turnovers` | Int64 | Total turnovers, including team turnovers. |
 | `turnover_points` | String | Points scored off the opponent's turnovers. |
 | `turnovers` | Int64 | Turnovers committed. |
-| `opponent_team_id` | Int64 | ESPN team id of the opponent in this game. |
+| `opponent_team_id` | Int32 | ESPN team id of the opponent in this game. |
 | `opponent_team_uid` | String | ESPN universal id for the opponent. |
 | `opponent_team_slug` | String | URL slug for the opponent on espn.com. |
 | `opponent_team_location` | String | School or city the opponent represents. |

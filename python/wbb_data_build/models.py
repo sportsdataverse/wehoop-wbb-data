@@ -6,9 +6,12 @@ validation over a multi-million-row pbp frame is a performance trap and is not
 the build path.
 
 Generated from the real built parquets, then kept by hand. Every ``*_id`` field
-is ``int`` because ids are canonicalized to Int64 at the write boundary (see
-``wbb_data_build.ids``) -- the released assets shipped the same id as Int32,
-Int64 and String across different datasets, which made them unjoinable.
+is ``int``, and ``polars_schema()`` resolves an id ``int`` to **Int32** rather
+than the generic Int64, because ids are canonicalized to Int32 at the write
+boundary (see ``wbb_data_build.ids``) -- the released assets shipped the same id
+as Int32, Int64 and String across different datasets, which made them
+unjoinable. Int32 is the width those assets already carry and the width the R
+chain writes.
 
 Strict mode is deliberate: without it pydantic coerces "401811123" to int and
 5 to 5.0, which is exactly the id-dtype class this repo keeps hitting.
@@ -21,6 +24,23 @@ from typing import Optional
 
 import polars as pl
 from pydantic import BaseModel, ConfigDict
+
+from wbb_data_build.ids import is_id_column
+
+#: (dataset, column) ids that do NOT fit Int32 and stay Int64.
+#:
+#: ESPN's play-by-play ``id`` is not a counter -- it is the game id with a
+#: sequence appended, so it runs to 18 digits (401804836115156657 in the 2026
+#: fixture) against an Int32 ceiling of 2,147,483,647. ``ids.canonicalize_ids``
+#: already refuses to narrow it at runtime (the range check is exactly for
+#: this, and non-strict mode leaves the column alone), so this set is what
+#: keeps the DECLARATION honest about it -- without it, ``check_frame`` reports
+#: a correct Int64 column as a narrowing violation on every pbp build.
+#:
+#: Keyed by (dataset, column), not column name: `id` means different things in
+#: different datasets, and a blanket exemption would silently stop narrowing an
+#: `id` that fits perfectly well.
+WIDE_IDS: frozenset[tuple[str, str]] = frozenset({("pbp", "id")})
 
 _PL_TYPES: dict[type, pl.DataType] = {
     str: pl.Utf8,
@@ -555,15 +575,25 @@ def polars_schema(dataset: str) -> pl.Schema:
         annotation = info.annotation
         args = getattr(annotation, "__args__", None)
         base = next((a for a in args if a is not type(None)), str) if args else annotation
-        fields[name] = _PL_TYPES.get(base, pl.Utf8)
+        dtype = _PL_TYPES.get(base, pl.Utf8)
+        # An id declared `int` is Int32, not the generic Int64: ids go through
+        # ids.canonicalize_ids at the write boundary, which keys off the column
+        # NAME, so the declaration has to key off the same thing or it declares
+        # a width the builder never produces. Non-id ints keep Int64 -- nothing
+        # canonicalizes them and check_frame's widening tolerance covers them.
+        if dtype == pl.Int64 and is_id_column(name) and (dataset, name) not in WIDE_IDS:
+            dtype = pl.Int32
+        fields[name] = dtype
     return pl.Schema(fields)
 
 
 def check_frame(dataset: str, frame: pl.DataFrame) -> list[str]:
     """Frame-level schema check. Returns problems; empty means it matches.
 
-    Widening is tolerated (an Int32 id read back from an older asset is
-    losslessly an Int64); narrowing and type changes are not.
+    Widening is tolerated (a narrow int read back from an older asset is
+    losslessly an Int64); narrowing and type changes are not. Ids declare Int32
+    now, so an Int64 id column IS flagged -- that is a real finding, not noise:
+    it means something bypassed the write boundary.
     """
     declared = polars_schema(dataset)
     widenable = {pl.Int8, pl.Int16, pl.Int32, pl.UInt8, pl.UInt16, pl.UInt32}

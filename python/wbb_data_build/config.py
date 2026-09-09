@@ -52,8 +52,8 @@ class DatasetSpec:
         canonicalize: run ``ids.canonicalize_ids`` before writing. False for
             the crosswalks: their id dtypes ARE the published contract
             (``espn_athlete_id``/``espn_game_id``/``fox_team_id`` ship as
-            String in every released crosswalk asset), and widening them to
-            Int64 would silently break every downstream join against them.
+            String in every released crosswalk asset), and coercing them to
+            Int32 would silently break every downstream join against them.
         rds_type: ``wehoop_type`` attribute override. Defaults to
             ``RDS_TYPE_TEMPLATE``; the crosswalks carry the bespoke string
             ``wehoop::wbb_*_crosswalk()`` stamps on the frame (verified
@@ -144,7 +144,7 @@ REGISTRY: dict[str, DatasetSpec] = {
     # contract: this one's ids are home/away_espn_team_id Int32 and
     # espn_game_id String (read off wbb/crosswalk/parquet/
     # wbb_schedule_crosswalk_2026.parquet). Canonicalizing would widen the team
-    # ids to Int64 AND coerce the String espn_game_id to Int64, so downstream
+    # ids to Int32 AND coerce the String espn_game_id to Int32, so downstream
     # joins against the released asset would stop matching on both keys.
     "schedule_crosswalk": DatasetSpec(
         "schedule_crosswalk",
@@ -163,7 +163,7 @@ REGISTRY: dict[str, DatasetSpec] = {
     # off wbb/crosswalk/parquet/wbb_player_crosswalk_2026.parquet: espn_team_id
     # is Int32 while espn_athlete_id / fox_athlete_id are String. Canonicalizing
     # would widen the team id AND coerce both numeric-looking athlete ids to
-    # Int64, breaking every downstream join against the released asset.
+    # Int32, breaking every downstream join against the released asset.
     #
     # This one was blocked on off-season ESPN roster coverage. It is not: a
     # fresh wehoop::wbb_player_crosswalk(2026) run on 2026-08-12 returns the

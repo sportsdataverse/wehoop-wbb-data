@@ -21,13 +21,13 @@
 | col_name | type | description |
 |---|---|---|
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
-| `game_id` | Int64 | ESPN game identifier; the join key across every per-game dataset. Int64. |
-| `team_id` | Int64 | ESPN numeric identifier for the team. |
+| `game_id` | Int32 | ESPN game identifier; the join key across every per-game dataset. Int32. |
+| `team_id` | Int32 | ESPN numeric identifier for the team. |
 | `team_slug` | String | URL slug for the team on espn.com. |
 | `team_abbreviation` | String | Team abbreviation (e.g. "UCLA"). |
 | `team_display_name` | String | Full team name including nickname (e.g. "UCLA Bruins"). |
 | `home_away` | String | Whether the athlete's team was the home or away side. |
-| `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
+| `athlete_id` | Int32 | ESPN numeric identifier for the athlete. |
 | `athlete_uid` | String | ESPN universal id for the athlete (e.g. "s:40~l:54~a:5315009"). |
 | `athlete_guid` | String | ESPN global GUID for the athlete, stable across seasons. |
 | `athlete_display_name` | String | Athlete's full display name. |

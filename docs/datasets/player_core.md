@@ -21,7 +21,7 @@
 | col_name | type | description |
 |---|---|---|
 | `season` | Int64 | Season end-year (2026 = the 2025-26 season). |
-| `athlete_id` | Int64 | ESPN numeric identifier for the athlete. |
+| `athlete_id` | Int32 | ESPN numeric identifier for the athlete. |
 | `guid` | String | ESPN global GUID for the entity, stable across seasons. |
 | `uid` | String | ESPN universal id for the entity (e.g. "s:40~l:54~t:26"). |
 | `slug` | String | URL slug for the entity on espn.com. |
@@ -41,15 +41,15 @@
 | `birth_state` | String | State or province the athlete was born in. |
 | `birth_country` | String | Country the athlete was born in. |
 | `jersey` | String | Jersey number, as a string to preserve leading zeros. |
-| `position_id` | Int64 | ESPN identifier for the athlete's listed position. |
+| `position_id` | Int32 | ESPN identifier for the athlete's listed position. |
 | `position_name` | String | Full position name. |
 | `position_abbreviation` | String | Position abbreviation. |
 | `position_display_name` | String | Full position name (e.g. "Forward"). |
-| `college_id` | Int64 | ESPN identifier for the athlete's college. |
-| `current_team_id` | Int64 | ESPN team id of the athlete's current team. |
+| `college_id` | Int32 | ESPN identifier for the athlete's college. |
+| `current_team_id` | Int32 | ESPN team id of the athlete's current team. |
 | `headshot_href` | String | URL of the athlete's ESPN headshot image. |
 | `experience_years` | Int64 | Seasons of collegiate eligibility used, as a string. |
-| `status_id` | Int64 | ESPN identifier for the athlete's roster status. |
+| `status_id` | Int32 | ESPN identifier for the athlete's roster status. |
 | `status_name` | String | Athlete's roster status (e.g. "Active"). |
 | `status_type` | String | Athlete's roster status code. |
 | `draft_year` | Int64 | Year the athlete was drafted, when applicable. |

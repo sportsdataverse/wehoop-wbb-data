@@ -73,10 +73,13 @@ def write_dataset(
 ) -> list[Path]:
     """Write parquet + csv + manifest for one dataset/season; return parquet+csv paths.
 
-    Ids are canonicalized to Int64 here, at the single write boundary, so every
+    Ids are canonicalized to Int32 here, at the single write boundary, so every
     dataset agrees. They did not: ``game_id`` shipped Int32 in pbp and String in
     officials, ``athlete_id`` shipped Int32/Int64/String across three datasets,
     and joining them raised ``SchemaError`` on the released data.
+
+    Int32 rather than Int64 because it is the width the assets already ship and
+    the width the R chain writes; see ``ids`` for why the target moved.
     """
     base = Path(base)
     if spec.canonicalize:

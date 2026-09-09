@@ -14,7 +14,7 @@ import polars as pl
 import pytest
 from wbb_data_build.config import REGISTRY
 from wbb_data_build.ids import is_id_column
-from wbb_data_build.models import MODELS, check_frame, polars_schema
+from wbb_data_build.models import MODELS, WIDE_IDS, check_frame, polars_schema
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -36,12 +36,39 @@ def test_polars_schema_is_derivable(dataset):
 
 
 @pytest.mark.parametrize("dataset", sorted(MODELS), ids=sorted(MODELS))
-def test_every_id_column_is_declared_int64(dataset):
+def test_every_id_column_is_declared_int32(dataset):
     """Ids are join keys. The released assets shipped the same id as Int32,
-    Int64 and String across datasets, which made them unjoinable."""
+    Int64 and String across datasets, which made them unjoinable.
+
+    Int32 is the width those assets carry and the width the R chain writes.
+    The only exemptions are WIDE_IDS -- ids that do not FIT Int32 -- and they
+    are asserted separately below rather than merely skipped here.
+    """
     schema = polars_schema(dataset)
-    wrong = {c: str(t) for c, t in schema.items() if is_id_column(c) and t != pl.Int64}
-    assert wrong == {}, f"{dataset}: id columns not declared Int64: {wrong}"
+    wrong = {
+        c: str(t)
+        for c, t in schema.items()
+        if is_id_column(c) and t != pl.Int32 and (dataset, c) not in WIDE_IDS
+    }
+    assert wrong == {}, f"{dataset}: id columns not declared Int32: {wrong}"
+
+
+def test_wide_ids_are_declared_int64_and_actually_need_it():
+    """A WIDE_IDS entry is a claim that the column overflows Int32.
+
+    Pinning it keeps the exemption honest: without this, the set is a place to
+    silence a narrowing complaint rather than a record of a measured fact. The
+    ESPN pbp play id is the game id with a sequence appended -- 18 digits
+    (401804836115156657 in tests/fixtures) against an Int32 ceiling of
+    2,147,483,647 -- so it genuinely cannot narrow. `schedules.id` is the
+    counterexample that makes the (dataset, column) key necessary rather than a
+    bare column name: it maxes at 401,865,139 and narrows fine.
+    """
+    assert WIDE_IDS, "the exemption set should be explicit, even if it shrinks to empty"
+    for dataset, column in WIDE_IDS:
+        assert polars_schema(dataset)[column] == pl.Int64, (dataset, column)
+    assert ("schedules", "id") not in WIDE_IDS
+    assert polars_schema("schedules")["id"] == pl.Int32
 
 
 def test_model_rejects_type_coercion():
