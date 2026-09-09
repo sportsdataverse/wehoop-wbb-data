@@ -13,7 +13,6 @@ suppressPackageStartupMessages(suppressMessages(library(data.table)))
 suppressPackageStartupMessages(suppressMessages(library(arrow)))
 suppressPackageStartupMessages(suppressMessages(library(glue)))
 suppressPackageStartupMessages(suppressMessages(library(optparse)))
-source(file.path("R", "id_canonicalization.R"))
 
 option_list <- list(
   make_option(
@@ -109,7 +108,7 @@ wbb_player_box_games <- function(y) {
       FALSE
     )
     arrow::write_parquet(
-      canonicalize_ids(espn_df),
+      espn_df,
       glue::glue("wbb/player_box/parquet/player_box_{y}.parquet")
     )
 
@@ -229,7 +228,7 @@ wbb_player_box_games <- function(y) {
   )
   saveRDS(final_sched, glue::glue("wbb/schedules/rds/wbb_schedule_{y}.rds"))
   arrow::write_parquet(
-    canonicalize_ids(final_sched),
+    final_sched,
     glue::glue("wbb/schedules/parquet/wbb_schedule_{y}.parquet")
   )
   rm(sched)

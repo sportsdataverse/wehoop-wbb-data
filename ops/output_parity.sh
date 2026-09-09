@@ -121,19 +121,14 @@ echo "=== R chain: stages 01..${TARGET_NN} (they feed each other) ==="
 # `wbb/schedules` fails outright when `wbb/` is absent. In the repo that dir is
 # tracked and always present; in a clean temp tree it is not. Seed it.
 mkdir -p "${R_OUT}/wbb"
-# The stages `source(file.path("R", "<helper>.R"))` at top level, relative to
-# cwd. The chain runs with cwd=R_OUT (so the stages' own dir.create() calls
-# land under wbb/, not the repo root), so those relative paths resolve to
+# WBB-only wrinkle (verified absent from every other espn_wbb_NN_*_creation.R
+# and from the WNBA sibling entirely): espn_wbb_01_pbp_creation.R does
+# `source(file.path("R", "manifest_upload_helper.R"))` at top level, relative
+# to cwd. The chain runs with cwd=R_OUT (so the stages' own dir.create() calls
+# land under wbb/, not the repo root), so that relative path resolves to
 # nothing in a clean temp tree unless seeded here.
-#
-# manifest_upload_helper.R was once a WBB-only wrinkle in stage 01 alone. It no
-# longer is: EVERY espn_wbb_NN_*_creation.R now also sources
-# id_canonicalization.R, which is what makes the R chain write Int64 ids to
-# parquet like the Python side. Miss one of these and the stage dies on
-# `cannot open file` -- so seed the whole directory rather than named files,
-# and a helper added later cannot be forgotten here.
 mkdir -p "${R_OUT}/R"
-cp "${REPO_DIR}"/R/*.R "${R_OUT}/R/"
+cp "${REPO_DIR}/R/manifest_upload_helper.R" "${R_OUT}/R/manifest_upload_helper.R"
 cd "${R_OUT}" || exit 1
 for f in "${REPO_DIR}"/R/espn_wbb_[0-9][0-9]_*_creation.R; do
   nn="$(basename "$f" | sed -E 's/^espn_wbb_([0-9]{2})_.*/\1/')"

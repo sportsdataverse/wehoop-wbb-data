@@ -13,7 +13,6 @@ suppressPackageStartupMessages(suppressMessages(library(optparse)))
 suppressPackageStartupMessages(suppressMessages(library(tibble)))
 suppressPackageStartupMessages(suppressMessages(library(rlang)))
 # Sourced up-front: upsert_manifest_row() is called inside the season loop.
-source(file.path("R", "id_canonicalization.R"))
 source(file.path("R", "manifest_upload_helper.R"))
 
 option_list <- list(
@@ -255,7 +254,7 @@ build_season_rosters <- function(y) {
 
   saveRDS(rosters, glue::glue("wbb/rosters/rds/rosters_{y}.rds"))
   arrow::write_parquet(
-    canonicalize_ids(rosters),
+    rosters,
     glue::glue("wbb/rosters/parquet/rosters_{y}.parquet"),
     compression = "zstd",
     compression_level = 22

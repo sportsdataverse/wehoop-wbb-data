@@ -8,7 +8,6 @@ suppressPackageStartupMessages({
 })
 
 # Sourced up-front: upsert_manifest_row() is called inside the season loop.
-source(file.path("R", "id_canonicalization.R"))
 source(file.path("R", "manifest_upload_helper.R"))
 
 # Stage 04 -- player_core. Twin of python/espn_wbb_04_player_core_creation.py.
@@ -131,7 +130,7 @@ build_season_player_core <- function(y) {
 
   saveRDS(core, glue::glue("wbb/player_core/rds/player_core_{y}.rds"))
   arrow::write_parquet(
-    canonicalize_ids(core),
+    core,
     glue::glue("wbb/player_core/parquet/player_core_{y}.parquet")
   )
 
