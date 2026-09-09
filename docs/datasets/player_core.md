@@ -8,9 +8,9 @@
 | **Release tag** | [`espn_womens_college_basketball_player_core`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_player_core) |
 | **File stem** | `player_core_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2026 (1 season) |
-| **Last published** | 2026-08-24 (newest release asset) |
+| **Last published** | 2026-09-09 (newest release asset) |
 | **Tag created** | 2026-07-17 |
-| **Release assets** | 66 |
+| **Release assets** | 70 |
 
 ## Automation
 
@@ -61,4 +61,4 @@
 
 | season | rows | built (UTC) |
 |---:|---:|---|
-| 2026 | 9,870 | 2026-08-24 02:29:38 UTC |
+| 2026 | 9,870 | 2026-09-09 04:40:00 UTC |
