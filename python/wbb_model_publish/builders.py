@@ -30,24 +30,19 @@ import polars as pl
 # boxscoreAvailable-flag fix (sdv-py#275) + the throttle-retry re-extraction
 # (2026-07-17): 2008=354 teams, 2009-2013 = 240-348 -- enough teams to adjust.
 #
-# The floor is nonetheless 2013, and the binding constraint is not coverage but
-# the INPUT SCHEMA. Measured 2026-09-02 over the released wbb_team_box: the
-# ``turnovers`` column is 0 in 100% of team rows for every season through 2012
-# (2005/2008/2010/2012 all 100.0% zero, 0% null) and is populated from 2013
-# (mean 16.13). Zeros are not nulls, so nothing downstream saw it; the
-# possession estimate FGA - OREB + TO + 0.44*FTA then silently lost its whole
-# turnover term -- poss 54.6 instead of ~70.9 per team-game, i.e. efficiency
-# inflated ~1.29x. That is the entire "pre-2013 seasons are on another scale"
-# effect: replaying it on a REAL modern season (zero 2017/2026 turnovers and
-# re-rate) reproduces mean adj_o 91.9 -> 118.6 and adj_tempo 69.9 -> 54.1, next
-# to the observed 2008 values of 119.4 / 54.5. The published levels for those
-# seasons are therefore points per 100 NON-TURNOVER possessions -- not the
-# documented unit -- and no possession formula recovers them: every box
-# estimate needs TO, and the player box cannot supply it (2008 is 99.8% zeros
-# there too; 2010/2012 sum to only 11.5-11.9 per team-game against the modern
-# 15.8-16.4). sdv-py's engine now raises InsufficientInputError for such a
-# season rather than emitting a wrong-scale rating.
-MIN_SEASON_RATINGS = 2013
+# The floor is 2009, set by the INPUT SCHEMA rather than coverage. ESPN's WBB
+# team box files each team's turnovers under ``teamTurnovers`` for 2009-2012
+# (released as ``team_turnovers``; ``turnovers`` and ``total_turnovers`` are 0
+# there -- pbp turnover counts match it 91-96% exactly) and under ``turnovers``
+# from 2013. From 2026-09-02 to 2026-09-30 the floor was 2013 because the engine
+# read only ``turnovers``: the possession estimate FGA - OREB + TO + 0.44*FTA
+# lost its turnover term (poss ~55 instead of ~71 per team-game, efficiency
+# inflated ~1.29x). sdv-py#622 reads ``team_turnovers`` row by row, so 2009-2012
+# rate on the modern scale (tempo 70.9-72.3, adj_o 92.0-94.5; 2013 = 70.8 /
+# 91.9). 2008 and earlier carry no turnovers under any key, in the box or the
+# pbp; sdv-py raises InsufficientInputError when more than 10% of a season's
+# games are at 0 turnovers, and the 2008 asset was withdrawn on 2026-09-29.
+MIN_SEASON_RATINGS = 2009
 
 # Player value floors HIGHER than ratings: wbb_box_bpm keeps only players
 # with >=10 games, and the partial archival coverage (2008-2013 averages
@@ -86,10 +81,11 @@ QUALIFIED_MIN_MINUTES = 300.0
 # or scale bug does (per-game instead of per-100, a sign flip, an un-centred
 # margin, or an all-NaN fixed point -- the published 2015 asset is 335/335 NaN).
 # Known consequence: the 2008 asset (158 qualified teams, mean adj_o 119.4,
-# mean adj_tempo 54.5 -- the pre-2013 box schema under-counts possessions) is
-# REFUSED, and 2009-2016 (45-101 qualified teams) are below the applicability
-# floor; both are recorded in models/REGISTRY.md as inputs to repair, not as
-# reasons to widen the band.
+# mean adj_tempo 54.5 -- its box has no turnovers, so possessions are
+# under-counted) was REFUSED, and 2009-2016 (45-101 qualified teams) are below
+# the applicability floor. Both were repaired at the input, not by widening the
+# band: 2008 withdrawn, 2009-2012 re-rated from ``team_turnovers`` (see
+# MIN_SEASON_RATINGS and models/REGISTRY.md).
 RATINGS_LEVEL_BANDS: dict[str, tuple[float, float]] = {
     "adj_o": (85.0, 105.0),
     "adj_d": (80.0, 100.0),

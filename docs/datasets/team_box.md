@@ -56,7 +56,7 @@
 | `offensive_rebounds` | Int64 | Rebounds collected on the offensive end. |
 | `points_in_paint` | String | Points scored inside the paint. |
 | `steals` | Int64 | Steals recorded. |
-| `team_turnovers` | Int64 | Turnovers charged to the team rather than to an individual player. |
+| `team_turnovers` | Int64 | Team turnovers as ESPN files them. 2009-2012: the team's whole turnover count (turnovers and total_turnovers are 0 in those seasons). 2013+: turnovers charged to the team rather than a player, already included in turnovers and total_turnovers. |
 | `technical_fouls` | Int64 | Technical fouls committed. |
 | `three_point_field_goal_pct` | Float64 | Three-point field goal percentage, 0-100. |
 | `three_point_field_goals_made` | Int64 | Three-point field goals made. |

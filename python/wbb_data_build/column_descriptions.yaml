@@ -105,7 +105,7 @@ team_logo: URL of the team's ESPN logo image.
 team_home_away: Whether this team was the home or away side.
 team_score: Final points scored by this team.
 team_winner: Whether this team won the game.
-team_turnovers: Turnovers charged to the team rather than to an individual player.
+team_turnovers: "Team turnovers as ESPN files them. 2009-2012: the team's whole turnover count (turnovers and total_turnovers are 0 in those seasons). 2013+: turnovers charged to the team rather than a player, already included in turnovers and total_turnovers."
 opponent_team_uid: ESPN universal id for the opponent.
 opponent_team_slug: URL slug for the opponent on espn.com.
 opponent_team_name: Opponent nickname.
