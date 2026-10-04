@@ -66,8 +66,13 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      # A run queued in the concurrency group would otherwise check out the SHA of
+      # its trigger, not the branch as it is when the job starts, and build on a
+      # stale tree (wehoop-wnba-stats-data run 37207505807, 2026-10-04).
       - name: Checkout repo
         uses: actions/checkout@v6
+        with:
+          ref: main
 
       # tools.validation is REPO-ONLY in sportsdataverse-py -- its wheel ships
       # `sportsdataverse*` and nothing else (allowlist, sdv-py 9a5810fc). The
