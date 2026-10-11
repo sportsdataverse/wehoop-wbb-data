@@ -490,7 +490,7 @@ def team_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.Dat
     """
     from sportsdataverse.wbb import wbb_team_crosswalk
 
-    return wbb_team_crosswalk(season=season)
+    return wbb_team_crosswalk(season=season, yahoo=True)
 
 
 def schedule_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
@@ -507,7 +507,7 @@ def schedule_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl
     """
     from sportsdataverse.wbb import wbb_schedule_crosswalk
 
-    return wbb_schedule_crosswalk(season=season)
+    return wbb_schedule_crosswalk(season=season, fox=True, yahoo=True)
 
 
 def player_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
