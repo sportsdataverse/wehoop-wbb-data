@@ -1,2 +1,12 @@
 season,row_count,generated_at_utc,source_endpoint
+2014,4703,2026-10-11 18:05:46 UTC,wehoop::wbb_player_crosswalk()
+2015,4594,2026-10-11 18:06:08 UTC,wehoop::wbb_player_crosswalk()
+2016,4847,2026-10-11 18:06:29 UTC,wehoop::wbb_player_crosswalk()
+2017,4910,2026-10-11 18:06:48 UTC,wehoop::wbb_player_crosswalk()
+2018,4885,2026-10-11 18:07:07 UTC,wehoop::wbb_player_crosswalk()
+2019,4961,2026-10-11 18:09:14 UTC,wehoop::wbb_player_crosswalk()
+2020,5103,2026-10-11 18:09:53 UTC,wehoop::wbb_player_crosswalk()
+2021,4954,2026-10-11 18:10:49 UTC,wehoop::wbb_player_crosswalk()
+2022,5437,2026-10-11 18:11:58 UTC,wehoop::wbb_player_crosswalk()
+2025,5209,2026-10-11 18:13:31 UTC,wehoop::wbb_player_crosswalk()
 2026,5018,2026-06-13 05:02:18 UTC,wehoop::wbb_player_crosswalk()
