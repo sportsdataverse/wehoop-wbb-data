@@ -28,7 +28,11 @@ NAME_COLS = ("athlete_name_1", "athlete_name_2", "athlete_name_3")
 # explicitly rather than widened to a wildcard -- an UNintended new column must
 # still fail the set assertion.
 WP_COLS = ("espn_home_wp", "espn_away_wp", "espn_tie_percentage")
-ADDITIVE_COLS = NAME_COLS + WP_COLS
+# sdv-py >= the score-repair PR rebuilds home_score/away_score from the scoring plays and adds
+# score_source; sdv-py's tests/test_basketball_score_repair.py owns that contract, so the two
+# score columns leave the oracle comparison and score_source is an allowed additive column.
+SCORE_COLS = ("home_score", "away_score")
+ADDITIVE_COLS = NAME_COLS + WP_COLS + ("score_source",)
 
 
 @pytest.mark.parametrize("season", [2025, 2026])
@@ -43,7 +47,10 @@ def test_pbp_parity(season, tmp_path):
         f"athlete_name_1 resolved on {matched}/{has_id.height} id-bearing rows"
     )
     oracle = FX / "released" / f"play_by_play_{season}.parquet"
-    sample = [c for c in pl.read_parquet_schema(str(oracle)) if c not in KEYS]
+    sample = [c for c in pl.read_parquet_schema(str(oracle)) if c not in KEYS and c not in SCORE_COLS]
+    assert "score_source" in py.columns
+    for c in SCORE_COLS:  # left the value comparison; keep the dtype contract
+        assert py.schema[c] == pl.read_parquet_schema(str(oracle))[c], c
     assert_parquet_parity(
         py,
         oracle,
