@@ -14,7 +14,11 @@ from pathlib import Path
 import polars as pl
 from wbb_data_build.build import build_season
 
-from tests.wbb_data_build._parity_helpers import assert_parquet_parity, id_dtype_upgrades
+from tests.wbb_data_build._parity_helpers import (
+    assert_parquet_parity,
+    ft_on_the_line_oracle,
+    id_dtype_upgrades,
+)
 
 FX = Path(__file__).parent.parent / "fixtures"
 
@@ -35,7 +39,8 @@ def test_shots_parity_2026(tmp_path):
     # Additive columns (2026-07): every shot has a shooter name and team cols.
     assert py["athlete_name_1"].null_count() == 0
     assert py["team_abbrev"].null_count() == 0
-    oracle = FX / "released" / "shots_2026.parquet"
+    # sdv-py #844 (R844-3): free throws on the line; the released oracle predates it.
+    oracle = ft_on_the_line_oracle(FX / "released" / "shots_2026.parquet", tmp_path / "oracle")
     keys = list(pl.read_parquet_schema(str(oracle)))
     assert_parquet_parity(
         py,

@@ -16,7 +16,7 @@ import polars as pl
 import pytest
 from wbb_data_build.build import build_season
 
-from tests.wbb_data_build._parity_helpers import assert_parquet_parity
+from tests.wbb_data_build._parity_helpers import assert_parquet_parity, ft_on_the_line_oracle
 
 FX = Path(__file__).parent.parent / "fixtures"
 
@@ -46,7 +46,10 @@ def test_pbp_parity(season, tmp_path):
     assert matched >= 0.99 * has_id.height, (
         f"athlete_name_1 resolved on {matched}/{has_id.height} id-bearing rows"
     )
-    oracle = FX / "released" / f"play_by_play_{season}.parquet"
+    # sdv-py #844 (R844-3): free throws on the line; the released oracle predates it.
+    oracle = ft_on_the_line_oracle(
+        FX / "released" / f"play_by_play_{season}.parquet", tmp_path / "oracle"
+    )
     sample = [c for c in pl.read_parquet_schema(str(oracle)) if c not in KEYS and c not in SCORE_COLS]
     assert "score_source" in py.columns
     for c in SCORE_COLS:  # left the value comparison; keep the dtype contract
