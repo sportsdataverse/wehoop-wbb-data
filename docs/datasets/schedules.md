@@ -8,7 +8,7 @@
 | **Release tag** | [`espn_womens_college_basketball_schedules`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_schedules) |
 | **File stem** | `wbb_schedule_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2002–2027 (26 seasons) |
-| **Last published** | 2026-10-23 (newest release asset) |
+| **Last published** | 2026-10-24 (newest release asset) |
 | **Tag created** | 2023-03-30 |
 | **Release assets** | 88 |
 
@@ -136,4 +136,4 @@
 | 2024 | 5,923 | 2026-08-01 15:29:49 UTC |
 | 2025 | 5,648 | 2026-08-01 15:29:51 UTC |
 | 2026 | 6,054 | 2026-09-09 04:40:15 UTC |
-| 2027 | 2,283 | 2026-10-23 12:29:13 UTC |
+| 2027 | 2,283 | 2026-10-24 12:10:39 UTC |
