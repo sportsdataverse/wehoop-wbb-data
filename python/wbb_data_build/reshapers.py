@@ -496,8 +496,9 @@ def team_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.Dat
 def schedule_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
     """ESPN/Torvik schedule crosswalk -- ``sportsdataverse.wbb.wbb_schedule_crosswalk``.
 
-    Reads LIVE ESPN + Torvik, not the raw repo, so ``raw_root``/``base`` are
-    accepted and ignored (the ``SEASON_BUILDERS`` signature). Fox is skipped
+    Reads LIVE ESPN + Torvik, not the raw repo, so ``raw_root`` is accepted and
+    ignored (the ``SEASON_BUILDERS`` signature); ``base`` locates the committed
+    crosswalk whose Fox / Yahoo ids ``alt_fill.carry_forward`` keeps. Fox is skipped
     outright on this path (sdv-py passes ``fox=pl.DataFrame()``): only
     ``espn_team_id`` and ``bart_team`` are needed to resolve Torvik names, so
     the Fox title-casing behaviour cannot reach this dataset.
@@ -507,14 +508,18 @@ def schedule_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl
     """
     from sportsdataverse.wbb import wbb_schedule_crosswalk
 
-    return wbb_schedule_crosswalk(season=season, fox=True, yahoo=True)
+    from wbb_data_build.alt_fill import carry_forward
+
+    df = wbb_schedule_crosswalk(season=season, fox=True, yahoo=True)
+    return carry_forward(df, "schedule_crosswalk", season, base)  # alt_fill's Fox / Yahoo ids
 
 
 def player_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
     """ESPN/Fox player crosswalk -- ``sportsdataverse.wbb.wbb_player_crosswalk``.
 
-    Reads LIVE ESPN + Fox, not the raw repo, so ``raw_root``/``base`` are
-    accepted and ignored (the ``SEASON_BUILDERS`` signature). It calls
+    Reads LIVE ESPN + Fox, not the raw repo, so ``raw_root`` is accepted and
+    ignored (the ``SEASON_BUILDERS`` signature); ``base`` locates the committed
+    crosswalk whose Fox / Yahoo ids ``alt_fill.carry_forward`` keeps. It calls
     ``wbb_team_crosswalk`` internally for the per-team ``fox_team_id``, so it
     inherits stage 13's ``CrosswalkSourceError`` guard: a source that returns
     nothing fails the stage instead of emitting an all-null crosswalk.
@@ -525,7 +530,10 @@ def player_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.D
     """
     from sportsdataverse.wbb import wbb_player_crosswalk
 
-    return wbb_player_crosswalk(season=season)
+    from wbb_data_build.alt_fill import carry_forward
+
+    # alt_fill (droplet) filled Fox / Yahoo ids from the box-score history; keep them.
+    return carry_forward(wbb_player_crosswalk(season=season), "player_crosswalk", season, base)
 
 
 SEASON_BUILDERS: dict = {
