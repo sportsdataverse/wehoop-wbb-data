@@ -88,7 +88,9 @@ def write_dataset(
     pq_dir = root / "parquet"
     pq_dir.mkdir(parents=True, exist_ok=True)
     pq = pq_dir / f"{spec.stem}_{season}.parquet"
-    df.write_parquet(pq)
+    # zstd 19, not the default 3: play_by_play_2026 is 91.9 MiB at 3 and 73.0 at 19
+    # (identical round-trip, ~35 s), and GitHub rejects any tracked file over 100 MiB.
+    df.write_parquet(pq, compression="zstd", compression_level=19)
     csv = None
     if spec.write_tree_csv:
         csv_dir = root / "csv"
