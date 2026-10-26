@@ -14,7 +14,7 @@ import polars as pl
 import pytest
 from wbb_data_build.config import REGISTRY
 from wbb_data_build.ids import is_id_column
-from wbb_data_build.models import MODELS, WIDE_IDS, check_frame, polars_schema
+from wbb_data_build.models import MODELS, WIDE_IDS, add_declared_columns, check_frame, polars_schema
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -97,6 +97,25 @@ def test_check_frame_tolerates_widening_but_not_narrowing():
     assert [p for p in check_frame("officials", ok) if "game_id" in p] == []
     bad = pl.DataFrame(schema={**polars_schema("officials"), "game_id": pl.Utf8})
     assert any("game_id" in p for p in check_frame("officials", bad))
+
+
+def test_add_declared_columns_fills_what_the_payload_lacked():
+    """A preseason schedule has no finished game, so ESPN sends no winner or
+    alt-detail fields; the written frame must still carry every declared column
+    (typed null), and a column the frame already has is left untouched."""
+    frame = pl.DataFrame({"game_id": [1, 2], "home_score": ["70", "61"]})
+    out = add_declared_columns("schedules", frame)
+    assert [p for p in check_frame("schedules", out) if "missing column" in p] == []
+    declared = polars_schema("schedules")
+    assert out.schema["home_winner"] == declared["home_winner"]
+    assert out["home_winner"].null_count() == 2
+    assert out.schema["home_score"] == pl.Utf8  # existing column not cast
+    assert out.columns[:2] == ["game_id", "home_score"]  # existing order kept
+
+
+def test_add_declared_columns_passes_undeclared_datasets_through():
+    frame = pl.DataFrame({"x": [1]})
+    assert add_declared_columns("team_crosswalk", frame).equals(frame)
 
 
 @pytest.mark.archive

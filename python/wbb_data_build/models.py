@@ -587,6 +587,24 @@ def polars_schema(dataset: str) -> pl.Schema:
     return pl.Schema(fields)
 
 
+def add_declared_columns(dataset: str, frame: pl.DataFrame) -> pl.DataFrame:
+    """Append every declared column the frame lacks, as a typed null.
+
+    A builder emits only the keys its payload carried, so a preseason schedule
+    (no finished game: no winner or alt-detail fields) shipped without columns
+    the model declares, and the published schema changed with the calendar.
+    Existing columns are never cast or reordered; datasets without a model
+    (the crosswalks) pass through.
+    """
+    if dataset not in MODELS:
+        return frame
+    declared = polars_schema(dataset)
+    missing = [name for name in declared if name not in frame.columns]
+    if not missing:
+        return frame
+    return frame.with_columns(pl.lit(None, dtype=declared[name]).alias(name) for name in missing)
+
+
 def check_frame(dataset: str, frame: pl.DataFrame) -> list[str]:
     """Frame-level schema check. Returns problems; empty means it matches.
 

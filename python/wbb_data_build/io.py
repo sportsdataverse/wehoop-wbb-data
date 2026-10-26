@@ -25,6 +25,7 @@ from wbb_data_build.config import (
     DatasetSpec,
 )
 from wbb_data_build.ids import canonicalize_ids
+from wbb_data_build.models import add_declared_columns
 
 _LEAGUE = "wbb"
 
@@ -84,6 +85,9 @@ def write_dataset(
     base = Path(base)
     if spec.canonicalize:
         df = canonicalize_ids(df)
+    # Declared columns the payload did not carry are written as typed nulls, so a
+    # season's schema does not depend on how far into the calendar it was built.
+    df = add_declared_columns(spec.dataset, df)
     root = dataset_dir(spec, base)
     pq_dir = root / "parquet"
     pq_dir.mkdir(parents=True, exist_ok=True)
