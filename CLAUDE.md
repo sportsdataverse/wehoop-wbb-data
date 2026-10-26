@@ -118,4 +118,4 @@ models/artifacts; "frozen" is a valid cadence but must be explicit.
 
 `bash scripts/cron_alt_fill.sh -s YYYY [-e YYYY] [-n]` runs on the droplet, not in a workflow:
 `/mnt/sdv_repos/bin/alt_daily.sh` (12:45 ET) calls it after parsing the season's CBS / Fox / Yahoo
-box scores into `wehoop-wbb-alt-data`. It fills Fox / Yahoo ids into the committed WBB schedule + player crosswalks from the parsed box-score history (`python -m wbb_data_build.alt_fill`; Yahoo's only roster endpoint is today's roster, so `yahoo_player_id` can come from nowhere else), then commits + publishes. `-n` is a dry run into a temp tree.
+box scores into `wehoop-wbb-alt-data`. It fills Fox / Yahoo ids into the committed WBB schedule + player crosswalks from the parsed box-score history (`python -m wbb_data_build.alt_fill`; Yahoo's only roster endpoint is today's roster, so `yahoo_player_id` can come from nowhere else), commits and publishes only when ids changed. `-n` is a dry run into a temp tree; no commit, no publish.
