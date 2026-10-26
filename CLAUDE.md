@@ -113,3 +113,9 @@ models/artifacts; "frozen" is a valid cadence but must be explicit.
 | [`python/espn_wbb_14_schedule_crosswalk_creation.py`](python/espn_wbb_14_schedule_crosswalk_creation.py) | [`schedule_crosswalk`](docs/datasets/schedule_crosswalk.md) | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) | 2026-10-26 |
 | [`python/espn_wbb_15_player_crosswalk_creation.py`](python/espn_wbb_15_player_crosswalk_creation.py) | [`player_crosswalk`](docs/datasets/player_crosswalk.md) | [`wbb_crosswalk`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/wbb_crosswalk) | 2026-10-26 |
 <!-- END GENERATED: datasets -->
+
+## Alt-source crosswalk fill (droplet cron)
+
+`bash scripts/cron_alt_fill.sh -s YYYY [-e YYYY] [-n]` runs on the droplet, not in a workflow:
+`/mnt/sdv_repos/bin/alt_daily.sh` (12:45 ET) calls it after parsing the season's CBS / Fox / Yahoo
+box scores into `wehoop-wbb-alt-data`. It fills Fox / Yahoo ids into the committed WBB schedule + player crosswalks from the parsed box-score history (`python -m wbb_data_build.alt_fill`; Yahoo's only roster endpoint is today's roster, so `yahoo_player_id` can come from nowhere else), then commits + publishes. `-n` is a dry run into a temp tree.
