@@ -7,10 +7,10 @@
 | **Builder** | [`python/espn_wbb_05_schedules_creation.py`](../../python/espn_wbb_05_schedules_creation.py) |
 | **Release tag** | [`espn_womens_college_basketball_schedules`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_schedules) |
 | **File stem** | `wbb_schedule_{season}.{parquet,csv,rds}` |
-| **Seasons built** | 2002–2027 (26 seasons) |
-| **Last published** | 2026-10-29 (newest release asset) |
+| **Seasons built** | 2001–2027 (27 seasons) |
+| **Last published** | 2026-10-30 (newest release asset) |
 | **Tag created** | 2023-03-30 |
-| **Release assets** | 88 |
+| **Release assets** | 91 |
 
 ## Automation
 
@@ -111,6 +111,7 @@
 
 | season | rows | built (UTC) |
 |---:|---:|---|
+| 2001 | 4,654 | 2026-10-30 00:04:50 UTC |
 | 2002 | 4,040 | 2026-10-13 23:23:55 UTC |
 | 2003 | 4,773 | 2026-10-13 23:47:49 UTC |
 | 2004 | 4,780 | 2026-08-01 15:29:41 UTC |
