@@ -1,0 +1,44 @@
+{
+  "2021_team_results.csv": {
+    "url": "https://barttorvik.com/ncaaw/2021_team_results.csv",
+    "fetched_at_utc": "2026-11-03T11:29:24Z",
+    "sha256": "40f0d7269671aa16c29bc845610fe8c3cf4003f51adb3b3c5b0e79573bf8ea74",
+    "teams": 355
+  },
+  "2022_team_results.csv": {
+    "url": "https://barttorvik.com/ncaaw/2022_team_results.csv",
+    "fetched_at_utc": "2026-11-03T11:29:25Z",
+    "sha256": "927175089edf0bb631595a533b674003bf2cb184c67569b6bf47a8dec8bc670f",
+    "teams": 356
+  },
+  "2023_team_results.csv": {
+    "url": "https://barttorvik.com/ncaaw/2023_team_results.csv",
+    "fetched_at_utc": "2026-11-03T11:29:25Z",
+    "sha256": "26fc7a2c10ac46d5ad3451bb3d3b50297b51cf04c53b1cb14d64fe674a910191",
+    "teams": 361
+  },
+  "2024_team_results.csv": {
+    "url": "https://barttorvik.com/ncaaw/2024_team_results.csv",
+    "fetched_at_utc": "2026-11-03T11:29:25Z",
+    "sha256": "f5b7aed2a57775fffc491fdb0a6642f90054af106529a018ce03e72fc8bf208d",
+    "teams": 360
+  },
+  "2025_team_results.csv": {
+    "url": "https://barttorvik.com/ncaaw/2025_team_results.csv",
+    "fetched_at_utc": "2026-11-03T11:29:25Z",
+    "sha256": "857b433ab3b1c6a57d4758a962d04bd51f256cb3e805639396613e1928fae926",
+    "teams": 362
+  },
+  "2026_team_results.csv": {
+    "url": "https://barttorvik.com/ncaaw/2026_team_results.csv",
+    "fetched_at_utc": "2026-11-03T11:29:25Z",
+    "sha256": "dae2b9c97d40914d059dc5ac1051820957f3302052241d55be42887181a9a639",
+    "teams": 363
+  },
+  "2027_team_results.csv": {
+    "url": "https://barttorvik.com/ncaaw/2027_team_results.csv",
+    "fetched_at_utc": "2026-11-03T11:29:25Z",
+    "sha256": "3610939f7cec576f854017715d367e64f712dc0f17d2c93f321f20b6c4964bef",
+    "teams": 363
+  }
+}

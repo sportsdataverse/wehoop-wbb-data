@@ -487,10 +487,15 @@ def team_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.Dat
     function raises ``CrosswalkSourceError`` when a source returns nothing, so
     a silently-empty crosswalk cannot reach the tree; the error propagates and
     the stage fails loudly.
+
+    Torvik comes from the committed ``torvik/`` snapshot, not barttorvik.com,
+    which 403s every datacenter IP (see ``torvik_snapshot``).
     """
     from sportsdataverse.wbb import wbb_team_crosswalk
 
-    return wbb_team_crosswalk(season=season, yahoo=True)
+    from wbb_data_build.torvik_snapshot import bart_teams
+
+    return wbb_team_crosswalk(season=season, bart=bart_teams(season), yahoo=True)
 
 
 def schedule_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
