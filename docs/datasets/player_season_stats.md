@@ -7,10 +7,10 @@
 | **Builder** | [`python/espn_wbb_08_player_season_stats_creation.py`](../../python/espn_wbb_08_player_season_stats_creation.py) |
 | **Release tag** | [`espn_womens_college_basketball_player_season_stats`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_player_season_stats) |
 | **File stem** | `player_season_stats_{season}.{parquet,csv,rds}` |
-| **Seasons built** | 2006–2026 (3 seasons, non-contiguous) |
-| **Last published** | 2026-11-02 (newest release asset) |
+| **Seasons built** | 2006–2027 (4 seasons, non-contiguous) |
+| **Last published** | 2026-11-03 (newest release asset) |
 | **Tag created** | 2026-05-11 |
-| **Release assets** | 61 |
+| **Release assets** | 64 |
 
 ## Automation
 
@@ -44,3 +44,4 @@
 | 2006 | 201 | 2026-07-16 23:47:34 UTC |
 | 2007 | 2,553 | 2026-07-16 23:54:52 UTC |
 | 2026 | 41,943 | 2026-11-02 17:14:11 UTC |
+| 2027 | 849 | 2026-11-03 13:39:29 UTC |
