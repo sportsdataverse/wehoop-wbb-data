@@ -80,7 +80,11 @@ export WEHOOP_WBB_RAW_ROOT="${WEHOOP_WBB_RAW_ROOT:-https://raw.githubusercontent
 case "${DATASET}" in
   team_box)   JOIN_KEYS="game_id team_id" ;;
   player_box) JOIN_KEYS="game_id athlete_id team_id" ;;
-  pbp)        JOIN_KEYS="game_id id" ;;
+  # `id` cannot key pbp: R/jsonlite reads it as Float64 (no int64) and Python as
+  # Int64, so the compare aborts on the dtype check, and a cast would collide
+  # above 2^53. (game_id, game_play_number) is unique: wnba 2025 121,342 rows,
+  # wbb 2014 524,623 / 2026 2,824,090 rows, measured 2026-11-04.
+  pbp)        JOIN_KEYS="game_id game_play_number" ;;
   *)
     echo "::error ::no verified join key for '${DATASET}'." >&2
     echo "Add one only after confirming it is unique on a real season -- do not guess." >&2
