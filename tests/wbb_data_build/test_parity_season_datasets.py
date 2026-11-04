@@ -25,7 +25,12 @@ FX = Path(__file__).parent.parent / "fixtures"
     ("dataset", "stem", "keys"),
     [
         ("rosters", "rosters_2026", ["team_id", "athlete_id"]),
-        ("player_season_stats", "player_season_stats_2026", None),
+        # The R oracle reads ESPN's CAREER totals row (sportsdataverse/wehoop-wnba-data#29); sdv-py now
+        # takes the season row, so parity with it is expected to fail until the oracle is refreshed.
+        pytest.param(
+            "player_season_stats", "player_season_stats_2026", None,
+            marks=pytest.mark.xfail(strict=True, reason="R oracle carries career totals (wehoop-wnba-data#29)"),
+        ),
         ("team_season_stats", "team_season_stats_2026", None),
         ("standings", "standings_2026", None),
     ],

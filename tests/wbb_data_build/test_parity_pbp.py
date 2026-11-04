@@ -32,6 +32,16 @@ WP_COLS = ("espn_home_wp", "espn_away_wp", "espn_tie_percentage")
 # score_source; sdv-py's tests/test_basketball_score_repair.py owns that contract, so the two
 # score columns leave the oracle comparison and score_source is an allowed additive column.
 SCORE_COLS = ("home_score", "away_score")
+# sdv-py f54d9aa0 (#1044/#1047/#1097) reads the line from pickcenter and leaves a no-line game
+# null; the frozen R oracle carries hoopR-era invented 2.5 lines, so these leave the value
+# comparison (dtype kept) and the no-line contract is asserted on the Python frame instead.
+LINE_COLS = ("game_spread", "home_favorite", "game_spread_available", "home_team_spread")
+
+
+def _assert_no_invented_line(py: pl.DataFrame) -> None:
+    no_line = py.filter(pl.col("game_spread_available") == False)  # noqa: E712
+    for c in ("game_spread", "home_team_spread"):
+        assert no_line.get_column(c).null_count() == no_line.height, f"{c} set on a no-line row"
 ADDITIVE_COLS = NAME_COLS + WP_COLS + ("score_source",)
 
 
@@ -50,9 +60,10 @@ def test_pbp_parity(season, tmp_path):
     oracle = ft_on_the_line_oracle(
         FX / "released" / f"play_by_play_{season}.parquet", tmp_path / "oracle"
     )
-    sample = [c for c in pl.read_parquet_schema(str(oracle)) if c not in KEYS and c not in SCORE_COLS]
+    sample = [c for c in pl.read_parquet_schema(str(oracle)) if c not in KEYS and c not in SCORE_COLS + LINE_COLS]
     assert "score_source" in py.columns
-    for c in SCORE_COLS:  # left the value comparison; keep the dtype contract
+    _assert_no_invented_line(py)
+    for c in SCORE_COLS + LINE_COLS:  # left the value comparison; keep the dtype contract
         assert py.schema[c] == pl.read_parquet_schema(str(oracle))[c], c
     assert_parquet_parity(
         py,
