@@ -10,3 +10,4 @@ season,row_count,generated_at_utc,source_endpoint
 2022,5437,2026-10-11 18:11:58 UTC,wehoop::wbb_player_crosswalk()
 2025,5209,2026-10-11 18:13:31 UTC,wehoop::wbb_player_crosswalk()
 2026,5018,2026-06-13 05:02:18 UTC,wehoop::wbb_player_crosswalk()
+2027,4925,2026-11-04 13:26:32 UTC,wehoop::wbb_player_crosswalk()
