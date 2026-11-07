@@ -8,7 +8,7 @@
 | **Release tag** | [`espn_womens_college_basketball_rosters`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_rosters) |
 | **File stem** | `rosters_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2026–2027 (2 seasons) |
-| **Last published** | 2026-11-06 (newest release asset) |
+| **Last published** | 2026-11-07 (newest release asset) |
 | **Tag created** | 2026-05-11 |
 | **Release assets** | 11 |
 
@@ -62,4 +62,4 @@
 | season | rows | built (UTC) |
 |---:|---:|---|
 | 2026 | 9,778 | 2026-11-03 15:17:03 UTC |
-| 2027 | 9,847 | 2026-11-06 15:11:43 UTC |
+| 2027 | 9,848 | 2026-11-07 11:56:50 UTC |
