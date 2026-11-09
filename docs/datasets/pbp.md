@@ -8,7 +8,7 @@
 | **Release tag** | [`espn_womens_college_basketball_pbp`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_pbp) |
 | **File stem** | `play_by_play_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2027 (24 seasons) |
-| **Last published** | 2026-11-08 (newest release asset) |
+| **Last published** | 2026-11-09 (newest release asset) |
 | **Tag created** | 2023-03-30 |
 | **Release assets** | 76 |
 
@@ -113,4 +113,4 @@
 | 2024 | 1,908,679 | 2026-10-18 12:18:52 UTC |
 | 2025 | 1,973,907 | 2026-10-18 12:36:40 UTC |
 | 2026 | 2,824,090 | 2026-11-03 15:27:24 UTC |
-| 2027 | 212,092 | 2026-11-08 14:44:34 UTC |
+| 2027 | 244,282 | 2026-11-09 17:51:15 UTC |
