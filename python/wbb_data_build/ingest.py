@@ -31,7 +31,9 @@ from wbb_data_build.config import RAW_ROOT_ENV
 
 log = get_logger()
 
-_RAW_REPO_API = "https://api.github.com/repos/sportsdataverse/wehoop-wbb-raw/contents"
+# Directory listings use the git trees API: the contents API returns at most 1,000
+# entries, which capped player_season_stats 2027 at 858 of 5,803 athletes (2026-11-10).
+_RAW_TREES_API = "https://api.github.com/repos/sportsdataverse/wehoop-wbb-raw/git/trees/main:"
 
 
 def build_workers() -> int:
@@ -189,8 +191,9 @@ def season_completed_game_ids(season: int, *, raw_root: str | Path | None = None
 def season_dir_ids(subdir: str, season: int, *, raw_root: str | Path | None = None) -> list[int]:
     """Numeric ids of the per-entity JSONs under ``wbb/{subdir}/json/{season}``.
 
-    Mirrors the R scripts' GitHub-contents listing (alphabetical by file NAME,
-    numeric names only). HTTP mode uses the contents API directly.
+    Alphabetical by file NAME, numeric names only (the R scripts' order). HTTP mode
+    lists via the git trees API (up to 100k entries), never the contents API, which
+    silently stops at 1,000.
     """
     root = _resolve_root(raw_root)
     if isinstance(root, Path):
@@ -199,19 +202,21 @@ def season_dir_ids(subdir: str, season: int, *, raw_root: str | Path | None = No
             return []
         names = sorted(f.stem for f in d.glob("*.json"))
         return [int(n) for n in names if n.isdigit()]
-    body = _http_get_bytes(f"{_RAW_REPO_API}/wbb/{subdir}/json/{season}")
+    body = _http_get_bytes(f"{_RAW_TREES_API}wbb/{subdir}/json/{season}")
     if body is None:
         return []
     try:
         listing = json.loads(body)
     except json.JSONDecodeError:
         return []
-    if not isinstance(listing, list):
+    if not isinstance(listing, dict) or not isinstance(listing.get("tree"), list):
         return []
+    if listing.get("truncated"):
+        raise RuntimeError(f"git tree listing of wbb/{subdir}/json/{season} is truncated")
     stems = sorted(
-        str(entry.get("name", "")).removesuffix(".json")
-        for entry in listing
-        if str(entry.get("name", "")).endswith(".json")
+        str(entry.get("path", "")).removesuffix(".json")
+        for entry in listing["tree"]
+        if str(entry.get("path", "")).endswith(".json")
     )
     return [int(s) for s in stems if s.isdigit()]
 

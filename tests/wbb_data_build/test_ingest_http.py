@@ -59,12 +59,28 @@ def test_season_game_ids_http_missing_schedule(monkeypatch, tmp_path):
     assert ingest.season_game_ids(1999, raw_root=BASE) == []
 
 
-def test_season_dir_ids_http_contents_api(monkeypatch, tmp_path):
-    listing = json.dumps([{"name": "197.json"}, {"name": "2429.json"}, {"name": "README.md"}])
-    _fake_transport(
-        monkeypatch,
-        {
-            "https://api.github.com/repos/sportsdataverse/wehoop-wbb-raw/contents/wbb/team_rosters/json/2026": listing.encode()
-        },
-    )
+_TREES = "https://api.github.com/repos/sportsdataverse/wehoop-wbb-raw/git/trees/main:"
+
+
+def test_season_dir_ids_http_trees_api(monkeypatch, tmp_path):
+    tree = [{"path": "197.json"}, {"path": "2429.json"}, {"path": "README.md"}]
+    listing = json.dumps({"tree": tree, "truncated": False})
+    _fake_transport(monkeypatch, {f"{_TREES}wbb/team_rosters/json/2026": listing.encode()})
     assert ingest.season_dir_ids("team_rosters", 2026, raw_root=BASE) == [197, 2429]
+
+
+def test_season_dir_ids_http_lists_past_1000(monkeypatch, tmp_path):
+    # The contents API stops at 1,000 entries; player_season_stats 2027 has 6,303.
+    tree = [{"path": f"{4_000_000 + i}.json"} for i in range(6303)]
+    listing = json.dumps({"tree": tree, "truncated": False})
+    _fake_transport(monkeypatch, {f"{_TREES}wbb/player_season_stats/json/2027": listing.encode()})
+    assert len(ingest.season_dir_ids("player_season_stats", 2027, raw_root=BASE)) == 6303
+
+
+def test_season_dir_ids_http_truncated_tree_raises(monkeypatch, tmp_path):
+    import pytest
+
+    listing = json.dumps({"tree": [{"path": "1.json"}], "truncated": True})
+    _fake_transport(monkeypatch, {f"{_TREES}wbb/team_rosters/json/2026": listing.encode()})
+    with pytest.raises(RuntimeError, match="truncated"):
+        ingest.season_dir_ids("team_rosters", 2026, raw_root=BASE)
