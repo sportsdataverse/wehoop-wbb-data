@@ -7,10 +7,10 @@
 | **Builder** | [`python/espn_wbb_10_standings_creation.py`](../../python/espn_wbb_10_standings_creation.py) |
 | **Release tag** | [`espn_womens_college_basketball_standings`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_standings) |
 | **File stem** | `standings_{season}.{parquet,csv,rds}` |
-| **Seasons built** | 2003–2027 (10 seasons, non-contiguous) |
+| **Seasons built** | 2001–2027 (12 seasons, non-contiguous) |
 | **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2026-05-11 |
-| **Release assets** | 80 |
+| **Release assets** | 86 |
 
 ## Automation
 
@@ -49,6 +49,8 @@
 
 | season | rows | built (UTC) |
 |---:|---:|---|
+| 2001 | 8,792 | 2026-11-13 13:09:45 UTC |
+| 2002 | 8,792 | 2026-11-13 13:12:38 UTC |
 | 2003 | 26,558 | 2026-10-13 23:48:11 UTC |
 | 2004 | 26,460 | 2026-07-16 22:07:11 UTC |
 | 2005 | 26,544 | 2026-11-13 10:58:31 UTC |
