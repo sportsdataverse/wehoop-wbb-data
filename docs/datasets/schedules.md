@@ -12,6 +12,21 @@
 | **Tag created** | 2023-03-30 |
 | **Release assets** | 91 |
 
+## Load it
+
+| | |
+|---|---|
+| **R** | `wehoop::load_wbb_schedule()` |
+| **Python** | `sportsdataverse.wbb.load_wbb_schedule()` |
+
+## Join keys
+
+| column | joins to |
+|---|---|
+| `home_id` | ESPN team id; the same id in every ESPN dataset here (joins `team_id`). |
+| `away_id` | ESPN team id; the same id in every ESPN dataset here (joins `team_id`). |
+| `game_id` | ESPN game id. `schedules` has one row per game; `pbp`, `shots`, `team_box`, `player_box`, `game_rosters` and `officials` key on it. `schedule_crosswalk.espn_game_id` maps it to Fox / Yahoo game ids. |
+
 ## Automation
 
 `.github/workflows/daily_wbb.yml` — cron 07:00 UTC in season (late Oct, Nov–Dec, Jan–Mar, early Apr), plus `repository_dispatch` from `wehoop-wbb-raw`. Runs `scripts/daily_wbb_data_processor.sh` (`-l python` default, `-l R` rollback).

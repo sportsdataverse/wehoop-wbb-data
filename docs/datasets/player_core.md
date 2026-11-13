@@ -12,6 +12,20 @@
 | **Tag created** | 2026-07-17 |
 | **Release assets** | 76 |
 
+## Load it
+
+| | |
+|---|---|
+| **R** | `wehoop::load_wbb_player_core()` |
+| **Python** | `sportsdataverse.wbb.load_wbb_player_core()` |
+
+## Join keys
+
+| column | joins to |
+|---|---|
+| `athlete_id` | ESPN athlete id. `player_core` holds identity + bio; `player_box`, `rosters`, `player_season_stats` and `game_rosters` key on it. `player_crosswalk.espn_athlete_id` maps it to Fox / Yahoo player ids. |
+| `current_team_id` | ESPN team id; the same id in every ESPN dataset here (joins `team_id`). |
+
 ## Automation
 
 `.github/workflows/daily_wbb.yml` — cron 07:00 UTC in season (late Oct, Nov–Dec, Jan–Mar, early Apr), plus `repository_dispatch` from `wehoop-wbb-raw`. Runs `scripts/daily_wbb_data_processor.sh` (`-l python` default, `-l R` rollback).

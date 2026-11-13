@@ -99,6 +99,8 @@ On the raw side `05` (draft) is WNBA-only and intentionally vacant;
 
 [ncaa-wbb-hoops-data repository (source: stats.ncaa.org)](https://github.com/sportsdataverse/ncaa-wbb-hoops-data)
 
+[hoopR-mbb-data repository (sibling league: men's college basketball, source: ESPN)](https://github.com/sportsdataverse/hoopR-mbb-data)
+
 ## Women's Basketball Data Releases
 
 [ESPN Women's College Basketball Schedules](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_schedules)

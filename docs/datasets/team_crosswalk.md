@@ -10,7 +10,18 @@
 | **Seasons built** | — |
 | **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2026-06-13 |
-| **Release assets** | 151 |
+| **Release assets** | 172 |
+
+## Load it
+
+| | |
+|---|---|
+| **R** | `wehoop::load_wbb_team_crosswalk()` |
+| **Python** | `sportsdataverse.wbb.load_wbb_team_crosswalk()` |
+
+## Join keys
+
+_R-only dataset; no Python schema model yet._
 
 ## Automation
 
