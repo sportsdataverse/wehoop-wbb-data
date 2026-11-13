@@ -10,7 +10,21 @@
 | **Seasons built** | 2006–2027 (20 seasons, non-contiguous) |
 | **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2026-05-11 |
-| **Release assets** | 59 |
+| **Release assets** | 58 |
+
+## Load it
+
+| | |
+|---|---|
+| **R** | `wehoop::load_wbb_player_stats()` |
+| **Python** | `sportsdataverse.wbb.load_wbb_player_season_stats()` |
+
+## Join keys
+
+| column | joins to |
+|---|---|
+| `athlete_id` | ESPN athlete id. `player_core` holds identity + bio; `player_box`, `rosters`, `player_season_stats` and `game_rosters` key on it. `player_crosswalk.espn_athlete_id` maps it to Fox / Yahoo player ids. |
+| `team_id` | ESPN team id. Shared by every ESPN dataset here; `team_crosswalk.espn_team_id` maps it to Fox / Yahoo team ids. |
 
 ## Automation
 
