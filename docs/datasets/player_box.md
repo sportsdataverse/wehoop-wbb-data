@@ -10,7 +10,7 @@
 | **Seasons built** | 2004–2027 (12 seasons, non-contiguous) |
 | **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2023-03-30 |
-| **Release assets** | 75 |
+| **Release assets** | 76 |
 
 ## Automation
 
@@ -81,7 +81,7 @@
 | season | rows | built (UTC) |
 |---:|---:|---|
 | 2004 | 610 | 2026-07-17 05:08:07 UTC |
-| 2005 | 1,161 | 2026-07-17 05:08:10 UTC |
+| 2005 | 1,161 | 2026-11-13 11:01:13 UTC |
 | 2006 | 2,301 | 2026-07-17 05:08:13 UTC |
 | 2007 | 4,452 | 2026-07-17 05:08:16 UTC |
 | 2008 | 17,461 | 2026-07-17 05:08:25 UTC |
