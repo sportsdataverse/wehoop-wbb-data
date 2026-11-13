@@ -8,6 +8,7 @@ season,row_count,generated_at_utc,source_endpoint
 2020,5103,2026-10-11 18:09:53 UTC,wehoop::wbb_player_crosswalk()
 2021,4954,2026-10-11 18:10:49 UTC,wehoop::wbb_player_crosswalk()
 2022,5437,2026-10-11 18:11:58 UTC,wehoop::wbb_player_crosswalk()
+2023,5185,2026-11-13 11:12:11 UTC,wehoop::wbb_player_crosswalk()
 2025,5209,2026-10-11 18:13:31 UTC,wehoop::wbb_player_crosswalk()
 2026,5018,2026-11-13 10:06:15 UTC,wehoop::wbb_player_crosswalk()
 2027,4955,2026-11-13 10:07:08 UTC,wehoop::wbb_player_crosswalk()
