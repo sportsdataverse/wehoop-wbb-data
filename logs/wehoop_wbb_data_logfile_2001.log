@@ -1,8 +1,10 @@
 From https://github.com/sportsdataverse/wehoop-wbb-data
+   d18b425d..685ac69b  main                   -> origin/main
  * [new branch]        AE/remove-qs           -> origin/AE/remove-qs
  * [new branch]        chore/sdv-py-score-repair -> origin/chore/sdv-py-score-repair
  * [new branch]        data/schedule-flags-backfill -> origin/data/schedule-flags-backfill
  * [new branch]        docs/live-publish-status -> origin/docs/live-publish-status
+ * [new branch]        feat/release-contiguity-check -> origin/feat/release-contiguity-check
  * [new branch]        feat/release-sidecars  -> origin/feat/release-sidecars
  * [new branch]        feat/repo-standardization -> origin/feat/repo-standardization
  * [new branch]        feat/wbb-build-logging -> origin/feat/wbb-build-logging
@@ -15,133 +17,153 @@ From https://github.com/sportsdataverse/wehoop-wbb-data
  * [new branch]        feat/wbb-player-core-tree -> origin/feat/wbb-player-core-tree
  * [new branch]        feat/wbb-python-producer -> origin/feat/wbb-python-producer
  * [new branch]        feat/wbb-python-rollback-gate -> origin/feat/wbb-python-rollback-gate
+ * [new branch]        fix/contiguity-review  -> origin/fix/contiguity-review
  * [new branch]        fix/manifest-one-row-per-season -> origin/fix/manifest-one-row-per-season
  * [new branch]        fix/player-core-manifest -> origin/fix/player-core-manifest
 ::group::wbb_data_build pbp 2001
-2026-10-30 00:03:28 [INFO] wbb_data_build: pbp 2001: per-game build starting -- 4642 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 250/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 500/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 750/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 1000/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 1250/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 1500/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 1750/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 2000/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 2250/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 2500/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 2750/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 3000/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 3250/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 3500/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 3750/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 4000/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 4250/4642 games collected
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: 4500/4642 games collected
-2026-10-30 00:04:34 [WARNING] wbb_data_build: pbp 2001: 0 games reshaped; nothing written
-2026-10-30 00:04:34 [INFO] wbb_data_build: pbp 2001: season complete -- 0 rows
+2026-11-13 13:08:13 [INFO] wbb_data_build: pbp 2001: per-game build starting -- 4642 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 250/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 500/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 750/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 1000/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 1250/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 1500/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 1750/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 2000/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 2250/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 2500/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 2750/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 3000/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 3250/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 3500/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 3750/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 4000/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 4250/4642 games collected
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: 4500/4642 games collected
+2026-11-13 13:09:00 [WARNING] wbb_data_build: pbp 2001: 0 games reshaped; nothing written
+2026-11-13 13:09:00 [INFO] wbb_data_build: pbp 2001: season complete -- 0 rows
 ::endgroup::
 ::group::wbb_data_build team_box 2001
-2026-10-30 00:04:36 [INFO] wbb_data_build: team_box 2001: per-game build starting -- 4642 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 250/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 500/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 750/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 1000/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 1250/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 1500/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 1750/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 2000/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 2250/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 2500/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 2750/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 3000/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 3250/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 3500/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 3750/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 4000/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 4250/4642 games collected
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: 4500/4642 games collected
-2026-10-30 00:04:39 [WARNING] wbb_data_build: team_box 2001: 0 games reshaped; nothing written
-2026-10-30 00:04:39 [INFO] wbb_data_build: team_box 2001: season complete -- 0 rows
+2026-11-13 13:09:02 [INFO] wbb_data_build: team_box 2001: per-game build starting -- 4642 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 250/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 500/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 750/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 1000/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 1250/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 1500/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 1750/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 2000/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 2250/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 2500/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 2750/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 3000/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 3250/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 3500/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 3750/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 4000/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 4250/4642 games collected
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: 4500/4642 games collected
+2026-11-13 13:09:05 [WARNING] wbb_data_build: team_box 2001: 0 games reshaped; nothing written
+2026-11-13 13:09:05 [INFO] wbb_data_build: team_box 2001: season complete -- 0 rows
+2026-11-13 13:09:05 [INFO] wbb_data_build: espn_womens_college_basketball_team_boxscores: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build player_box 2001
-2026-10-30 00:04:41 [INFO] wbb_data_build: player_box 2001: per-game build starting -- 4642 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 250/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 500/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 750/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 1000/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 1250/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 1500/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 1750/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 2000/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 2250/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 2500/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 2750/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 3000/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 3250/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 3500/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 3750/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 4000/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 4250/4642 games collected
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: 4500/4642 games collected
-2026-10-30 00:04:44 [WARNING] wbb_data_build: player_box 2001: 0 games reshaped; nothing written
-2026-10-30 00:04:44 [INFO] wbb_data_build: player_box 2001: season complete -- 0 rows
+2026-11-13 13:09:08 [INFO] wbb_data_build: player_box 2001: per-game build starting -- 4642 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 250/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 500/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 750/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 1000/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 1250/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 1500/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 1750/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 2000/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 2250/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 2500/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 2750/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 3000/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 3250/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 3500/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 3750/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 4000/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 4250/4642 games collected
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: 4500/4642 games collected
+2026-11-13 13:09:11 [WARNING] wbb_data_build: player_box 2001: 0 games reshaped; nothing written
+2026-11-13 13:09:11 [INFO] wbb_data_build: player_box 2001: season complete -- 0 rows
+2026-11-13 13:09:11 [INFO] wbb_data_build: espn_womens_college_basketball_player_boxscores: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build player_core 2001
-2026-10-30 00:04:46 [INFO] wbb_data_build: player_core 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:04:46 [WARNING] wbb_data_build: player_core 2001: no built player_box parquet at wbb/player_box/parquet/player_box_2001.parquet -- cannot resolve which athletes played this season (build player_box first)
-2026-10-30 00:04:46 [WARNING] wbb_data_build: player_core 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:04:46 [INFO] wbb_data_build: player_core 2001: season complete -- 0 rows
+2026-11-13 13:09:13 [INFO] wbb_data_build: player_core 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:13 [WARNING] wbb_data_build: player_core 2001: no built player_box parquet at wbb/player_box/parquet/player_box_2001.parquet -- cannot resolve which athletes played this season (build player_box first)
+2026-11-13 13:09:13 [WARNING] wbb_data_build: player_core 2001: season-level build produced 0 rows; nothing written
+2026-11-13 13:09:13 [INFO] wbb_data_build: player_core 2001: season complete -- 0 rows
+2026-11-13 13:09:14 [INFO] wbb_data_build: espn_womens_college_basketball_player_core: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build schedules 2001
-2026-10-30 00:04:48 [INFO] wbb_data_build: schedules 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:04:50 [INFO] wbb_data_build: wrote wbb/schedules/parquet/wbb_schedule_2001.parquet (314.7KB) + wbb_schedule_2001.rds (463.4KB) + wbb_schedule_2001.csv (8.6MB), 4654 rows x 97 cols; manifest wbb_schedules_in_data_repo.csv upserted
-2026-10-30 00:04:50 [INFO] wbb_data_build: uploading wbb_schedule_2001.parquet (314.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
-2026-10-30 00:04:51 [INFO] wbb_data_build: uploaded wbb_schedule_2001.parquet -> espn_womens_college_basketball_schedules (asset 1/3)
-2026-10-30 00:04:51 [INFO] wbb_data_build: uploading wbb_schedule_2001.rds (463.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
-2026-10-30 00:04:53 [INFO] wbb_data_build: uploaded wbb_schedule_2001.rds -> espn_womens_college_basketball_schedules (asset 2/3)
-2026-10-30 00:04:53 [INFO] wbb_data_build: uploading wbb_schedule_2001.csv (8.6MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
-2026-10-30 00:04:55 [INFO] wbb_data_build: uploaded wbb_schedule_2001.csv -> espn_womens_college_basketball_schedules (asset 3/3)
-2026-10-30 00:05:03 [INFO] wbb_data_build: stamped espn_womens_college_basketball_schedules with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-10-30 00:05:03 [INFO] wbb_data_build: schedules 2001: done -- 4654 rows in 14.9s
-2026-10-30 00:05:03 [INFO] wbb_data_build: schedules 2001: season complete -- 4654 rows
+2026-11-13 13:09:16 [INFO] wbb_data_build: schedules 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:18 [INFO] wbb_data_build: wrote wbb/schedules/parquet/wbb_schedule_2001.parquet (314.7KB) + wbb_schedule_2001.rds (463.4KB) + wbb_schedule_2001.csv (8.6MB), 4654 rows x 97 cols; manifest wbb_schedules_in_data_repo.csv upserted
+2026-11-13 13:09:18 [INFO] wbb_data_build: uploading wbb_schedule_2001.parquet (314.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
+2026-11-13 13:09:20 [INFO] wbb_data_build: uploaded wbb_schedule_2001.parquet -> espn_womens_college_basketball_schedules (asset 1/3)
+2026-11-13 13:09:20 [INFO] wbb_data_build: uploading wbb_schedule_2001.rds (463.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
+2026-11-13 13:09:22 [INFO] wbb_data_build: uploaded wbb_schedule_2001.rds -> espn_womens_college_basketball_schedules (asset 2/3)
+2026-11-13 13:09:22 [INFO] wbb_data_build: uploading wbb_schedule_2001.csv (8.6MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
+2026-11-13 13:09:24 [INFO] wbb_data_build: uploaded wbb_schedule_2001.csv -> espn_womens_college_basketball_schedules (asset 3/3)
+2026-11-13 13:09:31 [INFO] wbb_data_build: stamped espn_womens_college_basketball_schedules with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-13 13:09:31 [INFO] wbb_data_build: schedules 2001: done -- 4654 rows in 14.7s
+2026-11-13 13:09:31 [INFO] wbb_data_build: schedules 2001: season complete -- 4654 rows
+2026-11-13 13:09:31 [INFO] wbb_data_build: espn_womens_college_basketball_schedules: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build shots 2001
-2026-10-30 00:05:05 [INFO] wbb_data_build: shots 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:05:05 [WARNING] wbb_data_build: shots 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:05:05 [INFO] wbb_data_build: shots 2001: season complete -- 0 rows
+2026-11-13 13:09:33 [INFO] wbb_data_build: shots 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:33 [WARNING] wbb_data_build: shots 2001: season-level build produced 0 rows; nothing written
+2026-11-13 13:09:33 [INFO] wbb_data_build: shots 2001: season complete -- 0 rows
+2026-11-13 13:09:34 [INFO] wbb_data_build: espn_womens_college_basketball_shots: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build rosters 2001
-2026-10-30 00:05:07 [INFO] wbb_data_build: rosters 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:05:07 [WARNING] wbb_data_build: rosters 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:05:07 [INFO] wbb_data_build: rosters 2001: season complete -- 0 rows
+2026-11-13 13:09:36 [INFO] wbb_data_build: rosters 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:36 [WARNING] wbb_data_build: rosters 2001: season-level build produced 0 rows; nothing written
+2026-11-13 13:09:36 [INFO] wbb_data_build: rosters 2001: season complete -- 0 rows
+2026-11-13 13:09:37 [INFO] wbb_data_build: espn_womens_college_basketball_rosters: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build player_season_stats 2001
-2026-10-30 00:05:09 [INFO] wbb_data_build: player_season_stats 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:05:10 [WARNING] wbb_data_build: player_season_stats 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:05:10 [INFO] wbb_data_build: player_season_stats 2001: season complete -- 0 rows
+2026-11-13 13:09:39 [INFO] wbb_data_build: player_season_stats 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:39 [WARNING] wbb_data_build: player_season_stats 2001: season-level build produced 0 rows; nothing written
+2026-11-13 13:09:39 [INFO] wbb_data_build: player_season_stats 2001: season complete -- 0 rows
+2026-11-13 13:09:40 [INFO] wbb_data_build: espn_womens_college_basketball_player_season_stats: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build team_season_stats 2001
-2026-10-30 00:05:12 [INFO] wbb_data_build: team_season_stats 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:05:12 [WARNING] wbb_data_build: team_season_stats 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:05:12 [INFO] wbb_data_build: team_season_stats 2001: season complete -- 0 rows
+2026-11-13 13:09:42 [INFO] wbb_data_build: team_season_stats 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:42 [WARNING] wbb_data_build: team_season_stats 2001: season-level build produced 0 rows; nothing written
+2026-11-13 13:09:42 [INFO] wbb_data_build: team_season_stats 2001: season complete -- 0 rows
+2026-11-13 13:09:43 [INFO] wbb_data_build: espn_womens_college_basketball_team_season_stats: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build standings 2001
-2026-10-30 00:05:14 [INFO] wbb_data_build: standings 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:05:14 [WARNING] wbb_data_build: standings 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:05:14 [INFO] wbb_data_build: standings 2001: season complete -- 0 rows
+2026-11-13 13:09:45 [INFO] wbb_data_build: standings 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:09:45 [INFO] wbb_data_build: wrote wbb/standings/parquet/standings_2001.parquet (53.3KB) + standings_2001.rds (63.5KB) + standings_2001.csv (2.1MB), 8792 rows x 24 cols; manifest wbb_standings_in_data_repo.csv upserted
+2026-11-13 13:09:46 [INFO] wbb_data_build: uploading standings_2001.parquet (53.3KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
+2026-11-13 13:09:47 [INFO] wbb_data_build: uploaded standings_2001.parquet -> espn_womens_college_basketball_standings (asset 1/3)
+2026-11-13 13:09:47 [INFO] wbb_data_build: uploading standings_2001.rds (63.5KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
+2026-11-13 13:09:49 [INFO] wbb_data_build: uploaded standings_2001.rds -> espn_womens_college_basketball_standings (asset 2/3)
+2026-11-13 13:09:49 [INFO] wbb_data_build: uploading standings_2001.csv (2.1MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
+2026-11-13 13:09:51 [INFO] wbb_data_build: uploaded standings_2001.csv -> espn_womens_college_basketball_standings (asset 3/3)
+2026-11-13 13:09:59 [INFO] wbb_data_build: stamped espn_womens_college_basketball_standings with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-13 13:09:59 [INFO] wbb_data_build: standings 2001: done -- 8792 rows in 13.6s
+2026-11-13 13:09:59 [INFO] wbb_data_build: standings 2001: season complete -- 8792 rows
+2026-11-13 13:09:59 [INFO] wbb_data_build: espn_womens_college_basketball_standings: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build game_rosters 2001
-2026-10-30 00:05:16 [INFO] wbb_data_build: game_rosters 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:05:55 [WARNING] wbb_data_build: game_rosters 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:05:55 [INFO] wbb_data_build: game_rosters 2001: season complete -- 0 rows
+2026-11-13 13:10:01 [INFO] wbb_data_build: game_rosters 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:10:27 [WARNING] wbb_data_build: game_rosters 2001: season-level build produced 0 rows; nothing written
+2026-11-13 13:10:27 [INFO] wbb_data_build: game_rosters 2001: season complete -- 0 rows
+2026-11-13 13:10:27 [INFO] wbb_data_build: espn_womens_college_basketball_game_rosters: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build officials 2001
-2026-10-30 00:05:57 [INFO] wbb_data_build: officials 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-10-30 00:06:43 [WARNING] wbb_data_build: officials 2001: season-level build produced 0 rows; nothing written
-2026-10-30 00:06:43 [INFO] wbb_data_build: officials 2001: season complete -- 0 rows
+2026-11-13 13:10:30 [INFO] wbb_data_build: officials 2001: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-13 13:10:56 [WARNING] wbb_data_build: officials 2001: season-level build produced 0 rows; nothing written
+2026-11-13 13:10:56 [INFO] wbb_data_build: officials 2001: season complete -- 0 rows
+2026-11-13 13:10:56 [INFO] wbb_data_build: espn_womens_college_basketball_officials: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build team_crosswalk 2001
-2026-10-30 00:06:45 [INFO] wbb_data_build: team_crosswalk 2001: season-level build starting (raw=None via disk)
+2026-11-13 13:10:59 [INFO] wbb_data_build: team_crosswalk 2001: season-level build starting (raw=None via disk)
 Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 159, in require_source
     out = fetch()
@@ -149,17 +171,17 @@ Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 640, in <lambda>
     lambda: _fetch_release_parquet(f"{base}team_group_seasons_{season}.parquet"),
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 792, in _fetch_release_parquet
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 842, in _fetch_release_parquet
     _classify_release_failure(url, original)
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 849, in _classify_release_failure
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 899, in _classify_release_failure
     resp = download(url, headers=_PROBE_HEADERS)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/dl_utils.py", line 479, in download
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/dl_utils.py", line 485, in download
     response = no_espn_data(response)
                ^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/errors.py", line 711, in no_espn_data
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/errors.py", line 736, in no_espn_data
     raise NoDataError(_format_404(response.url))
-sportsdataverse.errors.NoDataError: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
+sportsdataverse.errors.NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
 
 The above exception was the direct cause of the following exception:
 
@@ -169,16 +191,16 @@ Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/__main__.py", line 6, in <module>
     sys.exit(main())
              ^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/cli.py", line 26, in main
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/cli.py", line 38, in main
     df = build_season(
          ^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/build.py", line 70, in build_season
     out = reshapers.SEASON_BUILDERS[dataset](season, raw_root=root, base=Path(base))
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/reshapers.py", line 493, in team_crosswalk_builder
-    return wbb_team_crosswalk(season=season, yahoo=True)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 436, in wbb_team_crosswalk
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/reshapers.py", line 498, in team_crosswalk_builder
+    return wbb_team_crosswalk(season=season, bart=bart_teams(season), yahoo=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 437, in wbb_team_crosswalk
     espn = espn_team_directory("wbb", season=season, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 716, in espn_team_directory
@@ -189,11 +211,11 @@ Traceback (most recent call last):
               ^^^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 163, in require_source
     raise CrosswalkSourceError(f"{label} could not be produced: {type(exc).__name__}: {exc}") from exc
-sportsdataverse._crosswalk_basketball_sources.CrosswalkSourceError: wbb_team_group_seasons_2001 could not be produced: NoDataError: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
+sportsdataverse._crosswalk_basketball_sources.CrosswalkSourceError: wbb_team_group_seasons_2001 could not be produced: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
 ::warning ::wbb_data_build team_crosswalk for season 2001 exited with code 1 (crosswalk; non-fatal, live external source)
 ::endgroup::
 ::group::wbb_data_build schedule_crosswalk 2001
-2026-10-30 00:06:48 [INFO] wbb_data_build: schedule_crosswalk 2001: season-level build starting (raw=None via disk)
+2026-11-13 13:11:02 [INFO] wbb_data_build: schedule_crosswalk 2001: season-level build starting (raw=None via disk)
 Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 159, in require_source
     out = fetch()
@@ -201,17 +223,17 @@ Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 640, in <lambda>
     lambda: _fetch_release_parquet(f"{base}team_group_seasons_{season}.parquet"),
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 792, in _fetch_release_parquet
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 842, in _fetch_release_parquet
     _classify_release_failure(url, original)
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 849, in _classify_release_failure
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 899, in _classify_release_failure
     resp = download(url, headers=_PROBE_HEADERS)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/dl_utils.py", line 479, in download
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/dl_utils.py", line 485, in download
     response = no_espn_data(response)
                ^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/errors.py", line 711, in no_espn_data
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/errors.py", line 736, in no_espn_data
     raise NoDataError(_format_404(response.url))
-sportsdataverse.errors.NoDataError: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
+sportsdataverse.errors.NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
 
 The above exception was the direct cause of the following exception:
 
@@ -221,19 +243,19 @@ Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/__main__.py", line 6, in <module>
     sys.exit(main())
              ^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/cli.py", line 26, in main
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/cli.py", line 38, in main
     df = build_season(
          ^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/build.py", line 70, in build_season
     out = reshapers.SEASON_BUILDERS[dataset](season, raw_root=root, base=Path(base))
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/reshapers.py", line 513, in schedule_crosswalk_builder
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/reshapers.py", line 518, in schedule_crosswalk_builder
     df = wbb_schedule_crosswalk(season=season, fox=True, yahoo=True)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 519, in wbb_schedule_crosswalk
-    team_xwalk = wbb_team_crosswalk(season=season, fox=pl.DataFrame(), strict=strict, yahoo=yahoo, **kwargs)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 436, in wbb_team_crosswalk
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 531, in wbb_schedule_crosswalk
+    team_xwalk = wbb_team_crosswalk(season=season, fox=pl.DataFrame(), bart=bart, strict=strict, yahoo=yahoo, **kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 437, in wbb_team_crosswalk
     espn = espn_team_directory("wbb", season=season, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 716, in espn_team_directory
@@ -244,11 +266,11 @@ Traceback (most recent call last):
               ^^^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 163, in require_source
     raise CrosswalkSourceError(f"{label} could not be produced: {type(exc).__name__}: {exc}") from exc
-sportsdataverse._crosswalk_basketball_sources.CrosswalkSourceError: wbb_team_group_seasons_2001 could not be produced: NoDataError: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
+sportsdataverse._crosswalk_basketball_sources.CrosswalkSourceError: wbb_team_group_seasons_2001 could not be produced: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
 ::warning ::wbb_data_build schedule_crosswalk for season 2001 exited with code 1 (crosswalk; non-fatal, live external source)
 ::endgroup::
 ::group::wbb_data_build player_crosswalk 2001
-2026-10-30 00:06:50 [INFO] wbb_data_build: player_crosswalk 2001: season-level build starting (raw=None via disk)
+2026-11-13 13:11:04 [INFO] wbb_data_build: player_crosswalk 2001: season-level build starting (raw=None via disk)
 Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 159, in require_source
     out = fetch()
@@ -256,17 +278,17 @@ Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 640, in <lambda>
     lambda: _fetch_release_parquet(f"{base}team_group_seasons_{season}.parquet"),
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 792, in _fetch_release_parquet
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 842, in _fetch_release_parquet
     _classify_release_failure(url, original)
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 849, in _classify_release_failure
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_codegen_runtime.py", line 899, in _classify_release_failure
     resp = download(url, headers=_PROBE_HEADERS)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/dl_utils.py", line 479, in download
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/dl_utils.py", line 485, in download
     response = no_espn_data(response)
                ^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/errors.py", line 711, in no_espn_data
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/errors.py", line 736, in no_espn_data
     raise NoDataError(_format_404(response.url))
-sportsdataverse.errors.NoDataError: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
+sportsdataverse.errors.NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
 
 The above exception was the direct cause of the following exception:
 
@@ -276,19 +298,19 @@ Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/__main__.py", line 6, in <module>
     sys.exit(main())
              ^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/cli.py", line 26, in main
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/cli.py", line 38, in main
     df = build_season(
          ^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/build.py", line 70, in build_season
     out = reshapers.SEASON_BUILDERS[dataset](season, raw_root=root, base=Path(base))
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/reshapers.py", line 536, in player_crosswalk_builder
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/python/wbb_data_build/reshapers.py", line 541, in player_crosswalk_builder
     return carry_forward(wbb_player_crosswalk(season=season), "player_crosswalk", season, base)
                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 591, in wbb_player_crosswalk
-    team_xwalk = wbb_team_crosswalk(season=season, strict=strict, **kwargs)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 436, in wbb_team_crosswalk
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 606, in wbb_player_crosswalk
+    team_xwalk = wbb_team_crosswalk(season=season, bart=pl.DataFrame(), strict=strict, **kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/wbb/wbb_crosswalk.py", line 437, in wbb_team_crosswalk
     espn = espn_team_directory("wbb", season=season, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 716, in espn_team_directory
@@ -299,22 +321,23 @@ Traceback (most recent call last):
               ^^^^^^^^^^^^^^^
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 163, in require_source
     raise CrosswalkSourceError(f"{label} could not be produced: {type(exc).__name__}: {exc}") from exc
-sportsdataverse._crosswalk_basketball_sources.CrosswalkSourceError: wbb_team_group_seasons_2001 could not be produced: NoDataError: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
+sportsdataverse._crosswalk_basketball_sources.CrosswalkSourceError: wbb_team_group_seasons_2001 could not be produced: NoDataError: No data found for https://github.com/sportsdataverse/sportsdataverse-data/releases/download/wbb_groups/wbb_team_group_seasons_2001.parquet
 ::warning ::wbb_data_build player_crosswalk for season 2001 exited with code 1 (crosswalk; non-fatal, live external source)
 ::endgroup::
 ::group::schedule master 2001
-master:   140091 games across 27 seasons
-manifest: 69172 games in >=1 compilation
-coverage: 52 rows
-  in_game_rosters: 6950
-  in_officials: 5828
-  in_pbp: 55105
-  in_player_box: 68788
-  in_shots: 55105
-  in_team_box: 68002
+master:   143612 games across 27 seasons
+manifest: 69871 games in >=1 compilation
+coverage: 53 rows
+  in_game_rosters: 7599
+  in_officials: 6451
+  in_pbp: 55799
+  in_player_box: 69487
+  in_shots: 55748
+  in_team_box: 68701
 ::endgroup::
 ::group::wp_enrich 2001
-2026-10-30 00:06:54 [INFO] wbb_data_build: wp 2001: no pbp built under wbb; nothing to enrich
+2026-11-13 13:11:08 [INFO] wbb_data_build: wp 2001: no pbp built under wbb; nothing to enrich
 ::endgroup::
 season 2001 EXIT=0
-pushed: WBB Data update (Start: 2001 End: 2001) (attempt 1)
+push rejected (attempt 1); syncing with origin
+pushed: WBB Data update (Start: 2001 End: 2001) (attempt 2)
