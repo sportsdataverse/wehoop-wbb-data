@@ -376,6 +376,14 @@ def team_season_stats_builder(season: int, *, raw_root: Path, base: Path) -> pl.
     )
 
 
+def _player_box_identity(base: Path, season: int) -> dict:
+    """athlete_id -> identity from the season's built player_box (empty when absent)."""
+    from sportsdataverse.nba import build_nba_player_identity_lookup
+
+    pb = base / "player_box" / "parquet" / f"player_box_{season}.parquet"
+    return build_nba_player_identity_lookup(pl.read_parquet(pb)) if pb.exists() else {}
+
+
 def player_season_stats_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
     from sportsdataverse.wbb import build_athlete_identity_lookup, helper_wbb_player_season_stats
 
@@ -387,7 +395,11 @@ def player_season_stats_builder(season: int, *, raw_root: Path, base: Path) -> p
         team_ids,
     )
     rosters = dict(zip(team_ids, payloads))
-    lookup = build_athlete_identity_lookup({t: r for t, r in rosters.items() if r})
+    # Team rosters are current-only (ESPN ignores the season), so before them the
+    # season's own player_box names the athlete, with their team and jersey that
+    # season. A roster entry still wins where both exist.
+    lookup = _player_box_identity(base, season)
+    lookup.update(build_athlete_identity_lookup({t: r for t, r in rosters.items() if r}))
 
     def _helper(payload: dict, *, season: int, athlete_id: int) -> pl.DataFrame:
         return helper_wbb_player_season_stats(
