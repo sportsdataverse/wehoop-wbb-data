@@ -10,7 +10,7 @@
 | **Seasons built** | 2023–2027 (5 seasons) |
 | **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2026-05-11 |
-| **Release assets** | 59 |
+| **Release assets** | 58 |
 
 ## Load it
 
