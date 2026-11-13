@@ -121,6 +121,7 @@ def test_wp_enrich_is_gated_on_every_input_it_reads():
     assert "PBP_RC" not in sh, "the pbp-only guard is back; wp_enrich needs all three inputs"
     for ds in ("pbp", "schedules", "team_box"):
         assert ds in sh
-    assert 'case "$ds" in pbp|schedules|team_box) WP_INPUT_RC=$rc;; esac' in sh
+    # GAP_RC (3) = built + published, only the release check failed: inputs stay fresh
+    assert 'if [ "$rc" -ne 3 ]; then WP_INPUT_RC=$rc; fi;;' in sh
     assert "*01_pbp*|*02_team_box*) WP_INPUT_RC=$rc" in sh
     assert 'if [ "${WP_INPUT_RC:-0}" != "0" ]; then' in sh
