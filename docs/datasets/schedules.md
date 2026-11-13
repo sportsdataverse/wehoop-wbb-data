@@ -8,7 +8,7 @@
 | **Release tag** | [`espn_womens_college_basketball_schedules`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_schedules) |
 | **File stem** | `wbb_schedule_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2001–2027 (27 seasons) |
-| **Last published** | 2026-11-12 (newest release asset) |
+| **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2023-03-30 |
 | **Release assets** | 91 |
 

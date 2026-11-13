@@ -7,10 +7,10 @@
 | **Builder** | [`python/espn_wbb_12_officials_creation.py`](../../python/espn_wbb_12_officials_creation.py) |
 | **Release tag** | [`espn_womens_college_basketball_officials`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_officials) |
 | **File stem** | `officials_{season}.{parquet,csv,rds}` |
-| **Seasons built** | 2026–2027 (2 seasons) |
-| **Last published** | 2026-11-12 (newest release asset) |
+| **Seasons built** | 2023–2027 (5 seasons) |
+| **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2026-05-11 |
-| **Release assets** | 40 |
+| **Release assets** | 47 |
 
 ## Automation
 
@@ -36,5 +36,8 @@
 
 | season | rows | built (UTC) |
 |---:|---:|---|
+| 2023 | 16,057 | 2026-11-13 08:27:52 UTC |
+| 2024 | 16,245 | 2026-11-13 08:18:52 UTC |
+| 2025 | 15,621 | 2026-11-13 08:20:16 UTC |
 | 2026 | 17,458 | 2026-11-03 15:21:24 UTC |
 | 2027 | 1,861 | 2026-11-12 16:15:00 UTC |
