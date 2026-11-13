@@ -529,13 +529,16 @@ def schedule_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl
 
     Like the team crosswalk, sdv-py raises ``CrosswalkSourceError`` when a
     source returns nothing, so a silently-empty crosswalk cannot reach the tree.
+    ``ncaa.add_ncaa_contest_id`` adds the stats.ncaa.org contest id last.
     """
     from sportsdataverse.wbb import wbb_schedule_crosswalk
 
     from wbb_data_build.alt_fill import carry_forward
+    from wbb_data_build.ncaa import add_ncaa_contest_id
 
     df = wbb_schedule_crosswalk(season=season, fox=True, yahoo=True)
-    return carry_forward(df, "schedule_crosswalk", season, base)  # alt_fill's Fox / Yahoo ids
+    df = carry_forward(df, "schedule_crosswalk", season, base)  # alt_fill's Fox / Yahoo ids
+    return add_ncaa_contest_id(df, season)  # stats.ncaa.org contest ids (2010+)
 
 
 def player_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.DataFrame:
@@ -551,13 +554,16 @@ def player_crosswalk_builder(season: int, *, raw_root: Path, base: Path) -> pl.D
     A team whose ESPN display name no longer matches Fox resolves a null
     ``fox_team_id`` and its whole roster comes back ``unmatched``. That is the
     R behaviour too, not a Python shortfall -- see ``config.REGISTRY``.
+    ``ncaa.add_ncaa_player_id`` adds the stats.ncaa.org player id last.
     """
     from sportsdataverse.wbb import wbb_player_crosswalk
 
     from wbb_data_build.alt_fill import carry_forward
+    from wbb_data_build.ncaa import add_ncaa_player_id
 
     # alt_fill (droplet) filled Fox / Yahoo ids from the box-score history; keep them.
-    return carry_forward(wbb_player_crosswalk(season=season), "player_crosswalk", season, base)
+    df = carry_forward(wbb_player_crosswalk(season=season), "player_crosswalk", season, base)
+    return add_ncaa_player_id(df, season)  # stats.ncaa.org ids from the wbb_groups aliases
 
 
 SEASON_BUILDERS: dict = {
