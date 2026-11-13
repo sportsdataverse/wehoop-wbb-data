@@ -12,6 +12,20 @@
 | **Tag created** | 2026-05-11 |
 | **Release assets** | 59 |
 
+## Load it
+
+| | |
+|---|---|
+| **R** | `wehoop::load_wbb_player_stats()` |
+| **Python** | `sportsdataverse.wbb.load_wbb_player_season_stats()` |
+
+## Join keys
+
+| column | joins to |
+|---|---|
+| `athlete_id` | ESPN athlete id. `player_core` holds identity + bio; `player_box`, `rosters`, `player_season_stats` and `game_rosters` key on it. `player_crosswalk.espn_athlete_id` maps it to Fox / Yahoo player ids. |
+| `team_id` | ESPN team id. Shared by every ESPN dataset here; `team_crosswalk.espn_team_id` maps it to Fox / Yahoo team ids. |
+
 ## Automation
 
 `.github/workflows/daily_wbb.yml` — cron 07:00 UTC in season (late Oct, Nov–Dec, Jan–Mar, early Apr), plus `repository_dispatch` from `wehoop-wbb-raw`. Runs `scripts/daily_wbb_data_processor.sh` (`-l python` default, `-l R` rollback).
@@ -43,21 +57,21 @@
 |---:|---:|---|
 | 2006 | 201 | 2026-07-16 23:47:34 UTC |
 | 2007 | 2,553 | 2026-07-16 23:54:52 UTC |
-| 2010 | 92,847 | 2026-11-10 10:29:14 UTC |
-| 2011 | 80,127 | 2026-11-10 08:38:10 UTC |
-| 2012 | 96,480 | 2026-11-10 08:38:12 UTC |
-| 2013 | 103,209 | 2026-11-10 08:38:15 UTC |
-| 2014 | 158,619 | 2026-11-10 07:25:44 UTC |
-| 2015 | 157,398 | 2026-11-10 07:25:49 UTC |
-| 2016 | 168,909 | 2026-11-10 07:25:54 UTC |
-| 2017 | 188,118 | 2026-11-10 07:26:00 UTC |
-| 2018 | 183,027 | 2026-11-10 07:26:06 UTC |
-| 2019 | 189,192 | 2026-11-10 07:26:12 UTC |
-| 2020 | 280,677 | 2026-11-10 07:26:21 UTC |
-| 2021 | 227,085 | 2026-11-10 07:26:28 UTC |
-| 2022 | 304,722 | 2026-11-10 07:26:37 UTC |
-| 2023 | 298,797 | 2026-11-10 07:26:45 UTC |
-| 2024 | 316,467 | 2026-11-10 07:26:55 UTC |
-| 2025 | 323,523 | 2026-11-10 07:27:04 UTC |
-| 2026 | 340,875 | 2026-11-10 07:11:37 UTC |
-| 2027 | 256,191 | 2026-11-13 12:07:10 UTC |
+| 2010 | 92,847 | 2026-11-13 15:44:54 UTC |
+| 2011 | 80,127 | 2026-11-13 15:45:37 UTC |
+| 2012 | 96,480 | 2026-11-13 15:46:22 UTC |
+| 2013 | 103,209 | 2026-11-13 15:47:10 UTC |
+| 2014 | 158,619 | 2026-11-13 15:47:57 UTC |
+| 2015 | 157,398 | 2026-11-13 15:48:53 UTC |
+| 2016 | 168,909 | 2026-11-13 15:49:50 UTC |
+| 2017 | 188,118 | 2026-11-13 15:50:57 UTC |
+| 2018 | 183,027 | 2026-11-13 15:52:14 UTC |
+| 2019 | 189,192 | 2026-11-13 15:53:25 UTC |
+| 2020 | 280,677 | 2026-11-13 15:54:50 UTC |
+| 2021 | 227,085 | 2026-11-13 15:56:19 UTC |
+| 2022 | 304,722 | 2026-11-13 15:57:26 UTC |
+| 2023 | 298,797 | 2026-11-13 15:58:45 UTC |
+| 2024 | 316,467 | 2026-11-13 16:24:44 UTC |
+| 2025 | 323,523 | 2026-11-13 16:15:08 UTC |
+| 2026 | 340,875 | 2026-11-13 16:17:34 UTC |
+| 2027 | 256,191 | 2026-11-13 16:20:02 UTC |

@@ -12,6 +12,19 @@
 | **Tag created** | 2026-05-11 |
 | **Release assets** | 86 |
 
+## Load it
+
+| | |
+|---|---|
+| **R** | `wehoop::load_wbb_standings()` |
+| **Python** | `sportsdataverse.wbb.load_wbb_standings()` |
+
+## Join keys
+
+| column | joins to |
+|---|---|
+| `team_id` | ESPN team id. Shared by every ESPN dataset here; `team_crosswalk.espn_team_id` maps it to Fox / Yahoo team ids. |
+
 ## Automation
 
 `.github/workflows/daily_wbb.yml` — cron 07:00 UTC in season (late Oct, Nov–Dec, Jan–Mar, early Apr), plus `repository_dispatch` from `wehoop-wbb-raw`. Runs `scripts/daily_wbb_data_processor.sh` (`-l python` default, `-l R` rollback).

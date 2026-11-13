@@ -10,7 +10,20 @@
 | **Seasons built** | 2023–2027 (5 seasons) |
 | **Last published** | 2026-11-13 (newest release asset) |
 | **Tag created** | 2026-05-11 |
-| **Release assets** | 59 |
+| **Release assets** | 58 |
+
+## Load it
+
+| | |
+|---|---|
+| **R** | `wehoop::load_wbb_team_stats()` |
+| **Python** | `sportsdataverse.wbb.load_wbb_team_season_stats()` |
+
+## Join keys
+
+| column | joins to |
+|---|---|
+| `team_id` | ESPN team id. Shared by every ESPN dataset here; `team_crosswalk.espn_team_id` maps it to Fox / Yahoo team ids. |
 
 ## Automation
 

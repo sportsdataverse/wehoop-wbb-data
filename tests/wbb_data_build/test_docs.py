@@ -146,3 +146,20 @@ def test_no_rendered_cell_is_blank():
     body = [r for r in table.splitlines() if r.startswith("| `")]
     assert body
     assert all(not r.rstrip().endswith("|  |") for r in body), table
+
+
+def test_every_page_names_both_loaders():
+    from wbb_data_build.docs import LOADERS
+
+    for dataset in REGISTRY:
+        page = dataset_page(dataset, live=False)
+        r_loader, py_loader = LOADERS[dataset]
+        assert f"`{r_loader}`" in page and f"`{py_loader}`" in page
+
+
+def test_join_keys_follow_the_schema():
+    from wbb_data_build.docs import join_table
+
+    pbp = join_table("pbp")
+    assert "| `game_id` |" in pbp and "| `team_id` |" in pbp
+    assert "| `type_id` |" not in pbp  # not a join key
