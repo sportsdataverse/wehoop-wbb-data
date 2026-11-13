@@ -5,3 +5,4 @@ season,row_count,generated_at_utc,source_endpoint
 2024,6351,2026-11-13 16:44:58 UTC,wehoop::wbb_schedule_crosswalk()
 2025,6472,2026-11-13 16:45:36 UTC,wehoop::wbb_schedule_crosswalk()
 2026,6521,2026-11-13 16:46:14 UTC,wehoop::wbb_schedule_crosswalk()
+2027,6346,2026-11-13 17:44:54 UTC,wehoop::wbb_schedule_crosswalk()
