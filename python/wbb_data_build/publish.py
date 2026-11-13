@@ -24,14 +24,7 @@ DEFAULT_REPO = "sportsdataverse/sportsdataverse-data"
 #: Interior seasons a dataset's release is known to lack (measured on the releases 2026-11-13).
 #: ``check_release_contiguous`` fails a publish run on any other hole (wehoop-wbb-data#44).
 #: When one of these is filled, drop it here.
-KNOWN_GAPS: dict[str, frozenset[int]] = {
-    "player_core": frozenset({2005}),  # present before this check; not yet investigated
-    "standings": frozenset({2005}),  # present before this check; not yet investigated
-    "team_crosswalk": frozenset(range(2004, 2014)),  # never built for 2004-2013
-    "player_crosswalk": frozenset(
-        {2023, 2024}
-    ),  # wehoop load_wbb_player_crosswalk(gaps = 2023:2024)
-}
+KNOWN_GAPS: dict[str, frozenset[int]] = {}  # every listed hole was filled 2026-11-13
 
 
 class SeasonGapError(RuntimeError):
