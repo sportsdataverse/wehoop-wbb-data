@@ -139,7 +139,11 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
       # shellcheck disable=SC2086
       uv run python -m wbb_data_build --dataset "$ds" --base wbb -s "$i" -e "$i" $pub || {
         rc=$?; echo "::warning ::wbb_data_build $ds for season $i exited with code $rc"; SEASON_RC=$rc
-        case "$ds" in pbp|schedules|team_box) WP_INPUT_RC=$rc;; esac
+        # rc 3 = built and published, only the release check failed
+        # (wbb_data_build.cli.GAP_RC): the tree file is fresh.
+        case "$ds" in pbp|schedules|team_box)
+          if [ "$rc" -ne 3 ]; then WP_INPUT_RC=$rc; fi;;
+        esac
       }
       echo "::endgroup::"
     }
