@@ -95,12 +95,27 @@ jobs:
             --repo "$PUBLISH_REPO" \
             ${{ inputs.dry_run && '--dry-run' || '' }}
 
+      # player_value floors higher than ratings (MIN_SEASON_PLAYER_VALUE vs
+      # MIN_SEASON_RATINGS), and the builder raises on any season below its
+      # floor. Clamp the shared range here so a ratings backfill such as
+      # 2009:2027 doesn't fail this step; the builder's guard stays strict
+      # for explicit requests.
       - name: Build + publish wbb_player_value ${{ env.SEASONS }}
         env:
           GH_TOKEN: ${{ secrets.SDV_GH_TOKEN }}
         run: |
+          FLOOR=$(uv run --no-sync python -c "from wbb_model_publish.builders import MIN_SEASON_PLAYER_VALUE as m; print(m)")
+          LO=${SEASONS%%:*}; HI=${SEASONS##*:}
+          if [ "$HI" -lt "$FLOOR" ]; then
+            echo "wbb_player_value: seasons $SEASONS all predate the $FLOOR floor -- skipping"
+            exit 0
+          fi
+          if [ "$LO" -lt "$FLOOR" ]; then
+            echo "wbb_player_value: clamping $SEASONS to $FLOOR:$HI (floor $FLOOR)"
+            LO=$FLOOR
+          fi
           uv run --no-sync python -m wbb_model_02_player_value \
-            --seasons "$SEASONS" \
+            --seasons "$LO:$HI" \
             --out out/wbb_player_value \
             --tag wbb_player_value \
             --repo "$PUBLISH_REPO" \
