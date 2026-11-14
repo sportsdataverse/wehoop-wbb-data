@@ -20,189 +20,189 @@ From https://github.com/sportsdataverse/wehoop-wbb-data
  * [new branch]        fix/manifest-one-row-per-season -> origin/fix/manifest-one-row-per-season
  * [new branch]        fix/player-core-manifest -> origin/fix/player-core-manifest
 ::group::wbb_data_build pbp 2027
-2026-11-14 12:02:11 [INFO] wbb_data_build: pbp 2027: per-game build starting -- 736 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:02:35 [INFO] wbb_data_build: pbp 2027: 250/736 games collected
-2026-11-14 12:02:35 [INFO] wbb_data_build: pbp 2027: 500/736 games collected
-2026-11-14 12:02:58 [INFO] wbb_data_build: wrote wbb/pbp/parquet/play_by_play_2027.parquet (9.3MB) + play_by_play_2027.rds (11.3MB) + play_by_play_2027.csv (160.3MB), 366062 rows x 69 cols; manifest wbb_pbp_in_data_repo.csv upserted
-2026-11-14 12:02:58 [INFO] wbb_data_build: pbp 2027: done -- 366062 rows from 731/736 games in 46.7s
-2026-11-14 12:02:58 [INFO] wbb_data_build: pbp 2027: season complete -- 366062 rows
+2026-11-14 14:16:43 [INFO] wbb_data_build: pbp 2027: per-game build starting -- 736 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:17:05 [INFO] wbb_data_build: pbp 2027: 250/736 games collected
+2026-11-14 14:17:05 [INFO] wbb_data_build: pbp 2027: 500/736 games collected
+2026-11-14 14:17:38 [INFO] wbb_data_build: wrote wbb/pbp/parquet/play_by_play_2027.parquet (9.3MB) + play_by_play_2027.rds (11.3MB) + play_by_play_2027.csv (160.3MB), 366062 rows x 69 cols; manifest wbb_pbp_in_data_repo.csv upserted
+2026-11-14 14:17:38 [INFO] wbb_data_build: pbp 2027: done -- 366062 rows from 731/736 games in 55.9s
+2026-11-14 14:17:38 [INFO] wbb_data_build: pbp 2027: season complete -- 366062 rows
 ::endgroup::
 ::group::wbb_data_build team_box 2027
-2026-11-14 12:03:00 [INFO] wbb_data_build: team_box 2027: per-game build starting -- 736 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:03:04 [INFO] wbb_data_build: team_box 2027: 250/736 games collected
-2026-11-14 12:03:04 [INFO] wbb_data_build: team_box 2027: 500/736 games collected
-2026-11-14 12:03:04 [INFO] wbb_data_build: wrote wbb/team_box/parquet/team_box_2027.parquet (147.8KB) + team_box_2027.rds (156.6KB) + team_box_2027.csv (678.5KB), 1472 rows x 58 cols; manifest wbb_team_box_in_data_repo.csv upserted
-2026-11-14 12:03:04 [INFO] wbb_data_build: uploading team_box_2027.parquet (147.8KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_boxscores
-2026-11-14 12:03:06 [INFO] wbb_data_build: uploaded team_box_2027.parquet -> espn_womens_college_basketball_team_boxscores (asset 1/3)
-2026-11-14 12:03:06 [INFO] wbb_data_build: uploading team_box_2027.rds (156.6KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_boxscores
-2026-11-14 12:03:08 [INFO] wbb_data_build: uploaded team_box_2027.rds -> espn_womens_college_basketball_team_boxscores (asset 2/3)
-2026-11-14 12:03:08 [INFO] wbb_data_build: uploading team_box_2027.csv (678.5KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_boxscores
-2026-11-14 12:03:10 [INFO] wbb_data_build: uploaded team_box_2027.csv -> espn_womens_college_basketball_team_boxscores (asset 3/3)
-2026-11-14 12:03:17 [INFO] wbb_data_build: stamped espn_womens_college_basketball_team_boxscores with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:03:17 [INFO] wbb_data_build: team_box 2027: done -- 1472 rows from 736/736 games in 17.3s
-2026-11-14 12:03:17 [INFO] wbb_data_build: team_box 2027: season complete -- 1472 rows
-2026-11-14 12:03:17 [INFO] wbb_data_build: espn_womens_college_basketball_team_boxscores: release seasons are contiguous
+2026-11-14 14:17:41 [INFO] wbb_data_build: team_box 2027: per-game build starting -- 736 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:17:48 [INFO] wbb_data_build: team_box 2027: 250/736 games collected
+2026-11-14 14:17:48 [INFO] wbb_data_build: team_box 2027: 500/736 games collected
+2026-11-14 14:17:48 [INFO] wbb_data_build: wrote wbb/team_box/parquet/team_box_2027.parquet (147.8KB) + team_box_2027.rds (156.6KB) + team_box_2027.csv (678.5KB), 1472 rows x 58 cols; manifest wbb_team_box_in_data_repo.csv upserted
+2026-11-14 14:17:49 [INFO] wbb_data_build: uploading team_box_2027.parquet (147.8KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_boxscores
+2026-11-14 14:17:51 [INFO] wbb_data_build: uploaded team_box_2027.parquet -> espn_womens_college_basketball_team_boxscores (asset 1/3)
+2026-11-14 14:17:51 [INFO] wbb_data_build: uploading team_box_2027.rds (156.6KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_boxscores
+2026-11-14 14:17:53 [INFO] wbb_data_build: uploaded team_box_2027.rds -> espn_womens_college_basketball_team_boxscores (asset 2/3)
+2026-11-14 14:17:53 [INFO] wbb_data_build: uploading team_box_2027.csv (678.5KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_boxscores
+2026-11-14 14:17:55 [INFO] wbb_data_build: uploaded team_box_2027.csv -> espn_womens_college_basketball_team_boxscores (asset 3/3)
+2026-11-14 14:18:04 [INFO] wbb_data_build: stamped espn_womens_college_basketball_team_boxscores with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:18:04 [INFO] wbb_data_build: team_box 2027: done -- 1472 rows from 736/736 games in 22.7s
+2026-11-14 14:18:04 [INFO] wbb_data_build: team_box 2027: season complete -- 1472 rows
+2026-11-14 14:18:04 [INFO] wbb_data_build: espn_womens_college_basketball_team_boxscores: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build player_box 2027
-2026-11-14 12:03:19 [INFO] wbb_data_build: player_box 2027: per-game build starting -- 736 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:03:23 [INFO] wbb_data_build: player_box 2027: 250/736 games collected
-2026-11-14 12:03:23 [INFO] wbb_data_build: player_box 2027: 500/736 games collected
-2026-11-14 12:03:25 [INFO] wbb_data_build: wrote wbb/player_box/parquet/player_box_2027.parquet (518.7KB) + player_box_2027.rds (812.6KB) + player_box_2027.csv (9.9MB), 20629 rows x 55 cols; manifest wbb_player_box_in_data_repo.csv upserted
-2026-11-14 12:03:25 [INFO] wbb_data_build: uploading player_box_2027.parquet (518.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_boxscores
-2026-11-14 12:03:27 [INFO] wbb_data_build: uploaded player_box_2027.parquet -> espn_womens_college_basketball_player_boxscores (asset 1/3)
-2026-11-14 12:03:27 [INFO] wbb_data_build: uploading player_box_2027.rds (812.6KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_boxscores
-2026-11-14 12:03:29 [INFO] wbb_data_build: uploaded player_box_2027.rds -> espn_womens_college_basketball_player_boxscores (asset 2/3)
-2026-11-14 12:03:29 [INFO] wbb_data_build: uploading player_box_2027.csv (9.9MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_boxscores
-2026-11-14 12:03:31 [INFO] wbb_data_build: uploaded player_box_2027.csv -> espn_womens_college_basketball_player_boxscores (asset 3/3)
-2026-11-14 12:03:39 [INFO] wbb_data_build: stamped espn_womens_college_basketball_player_boxscores with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:03:39 [INFO] wbb_data_build: player_box 2027: done -- 20629 rows from 736/736 games in 20.4s
-2026-11-14 12:03:39 [INFO] wbb_data_build: player_box 2027: season complete -- 20629 rows
-2026-11-14 12:03:39 [INFO] wbb_data_build: espn_womens_college_basketball_player_boxscores: release seasons are contiguous
+2026-11-14 14:18:06 [INFO] wbb_data_build: player_box 2027: per-game build starting -- 736 games (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:18:13 [INFO] wbb_data_build: player_box 2027: 250/736 games collected
+2026-11-14 14:18:13 [INFO] wbb_data_build: player_box 2027: 500/736 games collected
+2026-11-14 14:18:16 [INFO] wbb_data_build: wrote wbb/player_box/parquet/player_box_2027.parquet (518.7KB) + player_box_2027.rds (812.6KB) + player_box_2027.csv (9.9MB), 20629 rows x 55 cols; manifest wbb_player_box_in_data_repo.csv upserted
+2026-11-14 14:18:17 [INFO] wbb_data_build: uploading player_box_2027.parquet (518.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_boxscores
+2026-11-14 14:18:19 [INFO] wbb_data_build: uploaded player_box_2027.parquet -> espn_womens_college_basketball_player_boxscores (asset 1/3)
+2026-11-14 14:18:19 [INFO] wbb_data_build: uploading player_box_2027.rds (812.6KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_boxscores
+2026-11-14 14:18:21 [INFO] wbb_data_build: uploaded player_box_2027.rds -> espn_womens_college_basketball_player_boxscores (asset 2/3)
+2026-11-14 14:18:21 [INFO] wbb_data_build: uploading player_box_2027.csv (9.9MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_boxscores
+2026-11-14 14:18:23 [INFO] wbb_data_build: uploaded player_box_2027.csv -> espn_womens_college_basketball_player_boxscores (asset 3/3)
+2026-11-14 14:18:31 [INFO] wbb_data_build: stamped espn_womens_college_basketball_player_boxscores with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:18:31 [INFO] wbb_data_build: player_box 2027: done -- 20629 rows from 736/736 games in 24.6s
+2026-11-14 14:18:31 [INFO] wbb_data_build: player_box 2027: season complete -- 20629 rows
+2026-11-14 14:18:31 [INFO] wbb_data_build: espn_womens_college_basketball_player_boxscores: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build player_core 2027
-2026-11-14 12:03:41 [INFO] wbb_data_build: player_core 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:05:00 [INFO] wbb_data_build: wrote wbb/player_core/parquet/player_core_2027.parquet (499.9KB) + player_core_2027.rds (584.9KB) + player_core_2027.csv (2.0MB), 7554 rows x 36 cols; manifest wbb_player_core_in_data_repo.csv upserted
-2026-11-14 12:05:01 [INFO] wbb_data_build: uploading player_core_2027.parquet (499.9KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_core
-2026-11-14 12:05:03 [INFO] wbb_data_build: uploaded player_core_2027.parquet -> espn_womens_college_basketball_player_core (asset 1/3)
-2026-11-14 12:05:03 [INFO] wbb_data_build: uploading player_core_2027.rds (584.9KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_core
-2026-11-14 12:05:04 [INFO] wbb_data_build: uploaded player_core_2027.rds -> espn_womens_college_basketball_player_core (asset 2/3)
-2026-11-14 12:05:04 [INFO] wbb_data_build: uploading player_core_2027.csv (2.0MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_core
-2026-11-14 12:05:07 [INFO] wbb_data_build: uploaded player_core_2027.csv -> espn_womens_college_basketball_player_core (asset 3/3)
-2026-11-14 12:05:14 [INFO] wbb_data_build: stamped espn_womens_college_basketball_player_core with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:05:14 [INFO] wbb_data_build: player_core 2027: done -- 7554 rows in 93.3s
-2026-11-14 12:05:14 [INFO] wbb_data_build: player_core 2027: season complete -- 7554 rows
-2026-11-14 12:05:14 [INFO] wbb_data_build: espn_womens_college_basketball_player_core: release seasons are contiguous
+2026-11-14 14:18:33 [INFO] wbb_data_build: player_core 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:20:13 [INFO] wbb_data_build: wrote wbb/player_core/parquet/player_core_2027.parquet (499.9KB) + player_core_2027.rds (584.9KB) + player_core_2027.csv (2.0MB), 7554 rows x 36 cols; manifest wbb_player_core_in_data_repo.csv upserted
+2026-11-14 14:20:14 [INFO] wbb_data_build: uploading player_core_2027.parquet (499.9KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_core
+2026-11-14 14:20:16 [INFO] wbb_data_build: uploaded player_core_2027.parquet -> espn_womens_college_basketball_player_core (asset 1/3)
+2026-11-14 14:20:16 [INFO] wbb_data_build: uploading player_core_2027.rds (584.9KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_core
+2026-11-14 14:20:18 [INFO] wbb_data_build: uploaded player_core_2027.rds -> espn_womens_college_basketball_player_core (asset 2/3)
+2026-11-14 14:20:18 [INFO] wbb_data_build: uploading player_core_2027.csv (2.0MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_core
+2026-11-14 14:20:20 [INFO] wbb_data_build: uploaded player_core_2027.csv -> espn_womens_college_basketball_player_core (asset 3/3)
+2026-11-14 14:20:28 [INFO] wbb_data_build: stamped espn_womens_college_basketball_player_core with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:20:28 [INFO] wbb_data_build: player_core 2027: done -- 7554 rows in 115.0s
+2026-11-14 14:20:28 [INFO] wbb_data_build: player_core 2027: season complete -- 7554 rows
+2026-11-14 14:20:29 [INFO] wbb_data_build: espn_womens_college_basketball_player_core: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build schedules 2027
-2026-11-14 12:05:16 [INFO] wbb_data_build: schedules 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:05:18 [INFO] wbb_data_build: wrote wbb/schedules/parquet/wbb_schedule_2027.parquet (524.2KB) + wbb_schedule_2027.rds (752.5KB) + wbb_schedule_2027.csv (14.4MB), 5806 rows x 97 cols; manifest wbb_schedules_in_data_repo.csv upserted
-2026-11-14 12:05:18 [INFO] wbb_data_build: uploading wbb_schedule_2027.parquet (524.2KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
-2026-11-14 12:05:20 [INFO] wbb_data_build: uploaded wbb_schedule_2027.parquet -> espn_womens_college_basketball_schedules (asset 1/3)
-2026-11-14 12:05:20 [INFO] wbb_data_build: uploading wbb_schedule_2027.rds (752.5KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
-2026-11-14 12:05:22 [INFO] wbb_data_build: uploaded wbb_schedule_2027.rds -> espn_womens_college_basketball_schedules (asset 2/3)
-2026-11-14 12:05:22 [INFO] wbb_data_build: uploading wbb_schedule_2027.csv (14.4MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
-2026-11-14 12:05:24 [INFO] wbb_data_build: uploaded wbb_schedule_2027.csv -> espn_womens_college_basketball_schedules (asset 3/3)
-2026-11-14 12:05:31 [INFO] wbb_data_build: stamped espn_womens_college_basketball_schedules with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:05:31 [INFO] wbb_data_build: schedules 2027: done -- 5806 rows in 15.5s
-2026-11-14 12:05:31 [INFO] wbb_data_build: schedules 2027: season complete -- 5806 rows
-2026-11-14 12:05:32 [INFO] wbb_data_build: espn_womens_college_basketball_schedules: release seasons are contiguous
+2026-11-14 14:20:31 [INFO] wbb_data_build: schedules 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:20:34 [INFO] wbb_data_build: wrote wbb/schedules/parquet/wbb_schedule_2027.parquet (524.2KB) + wbb_schedule_2027.rds (752.5KB) + wbb_schedule_2027.csv (14.4MB), 5806 rows x 97 cols; manifest wbb_schedules_in_data_repo.csv upserted
+2026-11-14 14:20:34 [INFO] wbb_data_build: uploading wbb_schedule_2027.parquet (524.2KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
+2026-11-14 14:20:36 [INFO] wbb_data_build: uploaded wbb_schedule_2027.parquet -> espn_womens_college_basketball_schedules (asset 1/3)
+2026-11-14 14:20:36 [INFO] wbb_data_build: uploading wbb_schedule_2027.rds (752.5KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
+2026-11-14 14:20:38 [INFO] wbb_data_build: uploaded wbb_schedule_2027.rds -> espn_womens_college_basketball_schedules (asset 2/3)
+2026-11-14 14:20:38 [INFO] wbb_data_build: uploading wbb_schedule_2027.csv (14.4MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_schedules
+2026-11-14 14:20:41 [INFO] wbb_data_build: uploaded wbb_schedule_2027.csv -> espn_womens_college_basketball_schedules (asset 3/3)
+2026-11-14 14:20:49 [INFO] wbb_data_build: stamped espn_womens_college_basketball_schedules with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:20:49 [INFO] wbb_data_build: schedules 2027: done -- 5806 rows in 18.1s
+2026-11-14 14:20:49 [INFO] wbb_data_build: schedules 2027: season complete -- 5806 rows
+2026-11-14 14:20:49 [INFO] wbb_data_build: espn_womens_college_basketball_schedules: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build shots 2027
-2026-11-14 12:05:33 [INFO] wbb_data_build: shots 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:05:38 [INFO] wbb_data_build: wrote wbb/shots/parquet/shots_2027.parquet (1.3MB) + shots_2027.rds (1.5MB) + shots_2027.csv (13.3MB), 114129 rows x 20 cols; manifest wbb_shots_in_data_repo.csv upserted
-2026-11-14 12:05:38 [INFO] wbb_data_build: uploading shots_2027.parquet (1.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_shots
-2026-11-14 12:05:40 [INFO] wbb_data_build: uploaded shots_2027.parquet -> espn_womens_college_basketball_shots (asset 1/3)
-2026-11-14 12:05:40 [INFO] wbb_data_build: uploading shots_2027.rds (1.5MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_shots
-2026-11-14 12:05:42 [INFO] wbb_data_build: uploaded shots_2027.rds -> espn_womens_college_basketball_shots (asset 2/3)
-2026-11-14 12:05:42 [INFO] wbb_data_build: uploading shots_2027.csv (13.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_shots
-2026-11-14 12:05:44 [INFO] wbb_data_build: uploaded shots_2027.csv -> espn_womens_college_basketball_shots (asset 3/3)
-2026-11-14 12:05:51 [INFO] wbb_data_build: stamped espn_womens_college_basketball_shots with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:05:51 [INFO] wbb_data_build: shots 2027: done -- 114129 rows in 17.7s
-2026-11-14 12:05:51 [INFO] wbb_data_build: shots 2027: season complete -- 114129 rows
-2026-11-14 12:05:51 [INFO] wbb_data_build: espn_womens_college_basketball_shots: release seasons are contiguous
+2026-11-14 14:20:52 [INFO] wbb_data_build: shots 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:20:58 [INFO] wbb_data_build: wrote wbb/shots/parquet/shots_2027.parquet (1.3MB) + shots_2027.rds (1.5MB) + shots_2027.csv (13.3MB), 114129 rows x 20 cols; manifest wbb_shots_in_data_repo.csv upserted
+2026-11-14 14:20:59 [INFO] wbb_data_build: uploading shots_2027.parquet (1.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_shots
+2026-11-14 14:21:01 [INFO] wbb_data_build: uploaded shots_2027.parquet -> espn_womens_college_basketball_shots (asset 1/3)
+2026-11-14 14:21:01 [INFO] wbb_data_build: uploading shots_2027.rds (1.5MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_shots
+2026-11-14 14:21:03 [INFO] wbb_data_build: uploaded shots_2027.rds -> espn_womens_college_basketball_shots (asset 2/3)
+2026-11-14 14:21:03 [INFO] wbb_data_build: uploading shots_2027.csv (13.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_shots
+2026-11-14 14:21:06 [INFO] wbb_data_build: uploaded shots_2027.csv -> espn_womens_college_basketball_shots (asset 3/3)
+2026-11-14 14:21:13 [INFO] wbb_data_build: stamped espn_womens_college_basketball_shots with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:21:13 [INFO] wbb_data_build: shots 2027: done -- 114129 rows in 21.8s
+2026-11-14 14:21:13 [INFO] wbb_data_build: shots 2027: season complete -- 114129 rows
+2026-11-14 14:21:14 [INFO] wbb_data_build: espn_womens_college_basketball_shots: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build rosters 2027
-2026-11-14 12:05:53 [INFO] wbb_data_build: rosters 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:06:01 [INFO] wbb_data_build: wrote wbb/rosters/parquet/rosters_2027.parquet (745.2KB) + rosters_2027.rds (857.4KB) + rosters_2027.csv (3.7MB), 9903 rows x 36 cols; manifest wbb_rosters_in_data_repo.csv upserted
-2026-11-14 12:06:02 [INFO] wbb_data_build: uploading rosters_2027.parquet (745.2KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_rosters
-2026-11-14 12:06:03 [INFO] wbb_data_build: uploaded rosters_2027.parquet -> espn_womens_college_basketball_rosters (asset 1/3)
-2026-11-14 12:06:03 [INFO] wbb_data_build: uploading rosters_2027.rds (857.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_rosters
-2026-11-14 12:06:05 [INFO] wbb_data_build: uploaded rosters_2027.rds -> espn_womens_college_basketball_rosters (asset 2/3)
-2026-11-14 12:06:05 [INFO] wbb_data_build: uploading rosters_2027.csv (3.7MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_rosters
-2026-11-14 12:06:07 [INFO] wbb_data_build: uploaded rosters_2027.csv -> espn_womens_college_basketball_rosters (asset 3/3)
-2026-11-14 12:06:14 [INFO] wbb_data_build: stamped espn_womens_college_basketball_rosters with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:06:14 [INFO] wbb_data_build: rosters 2027: done -- 9903 rows in 21.0s
-2026-11-14 12:06:14 [INFO] wbb_data_build: rosters 2027: season complete -- 9903 rows
-2026-11-14 12:06:14 [INFO] wbb_data_build: espn_womens_college_basketball_rosters: release seasons are contiguous
+2026-11-14 14:21:16 [INFO] wbb_data_build: rosters 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:21:25 [INFO] wbb_data_build: wrote wbb/rosters/parquet/rosters_2027.parquet (745.2KB) + rosters_2027.rds (857.4KB) + rosters_2027.csv (3.7MB), 9903 rows x 36 cols; manifest wbb_rosters_in_data_repo.csv upserted
+2026-11-14 14:21:26 [INFO] wbb_data_build: uploading rosters_2027.parquet (745.2KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_rosters
+2026-11-14 14:21:28 [INFO] wbb_data_build: uploaded rosters_2027.parquet -> espn_womens_college_basketball_rosters (asset 1/3)
+2026-11-14 14:21:28 [INFO] wbb_data_build: uploading rosters_2027.rds (857.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_rosters
+2026-11-14 14:21:30 [INFO] wbb_data_build: uploaded rosters_2027.rds -> espn_womens_college_basketball_rosters (asset 2/3)
+2026-11-14 14:21:30 [INFO] wbb_data_build: uploading rosters_2027.csv (3.7MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_rosters
+2026-11-14 14:21:32 [INFO] wbb_data_build: uploaded rosters_2027.csv -> espn_womens_college_basketball_rosters (asset 3/3)
+2026-11-14 14:21:39 [INFO] wbb_data_build: stamped espn_womens_college_basketball_rosters with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:21:39 [INFO] wbb_data_build: rosters 2027: done -- 9903 rows in 23.2s
+2026-11-14 14:21:39 [INFO] wbb_data_build: rosters 2027: season complete -- 9903 rows
+2026-11-14 14:21:40 [INFO] wbb_data_build: espn_womens_college_basketball_rosters: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build player_season_stats 2027
-2026-11-14 12:06:16 [INFO] wbb_data_build: player_season_stats 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:07:27 [INFO] wbb_data_build: wrote wbb/player_season_stats/parquet/player_season_stats_2027.parquet (572.1KB) + player_season_stats_2027.rds (1.1MB) + player_season_stats_2027.csv (50.8MB), 259296 rows x 16 cols; manifest wbb_player_season_stats_in_data_repo.csv upserted
-2026-11-14 12:07:28 [INFO] wbb_data_build: uploading player_season_stats_2027.parquet (572.1KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_season_stats
-2026-11-14 12:07:30 [INFO] wbb_data_build: uploaded player_season_stats_2027.parquet -> espn_womens_college_basketball_player_season_stats (asset 1/3)
-2026-11-14 12:07:30 [INFO] wbb_data_build: uploading player_season_stats_2027.rds (1.1MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_season_stats
-2026-11-14 12:07:31 [INFO] wbb_data_build: uploaded player_season_stats_2027.rds -> espn_womens_college_basketball_player_season_stats (asset 2/3)
-2026-11-14 12:07:31 [INFO] wbb_data_build: uploading player_season_stats_2027.csv (50.8MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_season_stats
-2026-11-14 12:07:35 [INFO] wbb_data_build: uploaded player_season_stats_2027.csv -> espn_womens_college_basketball_player_season_stats (asset 3/3)
-2026-11-14 12:07:42 [INFO] wbb_data_build: stamped espn_womens_college_basketball_player_season_stats with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:07:42 [INFO] wbb_data_build: player_season_stats 2027: done -- 259296 rows in 86.1s
-2026-11-14 12:07:42 [INFO] wbb_data_build: player_season_stats 2027: season complete -- 259296 rows
-2026-11-14 12:07:42 [INFO] wbb_data_build: espn_womens_college_basketball_player_season_stats: release seasons are contiguous
+2026-11-14 14:21:42 [INFO] wbb_data_build: player_season_stats 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:23:20 [INFO] wbb_data_build: wrote wbb/player_season_stats/parquet/player_season_stats_2027.parquet (572.1KB) + player_season_stats_2027.rds (1.1MB) + player_season_stats_2027.csv (50.8MB), 259296 rows x 16 cols; manifest wbb_player_season_stats_in_data_repo.csv upserted
+2026-11-14 14:23:20 [INFO] wbb_data_build: uploading player_season_stats_2027.parquet (572.1KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_season_stats
+2026-11-14 14:23:22 [INFO] wbb_data_build: uploaded player_season_stats_2027.parquet -> espn_womens_college_basketball_player_season_stats (asset 1/3)
+2026-11-14 14:23:22 [INFO] wbb_data_build: uploading player_season_stats_2027.rds (1.1MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_season_stats
+2026-11-14 14:23:24 [INFO] wbb_data_build: uploaded player_season_stats_2027.rds -> espn_womens_college_basketball_player_season_stats (asset 2/3)
+2026-11-14 14:23:24 [INFO] wbb_data_build: uploading player_season_stats_2027.csv (50.8MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_player_season_stats
+2026-11-14 14:23:28 [INFO] wbb_data_build: uploaded player_season_stats_2027.csv -> espn_womens_college_basketball_player_season_stats (asset 3/3)
+2026-11-14 14:23:36 [INFO] wbb_data_build: stamped espn_womens_college_basketball_player_season_stats with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:23:36 [INFO] wbb_data_build: player_season_stats 2027: done -- 259296 rows in 114.4s
+2026-11-14 14:23:36 [INFO] wbb_data_build: player_season_stats 2027: season complete -- 259296 rows
+2026-11-14 14:23:37 [INFO] wbb_data_build: espn_womens_college_basketball_player_season_stats: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build team_season_stats 2027
-2026-11-14 12:07:44 [INFO] wbb_data_build: team_season_stats 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:07:49 [INFO] wbb_data_build: wrote wbb/team_season_stats/parquet/team_season_stats_2027.parquet (101.3KB) + team_season_stats_2027.rds (144.4KB) + team_season_stats_2027.csv (4.8MB), 23985 rows x 16 cols; manifest wbb_team_season_stats_in_data_repo.csv upserted
-2026-11-14 12:07:49 [INFO] wbb_data_build: uploading team_season_stats_2027.parquet (101.3KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_season_stats
-2026-11-14 12:07:51 [INFO] wbb_data_build: uploaded team_season_stats_2027.parquet -> espn_womens_college_basketball_team_season_stats (asset 1/3)
-2026-11-14 12:07:51 [INFO] wbb_data_build: uploading team_season_stats_2027.rds (144.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_season_stats
-2026-11-14 12:07:53 [INFO] wbb_data_build: uploaded team_season_stats_2027.rds -> espn_womens_college_basketball_team_season_stats (asset 2/3)
-2026-11-14 12:07:53 [INFO] wbb_data_build: uploading team_season_stats_2027.csv (4.8MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_season_stats
-2026-11-14 12:07:55 [INFO] wbb_data_build: uploaded team_season_stats_2027.csv -> espn_womens_college_basketball_team_season_stats (asset 3/3)
-2026-11-14 12:08:02 [INFO] wbb_data_build: stamped espn_womens_college_basketball_team_season_stats with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:08:02 [INFO] wbb_data_build: team_season_stats 2027: done -- 23985 rows in 18.5s
-2026-11-14 12:08:02 [INFO] wbb_data_build: team_season_stats 2027: season complete -- 23985 rows
-2026-11-14 12:08:03 [INFO] wbb_data_build: espn_womens_college_basketball_team_season_stats: release seasons are contiguous
+2026-11-14 14:23:39 [INFO] wbb_data_build: team_season_stats 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:23:47 [INFO] wbb_data_build: wrote wbb/team_season_stats/parquet/team_season_stats_2027.parquet (101.3KB) + team_season_stats_2027.rds (144.4KB) + team_season_stats_2027.csv (4.8MB), 23985 rows x 16 cols; manifest wbb_team_season_stats_in_data_repo.csv upserted
+2026-11-14 14:23:47 [INFO] wbb_data_build: uploading team_season_stats_2027.parquet (101.3KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_season_stats
+2026-11-14 14:23:49 [INFO] wbb_data_build: uploaded team_season_stats_2027.parquet -> espn_womens_college_basketball_team_season_stats (asset 1/3)
+2026-11-14 14:23:49 [INFO] wbb_data_build: uploading team_season_stats_2027.rds (144.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_season_stats
+2026-11-14 14:23:51 [INFO] wbb_data_build: uploaded team_season_stats_2027.rds -> espn_womens_college_basketball_team_season_stats (asset 2/3)
+2026-11-14 14:23:51 [INFO] wbb_data_build: uploading team_season_stats_2027.csv (4.8MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_team_season_stats
+2026-11-14 14:23:54 [INFO] wbb_data_build: uploaded team_season_stats_2027.csv -> espn_womens_college_basketball_team_season_stats (asset 3/3)
+2026-11-14 14:24:01 [INFO] wbb_data_build: stamped espn_womens_college_basketball_team_season_stats with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:24:01 [INFO] wbb_data_build: team_season_stats 2027: done -- 23985 rows in 22.6s
+2026-11-14 14:24:01 [INFO] wbb_data_build: team_season_stats 2027: season complete -- 23985 rows
+2026-11-14 14:24:02 [INFO] wbb_data_build: espn_womens_college_basketball_team_season_stats: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build standings 2027
-2026-11-14 12:08:04 [INFO] wbb_data_build: standings 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:08:05 [INFO] wbb_data_build: wrote wbb/standings/parquet/standings_2027.parquet (57.2KB) + standings_2027.rds (108.7KB) + standings_2027.csv (7.2MB), 30492 rows x 24 cols; manifest wbb_standings_in_data_repo.csv upserted
-2026-11-14 12:08:05 [INFO] wbb_data_build: uploading standings_2027.parquet (57.2KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
-2026-11-14 12:08:07 [INFO] wbb_data_build: uploaded standings_2027.parquet -> espn_womens_college_basketball_standings (asset 1/3)
-2026-11-14 12:08:07 [INFO] wbb_data_build: uploading standings_2027.rds (108.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
-2026-11-14 12:08:09 [INFO] wbb_data_build: uploaded standings_2027.rds -> espn_womens_college_basketball_standings (asset 2/3)
-2026-11-14 12:08:09 [INFO] wbb_data_build: uploading standings_2027.csv (7.2MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
-2026-11-14 12:08:12 [INFO] wbb_data_build: uploaded standings_2027.csv -> espn_womens_college_basketball_standings (asset 3/3)
-2026-11-14 12:08:18 [INFO] wbb_data_build: stamped espn_womens_college_basketball_standings with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:08:18 [INFO] wbb_data_build: standings 2027: done -- 30492 rows in 14.2s
-2026-11-14 12:08:18 [INFO] wbb_data_build: standings 2027: season complete -- 30492 rows
-2026-11-14 12:08:19 [INFO] wbb_data_build: espn_womens_college_basketball_standings: release seasons are contiguous
+2026-11-14 14:24:04 [INFO] wbb_data_build: standings 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:24:06 [INFO] wbb_data_build: wrote wbb/standings/parquet/standings_2027.parquet (57.2KB) + standings_2027.rds (108.7KB) + standings_2027.csv (7.2MB), 30492 rows x 24 cols; manifest wbb_standings_in_data_repo.csv upserted
+2026-11-14 14:24:07 [INFO] wbb_data_build: uploading standings_2027.parquet (57.2KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
+2026-11-14 14:24:09 [INFO] wbb_data_build: uploaded standings_2027.parquet -> espn_womens_college_basketball_standings (asset 1/3)
+2026-11-14 14:24:09 [INFO] wbb_data_build: uploading standings_2027.rds (108.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
+2026-11-14 14:24:11 [INFO] wbb_data_build: uploaded standings_2027.rds -> espn_womens_college_basketball_standings (asset 2/3)
+2026-11-14 14:24:11 [INFO] wbb_data_build: uploading standings_2027.csv (7.2MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_standings
+2026-11-14 14:24:13 [INFO] wbb_data_build: uploaded standings_2027.csv -> espn_womens_college_basketball_standings (asset 3/3)
+2026-11-14 14:24:21 [INFO] wbb_data_build: stamped espn_womens_college_basketball_standings with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:24:21 [INFO] wbb_data_build: standings 2027: done -- 30492 rows in 17.3s
+2026-11-14 14:24:21 [INFO] wbb_data_build: standings 2027: season complete -- 30492 rows
+2026-11-14 14:24:22 [INFO] wbb_data_build: espn_womens_college_basketball_standings: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build game_rosters 2027
-2026-11-14 12:08:20 [INFO] wbb_data_build: game_rosters 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:08:36 [INFO] wbb_data_build: wrote wbb/game_rosters/parquet/game_rosters_2027.parquet (508.4KB) + game_rosters_2027.rds (965.7KB) + game_rosters_2027.csv (4.8MB), 20629 rows x 22 cols; manifest wbb_game_rosters_in_data_repo.csv upserted
-2026-11-14 12:08:36 [INFO] wbb_data_build: uploading game_rosters_2027.parquet (508.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_game_rosters
-2026-11-14 12:08:38 [INFO] wbb_data_build: uploaded game_rosters_2027.parquet -> espn_womens_college_basketball_game_rosters (asset 1/3)
-2026-11-14 12:08:38 [INFO] wbb_data_build: uploading game_rosters_2027.rds (965.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_game_rosters
-2026-11-14 12:08:40 [INFO] wbb_data_build: uploaded game_rosters_2027.rds -> espn_womens_college_basketball_game_rosters (asset 2/3)
-2026-11-14 12:08:40 [INFO] wbb_data_build: uploading game_rosters_2027.csv (4.8MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_game_rosters
-2026-11-14 12:08:42 [INFO] wbb_data_build: uploaded game_rosters_2027.csv -> espn_womens_college_basketball_game_rosters (asset 3/3)
-2026-11-14 12:08:49 [INFO] wbb_data_build: stamped espn_womens_college_basketball_game_rosters with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:08:49 [INFO] wbb_data_build: game_rosters 2027: done -- 20629 rows in 29.2s
-2026-11-14 12:08:49 [INFO] wbb_data_build: game_rosters 2027: season complete -- 20629 rows
-2026-11-14 12:08:50 [INFO] wbb_data_build: espn_womens_college_basketball_game_rosters: release seasons are contiguous
+2026-11-14 14:24:24 [INFO] wbb_data_build: game_rosters 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:24:42 [INFO] wbb_data_build: wrote wbb/game_rosters/parquet/game_rosters_2027.parquet (508.4KB) + game_rosters_2027.rds (965.7KB) + game_rosters_2027.csv (4.8MB), 20629 rows x 22 cols; manifest wbb_game_rosters_in_data_repo.csv upserted
+2026-11-14 14:24:42 [INFO] wbb_data_build: uploading game_rosters_2027.parquet (508.4KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_game_rosters
+2026-11-14 14:24:44 [INFO] wbb_data_build: uploaded game_rosters_2027.parquet -> espn_womens_college_basketball_game_rosters (asset 1/3)
+2026-11-14 14:24:44 [INFO] wbb_data_build: uploading game_rosters_2027.rds (965.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_game_rosters
+2026-11-14 14:24:46 [INFO] wbb_data_build: uploaded game_rosters_2027.rds -> espn_womens_college_basketball_game_rosters (asset 2/3)
+2026-11-14 14:24:46 [INFO] wbb_data_build: uploading game_rosters_2027.csv (4.8MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_game_rosters
+2026-11-14 14:24:49 [INFO] wbb_data_build: uploaded game_rosters_2027.csv -> espn_womens_college_basketball_game_rosters (asset 3/3)
+2026-11-14 14:24:56 [INFO] wbb_data_build: stamped espn_womens_college_basketball_game_rosters with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:24:56 [INFO] wbb_data_build: game_rosters 2027: done -- 20629 rows in 32.1s
+2026-11-14 14:24:56 [INFO] wbb_data_build: game_rosters 2027: season complete -- 20629 rows
+2026-11-14 14:24:57 [INFO] wbb_data_build: espn_womens_college_basketball_game_rosters: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build officials 2027
-2026-11-14 12:08:51 [INFO] wbb_data_build: officials 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
-2026-11-14 12:09:00 [INFO] wbb_data_build: wrote wbb/officials/parquet/officials_2027.parquet (35.9KB) + officials_2027.rds (36.7KB) + officials_2027.csv (173.5KB), 2110 rows x 11 cols; manifest wbb_officials_in_data_repo.csv upserted
-2026-11-14 12:09:00 [INFO] wbb_data_build: uploading officials_2027.parquet (35.9KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_officials
-2026-11-14 12:09:02 [INFO] wbb_data_build: uploaded officials_2027.parquet -> espn_womens_college_basketball_officials (asset 1/3)
-2026-11-14 12:09:02 [INFO] wbb_data_build: uploading officials_2027.rds (36.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_officials
-2026-11-14 12:09:04 [INFO] wbb_data_build: uploaded officials_2027.rds -> espn_womens_college_basketball_officials (asset 2/3)
-2026-11-14 12:09:04 [INFO] wbb_data_build: uploading officials_2027.csv (173.5KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_officials
-2026-11-14 12:09:05 [INFO] wbb_data_build: uploaded officials_2027.csv -> espn_womens_college_basketball_officials (asset 3/3)
-2026-11-14 12:09:12 [INFO] wbb_data_build: stamped espn_womens_college_basketball_officials with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:09:12 [INFO] wbb_data_build: officials 2027: done -- 2110 rows in 21.1s
-2026-11-14 12:09:12 [INFO] wbb_data_build: officials 2027: season complete -- 2110 rows
-2026-11-14 12:09:12 [INFO] wbb_data_build: espn_womens_college_basketball_officials: release seasons are contiguous
+2026-11-14 14:24:59 [INFO] wbb_data_build: officials 2027: season-level build starting (raw=https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main via http)
+2026-11-14 14:25:11 [INFO] wbb_data_build: wrote wbb/officials/parquet/officials_2027.parquet (35.9KB) + officials_2027.rds (36.7KB) + officials_2027.csv (173.5KB), 2110 rows x 11 cols; manifest wbb_officials_in_data_repo.csv upserted
+2026-11-14 14:25:12 [INFO] wbb_data_build: uploading officials_2027.parquet (35.9KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_officials
+2026-11-14 14:25:13 [INFO] wbb_data_build: uploaded officials_2027.parquet -> espn_womens_college_basketball_officials (asset 1/3)
+2026-11-14 14:25:13 [INFO] wbb_data_build: uploading officials_2027.rds (36.7KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_officials
+2026-11-14 14:25:15 [INFO] wbb_data_build: uploaded officials_2027.rds -> espn_womens_college_basketball_officials (asset 2/3)
+2026-11-14 14:25:15 [INFO] wbb_data_build: uploading officials_2027.csv (173.5KB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_officials
+2026-11-14 14:25:17 [INFO] wbb_data_build: uploaded officials_2027.csv -> espn_womens_college_basketball_officials (asset 3/3)
+2026-11-14 14:25:25 [INFO] wbb_data_build: stamped espn_womens_college_basketball_officials with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:25:25 [INFO] wbb_data_build: officials 2027: done -- 2110 rows in 26.2s
+2026-11-14 14:25:25 [INFO] wbb_data_build: officials 2027: season complete -- 2110 rows
+2026-11-14 14:25:25 [INFO] wbb_data_build: espn_womens_college_basketball_officials: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build team_crosswalk 2027
-2026-11-14 12:09:14 [INFO] wbb_data_build: team_crosswalk 2027: season-level build starting (raw=None via disk)
-2026-11-14 12:09:20 [INFO] wbb_data_build: wrote wbb/crosswalk/parquet/wbb_team_crosswalk_2027.parquet (30.4KB) + wbb_team_crosswalk_2027.rds (21.9KB), 363 rows x 18 cols; manifest wbb_team_crosswalk_in_data_repo.csv upserted
-2026-11-14 12:09:21 [INFO] wbb_data_build: uploading wbb_team_crosswalk_2027.parquet (30.4KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:09:23 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_2027.parquet -> wbb_crosswalk (asset 1/4)
-2026-11-14 12:09:23 [INFO] wbb_data_build: uploading wbb_team_crosswalk_2027.rds (21.9KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:09:25 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_2027.rds -> wbb_crosswalk (asset 2/4)
-2026-11-14 12:09:25 [INFO] wbb_data_build: uploading wbb_team_crosswalk_2027.csv (67.5KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:09:27 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_2027.csv -> wbb_crosswalk (asset 3/4)
-2026-11-14 12:09:27 [INFO] wbb_data_build: uploading wbb_team_crosswalk_in_data_repo.csv (1.6KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:09:29 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_in_data_repo.csv -> wbb_crosswalk (asset 4/4)
-2026-11-14 12:09:36 [INFO] wbb_data_build: stamped wbb_crosswalk with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:09:36 [INFO] wbb_data_build: team_crosswalk 2027: done -- 363 rows in 22.0s
-2026-11-14 12:09:36 [INFO] wbb_data_build: team_crosswalk 2027: season complete -- 363 rows
-2026-11-14 12:09:36 [INFO] wbb_data_build: wbb_crosswalk: release seasons are contiguous
+2026-11-14 14:25:28 [INFO] wbb_data_build: team_crosswalk 2027: season-level build starting (raw=None via disk)
+2026-11-14 14:25:37 [INFO] wbb_data_build: wrote wbb/crosswalk/parquet/wbb_team_crosswalk_2027.parquet (30.4KB) + wbb_team_crosswalk_2027.rds (21.9KB), 363 rows x 18 cols; manifest wbb_team_crosswalk_in_data_repo.csv upserted
+2026-11-14 14:25:38 [INFO] wbb_data_build: uploading wbb_team_crosswalk_2027.parquet (30.4KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:25:40 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_2027.parquet -> wbb_crosswalk (asset 1/4)
+2026-11-14 14:25:40 [INFO] wbb_data_build: uploading wbb_team_crosswalk_2027.rds (21.9KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:25:42 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_2027.rds -> wbb_crosswalk (asset 2/4)
+2026-11-14 14:25:42 [INFO] wbb_data_build: uploading wbb_team_crosswalk_2027.csv (67.5KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:25:44 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_2027.csv -> wbb_crosswalk (asset 3/4)
+2026-11-14 14:25:44 [INFO] wbb_data_build: uploading wbb_team_crosswalk_in_data_repo.csv (1.6KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:25:46 [INFO] wbb_data_build: uploaded wbb_team_crosswalk_in_data_repo.csv -> wbb_crosswalk (asset 4/4)
+2026-11-14 14:25:55 [INFO] wbb_data_build: stamped wbb_crosswalk with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:25:55 [INFO] wbb_data_build: team_crosswalk 2027: done -- 363 rows in 26.9s
+2026-11-14 14:25:55 [INFO] wbb_data_build: team_crosswalk 2027: season complete -- 363 rows
+2026-11-14 14:25:55 [INFO] wbb_data_build: wbb_crosswalk: release seasons are contiguous
 ::endgroup::
 ::group::wbb_data_build schedule_crosswalk 2027
-2026-11-14 12:09:38 [INFO] wbb_data_build: schedule_crosswalk 2027: season-level build starting (raw=None via disk)
+2026-11-14 14:25:57 [INFO] wbb_data_build: schedule_crosswalk 2027: season-level build starting (raw=None via disk)
 Traceback (most recent call last):
   File "/home/runner/work/wehoop-wbb-data/wehoop-wbb-data/.venv/lib/python3.12/site-packages/sportsdataverse/_crosswalk_basketball_sources.py", line 159, in require_source
     out = fetch()
@@ -253,46 +253,46 @@ sportsdataverse._crosswalk_basketball_sources.CrosswalkSourceError: bart_wbb_rat
 ::warning ::wbb_data_build schedule_crosswalk for season 2027 exited with code 1 (crosswalk; non-fatal, live external source)
 ::endgroup::
 ::group::wbb_data_build player_crosswalk 2027
-2026-11-14 12:09:45 [INFO] wbb_data_build: player_crosswalk 2027: season-level build starting (raw=None via disk)
-2026-11-14 12:10:46 [INFO] wbb_data_build: player_crosswalk 2027: yahoo_player_id carried forward 1698
-2026-11-14 12:10:46 [INFO] wbb_data_build: player_crosswalk 2027: fox_athlete_id carried forward 86
-2026-11-14 12:10:46 [INFO] wbb_data_build: player_crosswalk 2027: ncaa_player_id 4920/4955 (NCAA aliases for the season 4959)
-2026-11-14 12:10:46 [INFO] wbb_data_build: wrote wbb/crosswalk/parquet/wbb_player_crosswalk_2027.parquet (176.3KB) + wbb_player_crosswalk_2027.rds (200.5KB), 4955 rows x 18 cols; manifest wbb_player_crosswalk_in_data_repo.csv upserted
-2026-11-14 12:10:47 [INFO] wbb_data_build: uploading wbb_player_crosswalk_2027.parquet (176.3KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:10:49 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_2027.parquet -> wbb_crosswalk (asset 1/4)
-2026-11-14 12:10:49 [INFO] wbb_data_build: uploading wbb_player_crosswalk_2027.rds (200.5KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:10:51 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_2027.rds -> wbb_crosswalk (asset 2/4)
-2026-11-14 12:10:51 [INFO] wbb_data_build: uploading wbb_player_crosswalk_2027.csv (576.6KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:10:53 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_2027.csv -> wbb_crosswalk (asset 3/4)
-2026-11-14 12:10:53 [INFO] wbb_data_build: uploading wbb_player_crosswalk_in_data_repo.csv (1.4KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
-2026-11-14 12:10:54 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_in_data_repo.csv -> wbb_crosswalk (asset 4/4)
-2026-11-14 12:11:02 [INFO] wbb_data_build: stamped wbb_crosswalk with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:11:02 [INFO] wbb_data_build: player_crosswalk 2027: done -- 4955 rows in 77.0s
-2026-11-14 12:11:02 [INFO] wbb_data_build: player_crosswalk 2027: season complete -- 4955 rows
-2026-11-14 12:11:02 [INFO] wbb_data_build: wbb_crosswalk: release seasons are contiguous
+2026-11-14 14:26:05 [INFO] wbb_data_build: player_crosswalk 2027: season-level build starting (raw=None via disk)
+2026-11-14 14:27:48 [INFO] wbb_data_build: player_crosswalk 2027: yahoo_player_id carried forward 1698
+2026-11-14 14:27:48 [INFO] wbb_data_build: player_crosswalk 2027: fox_athlete_id carried forward 15
+2026-11-14 14:27:48 [INFO] wbb_data_build: player_crosswalk 2027: ncaa_player_id 4932/4968 (NCAA aliases for the season 4959)
+2026-11-14 14:27:49 [INFO] wbb_data_build: wrote wbb/crosswalk/parquet/wbb_player_crosswalk_2027.parquet (176.3KB) + wbb_player_crosswalk_2027.rds (200.9KB), 4968 rows x 18 cols; manifest wbb_player_crosswalk_in_data_repo.csv upserted
+2026-11-14 14:27:49 [INFO] wbb_data_build: uploading wbb_player_crosswalk_2027.parquet (176.3KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:27:51 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_2027.parquet -> wbb_crosswalk (asset 1/4)
+2026-11-14 14:27:51 [INFO] wbb_data_build: uploading wbb_player_crosswalk_2027.rds (200.9KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:27:53 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_2027.rds -> wbb_crosswalk (asset 2/4)
+2026-11-14 14:27:53 [INFO] wbb_data_build: uploading wbb_player_crosswalk_2027.csv (578.7KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:27:55 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_2027.csv -> wbb_crosswalk (asset 3/4)
+2026-11-14 14:27:55 [INFO] wbb_data_build: uploading wbb_player_crosswalk_in_data_repo.csv (1.4KB) -> sportsdataverse/sportsdataverse-data:wbb_crosswalk
+2026-11-14 14:27:58 [INFO] wbb_data_build: uploaded wbb_player_crosswalk_in_data_repo.csv -> wbb_crosswalk (asset 4/4)
+2026-11-14 14:28:06 [INFO] wbb_data_build: stamped wbb_crosswalk with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:28:06 [INFO] wbb_data_build: player_crosswalk 2027: done -- 4968 rows in 120.4s
+2026-11-14 14:28:06 [INFO] wbb_data_build: player_crosswalk 2027: season complete -- 4968 rows
+2026-11-14 14:28:06 [INFO] wbb_data_build: wbb_crosswalk: release seasons are contiguous
 ::endgroup::
 ::group::schedule master 2027
 master:   143614 games across 27 seasons
 manifest: 69908 games in >=1 compilation
 coverage: 53 rows
-  in_game_rosters: 7649
-  in_officials: 6499
+  in_game_rosters: 7686
+  in_officials: 6535
   in_pbp: 55836
   in_player_box: 69524
-  in_shots: 55799
+  in_shots: 55836
   in_team_box: 68738
 ::endgroup::
 ::group::wp_enrich 2027
-2026-11-14 12:11:28 [INFO] wbb_data_build: wrote wbb/pbp/parquet/play_by_play_2027.parquet (9.3MB) + play_by_play_2027.rds (11.3MB) + play_by_play_2027.csv (173.6MB), 366062 rows x 71 cols; manifest wbb_pbp_in_data_repo.csv upserted
-2026-11-14 12:11:28 [INFO] wbb_data_build: pbp 2027: WP contract ok -- finite rates {'pregame_home_prob': 1.0, 'home_win_prob': 1.0}
-2026-11-14 12:11:29 [INFO] wbb_data_build: uploading play_by_play_2027.parquet (9.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_pbp
-2026-11-14 12:11:31 [INFO] wbb_data_build: uploaded play_by_play_2027.parquet -> espn_womens_college_basketball_pbp (asset 1/3)
-2026-11-14 12:11:31 [INFO] wbb_data_build: uploading play_by_play_2027.rds (11.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_pbp
-2026-11-14 12:11:33 [INFO] wbb_data_build: uploaded play_by_play_2027.rds -> espn_womens_college_basketball_pbp (asset 2/3)
-2026-11-14 12:11:33 [INFO] wbb_data_build: uploading play_by_play_2027.csv (173.6MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_pbp
-2026-11-14 12:11:39 [INFO] wbb_data_build: uploaded play_by_play_2027.csv -> espn_womens_college_basketball_pbp (asset 3/3)
-2026-11-14 12:11:46 [INFO] wbb_data_build: stamped espn_womens_college_basketball_pbp with timestamp.txt, timestamp.json, package_function.txt, package_function.json
-2026-11-14 12:11:46 [INFO] wbb_data_build: wp 2027: published parquet+csv+rds with ['pregame_home_prob', 'home_win_prob'] (366062 rows)
+2026-11-14 14:28:46 [INFO] wbb_data_build: wrote wbb/pbp/parquet/play_by_play_2027.parquet (9.3MB) + play_by_play_2027.rds (11.3MB) + play_by_play_2027.csv (173.6MB), 366062 rows x 71 cols; manifest wbb_pbp_in_data_repo.csv upserted
+2026-11-14 14:28:46 [INFO] wbb_data_build: pbp 2027: WP contract ok -- finite rates {'pregame_home_prob': 1.0, 'home_win_prob': 1.0}
+2026-11-14 14:28:46 [INFO] wbb_data_build: uploading play_by_play_2027.parquet (9.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_pbp
+2026-11-14 14:28:49 [INFO] wbb_data_build: uploaded play_by_play_2027.parquet -> espn_womens_college_basketball_pbp (asset 1/3)
+2026-11-14 14:28:49 [INFO] wbb_data_build: uploading play_by_play_2027.rds (11.3MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_pbp
+2026-11-14 14:28:52 [INFO] wbb_data_build: uploaded play_by_play_2027.rds -> espn_womens_college_basketball_pbp (asset 2/3)
+2026-11-14 14:28:52 [INFO] wbb_data_build: uploading play_by_play_2027.csv (173.6MB) -> sportsdataverse/sportsdataverse-data:espn_womens_college_basketball_pbp
+2026-11-14 14:29:00 [INFO] wbb_data_build: uploaded play_by_play_2027.csv -> espn_womens_college_basketball_pbp (asset 3/3)
+2026-11-14 14:29:08 [INFO] wbb_data_build: stamped espn_womens_college_basketball_pbp with timestamp.txt, timestamp.json, package_function.txt, package_function.json
+2026-11-14 14:29:08 [INFO] wbb_data_build: wp 2027: published parquet+csv+rds with ['pregame_home_prob', 'home_win_prob'] (366062 rows)
 ::endgroup::
 season 2027 EXIT=0
 pushed: WBB Data update (Start: 2027 End: 2027) (attempt 1)
