@@ -8,7 +8,7 @@
 | **Release tag** | [`espn_womens_college_basketball_standings`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_standings) |
 | **File stem** | `standings_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2001–2027 (12 seasons, non-contiguous) |
-| **Last published** | 2026-11-13 (newest release asset) |
+| **Last published** | 2026-11-14 (newest release asset) |
 | **Tag created** | 2026-05-11 |
 | **Release assets** | 86 |
 
@@ -73,4 +73,4 @@
 | 2024 | 30,156 | 2026-11-13 08:19:43 UTC |
 | 2025 | 30,408 | 2026-11-13 08:21:05 UTC |
 | 2026 | 30,492 | 2026-11-03 15:18:17 UTC |
-| 2027 | 30,492 | 2026-11-13 17:58:11 UTC |
+| 2027 | 30,492 | 2026-11-14 12:08:05 UTC |
