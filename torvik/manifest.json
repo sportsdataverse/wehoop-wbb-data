@@ -35,10 +35,16 @@
     "sha256": "dae2b9c97d40914d059dc5ac1051820957f3302052241d55be42887181a9a639",
     "teams": 363
   },
+  "2027_super_sked.json": {
+    "url": "https://barttorvik.com/ncaaw/2027_super_sked.json",
+    "fetched_at_utc": "2026-11-15T22:41:43Z",
+    "sha256": "090b1a480b8b5403ef28392593b8eb1febca819240984434f8403cf23b3c82c3",
+    "games": 5753
+  },
   "2027_team_results.csv": {
     "url": "https://barttorvik.com/ncaaw/2027_team_results.csv",
-    "fetched_at_utc": "2026-11-03T11:29:25Z",
-    "sha256": "3610939f7cec576f854017715d367e64f712dc0f17d2c93f321f20b6c4964bef",
+    "fetched_at_utc": "2026-11-15T22:41:43Z",
+    "sha256": "3c363b19ea4e54506bfb5930699a84eb4df5593074f9b28f0759bd308f9ca722",
     "teams": 363
   }
 }
