@@ -29,6 +29,19 @@ jobs:
         # an uncommitted lock bump that a local .venv would otherwise mask.
         run: uv sync --frozen --dev
 
+      # tests/test_r_player_season_stats.py runs the R stage's parsers against
+      # sdv-py's helper. It used to skip here for want of R, so the R-vs-Python
+      # parity check only ever ran on a dev box. Only the packages the R driver
+      # loads -- not the DESCRIPTION's wehoop/arrow stack.
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: any::jsonlite, any::purrr, any::tibble, any::glue, any::rlang
+          install-pandoc: false
+
       - name: Tests
         # `archive` tests read the committed wbb/ parquet tree; they run in the
         # daily workflow, which already has it.

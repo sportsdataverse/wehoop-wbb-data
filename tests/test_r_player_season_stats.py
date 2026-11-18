@@ -6,8 +6,9 @@ sportsdataverse-py#1094). These run the R stage's parsers on the real 2026
 fixtures: values and team fields must equal sdv-py's helper, and the team
 fields follow the season row, not an earlier school or the roster identity.
 The traded-player Totals-row case is covered on real data by the WNBA twin of
-this stage (same code); no WBB fixture has one. Needs a local ``Rscript`` with
-jsonlite/purrr/tibble/glue/rlang; skipped otherwise (the CI runner has no R).
+this stage (same code); no WBB fixture has one. Needs ``Rscript`` with
+jsonlite/purrr/tibble/glue/rlang; never skipped -- tests.yml installs R, so a
+missing R fails loudly instead of passing as a silent skip.
 """
 
 from __future__ import annotations
@@ -19,7 +20,6 @@ import subprocess
 from pathlib import Path
 
 import polars as pl
-import pytest
 from sportsdataverse.wbb import helper_wbb_player_season_stats
 
 REPO = Path(__file__).resolve().parents[1]
@@ -46,18 +46,6 @@ out <- purrr::map_dfr(ids, function(a) parse_one_athlete(season, a, ident, args[
 cols <- c("athlete_id", "team_id", "team_display_name", "category", "stat_name", "display_value")
 utils::write.csv(out[, cols], stdout(), row.names = FALSE)
 """
-
-
-def _r_available() -> bool:
-    if shutil.which("Rscript") is None:
-        return False
-    probe = 'q(status = !all(sapply(c("jsonlite","purrr","tibble","glue","rlang"), requireNamespace, quietly = TRUE)))'
-    return subprocess.run(["Rscript", "-e", probe], capture_output=True).returncode == 0
-
-
-pytestmark = pytest.mark.skipif(
-    not _r_available(), reason="needs Rscript + jsonlite/purrr/tibble/glue/rlang"
-)
 
 
 def _run_r(tmp_path: Path, raw_base: Path, ident: dict | None = None) -> pl.DataFrame:
