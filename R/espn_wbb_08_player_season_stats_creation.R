@@ -36,6 +36,8 @@ opt <- parse_args(OptionParser(option_list = option_list))
 options(stringsAsFactors = FALSE)
 options(scipen = 999)
 years_vec <- opt$s:opt$e
+# 2006-09 payloads are ESPN career totals, withdrawn 2026-11-13; never rebuild them.
+years_vec <- years_vec[years_vec >= 2010]
 
 raw_base <- "https://raw.githubusercontent.com/sportsdataverse/wehoop-wbb-raw/main/wbb/player_season_stats/json"
 gh_api_base <- "https://api.github.com/repos/sportsdataverse/wehoop-wbb-raw/contents/wbb/player_season_stats/json"

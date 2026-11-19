@@ -15,7 +15,7 @@ import polars as pl
 
 from wbb_data_build import ingest, io, publish, reshapers
 from wbb_data_build._logging import get_logger
-from wbb_data_build.config import REGISTRY
+from wbb_data_build.config import FIRST_SEASON, REGISTRY
 
 log = get_logger()
 
@@ -53,6 +53,9 @@ def build_season(
             print(df.shape)
     """
     spec = REGISTRY[dataset]
+    floor = FIRST_SEASON.get(dataset)
+    if floor is not None and season < floor:
+        raise ValueError(f"{dataset} {season}: below the {floor} floor (config.FIRST_SEASON)")
     if dataset not in reshapers.SEASON_BUILDERS and spec.reshaper not in reshapers.RESHAPERS:
         # Every registry entry has a builder today; this guards a future entry
         # added to config.REGISTRY before its builder lands.

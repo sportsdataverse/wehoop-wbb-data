@@ -200,6 +200,12 @@ REGISTRY: dict[str, DatasetSpec] = {
 # loader (shots, game_rosters, officials) or a builder or *_manifest() function
 # that is not the tag's loader. Python-only tags name the sdv-py loader.
 #
+# Per-dataset first season a build may write. ESPN's 2006-2009 player season
+# payloads hold career totals, not one season; those assets were withdrawn on
+# 2026-11-13 (owner decision 2026-11-17), and the raw repo still has the JSON,
+# so without this floor a backfill would republish them.
+FIRST_SEASON: dict[str, int] = {"player_season_stats": 2010}
+
 # Keyed by tag, not dataset -- several datasets can share one tag.
 # The publish tests assert every REGISTRY tag has an entry, so a new dataset
 # cannot ship an unnamed tag.
