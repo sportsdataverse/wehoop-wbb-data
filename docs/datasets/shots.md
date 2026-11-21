@@ -8,7 +8,7 @@
 | **Release tag** | [`espn_womens_college_basketball_shots`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_shots) |
 | **File stem** | `shots_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2027 (24 seasons) |
-| **Last published** | 2026-11-20 (newest release asset) |
+| **Last published** | 2026-11-21 (newest release asset) |
 | **Tag created** | 2026-05-11 |
 | **Release assets** | 77 |
 
@@ -82,4 +82,4 @@
 | 2024 | 867,657 | 2026-07-29 10:43:08 UTC |
 | 2025 | 804,750 | 2026-07-29 10:46:39 UTC |
 | 2026 | 907,805 | 2026-11-03 15:16:35 UTC |
-| 2027 | 162,302 | 2026-11-20 16:58:55 UTC |
+| 2027 | 168,593 | 2026-11-21 12:07:00 UTC |
