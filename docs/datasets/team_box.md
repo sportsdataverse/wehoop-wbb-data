@@ -8,7 +8,7 @@
 | **Release tag** | [`espn_womens_college_basketball_team_boxscores`](https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_womens_college_basketball_team_boxscores) |
 | **File stem** | `team_box_{season}.{parquet,csv,rds}` |
 | **Seasons built** | 2004–2027 (12 seasons, non-contiguous) |
-| **Last published** | 2026-11-23 (newest release asset) |
+| **Last published** | 2026-11-24 (newest release asset) |
 | **Tag created** | 2023-03-30 |
 | **Release assets** | 76 |
 
@@ -109,4 +109,4 @@
 | 2012 | 2,884 | 2026-07-17 05:07:52 UTC |
 | 2013 | 3,662 | 2026-07-17 05:08:01 UTC |
 | 2026 | 12,058 | 2026-11-03 15:11:25 UTC |
-| 2027 | 2,412 | 2026-11-23 19:17:37 UTC |
+| 2027 | 2,486 | 2026-11-24 12:13:14 UTC |
