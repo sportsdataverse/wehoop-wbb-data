@@ -2,8 +2,8 @@
 
 The live build (``daily_wbb.yml``) can only see today's Fox / Yahoo rosters and scoreboards,
 so ``yahoo_player_id`` and past game ids stay null. This droplet step reads the committed
-season crosswalk, the season's ESPN schedule + game rosters from this tree, and the parsed
-alt-data season, fills only null provider ids
+season crosswalk, the season's ESPN schedule + game rosters (this tree, else the release
+asset), and the parsed alt-data season, fills only null provider ids
 (``sportsdataverse._crosswalk_alt.with_alt_game_legs`` / ``with_alt_player_legs``), refuses
 any change that loses a non-null value or a row / column, and writes (+ publishes) only when
 an id changed. :func:`carry_forward` keeps those ids through the next live rebuild.
@@ -15,15 +15,18 @@ from __future__ import annotations
 
 import argparse
 import os
+from io import BytesIO
 from pathlib import Path
 
 import polars as pl
 
-from wbb_data_build import io, publish
+from wbb_data_build import ingest, io, publish
 from wbb_data_build._logging import get_logger
 from wbb_data_build.config import REGISTRY
 
 log = get_logger()
+
+RELEASE = f"https://github.com/{publish.DEFAULT_REPO}/releases/download"
 
 LEAGUE = "wbb"
 ALT_ENV = "WEHOOP_WBB_ALT_DATA_ROOT"
@@ -57,6 +60,25 @@ def alt_root(season: int) -> Path | None:
 def _tree(dataset: str, season: int, base: Path) -> Path:
     spec = REGISTRY[dataset]
     return io.dataset_dir(spec, Path(base)) / "parquet" / f"{spec.stem}_{season}.parquet"
+
+
+def _espn_input(dataset: str, season: int, base: Path) -> pl.DataFrame:
+    """The season's ESPN ``schedules`` / ``game_rosters`` frame: this tree, else the release.
+
+    The tree is not complete (``wbb/game_rosters/parquet`` holds 2004-07 and 2023+, the
+    release 2004+), and reading it alone left every 2015-22 fill a silent no-op. Missing
+    from both raises: the season has a crosswalk and a parsed alt season, so it is a gap.
+    """
+    path = _tree(dataset, season, base)
+    if path.exists():
+        return pl.read_parquet(path)
+    spec = REGISTRY[dataset]
+    url = f"{RELEASE}/{spec.tag}/{spec.stem}_{season}.parquet"
+    body = ingest._http_get_bytes(url)  # retries 429 / 5xx with backoff
+    if body is None:
+        raise RuntimeError(f"{dataset} {season}: not in the tree and no release asset at {url}")
+    log.info("%s %s: not in the tree, read %s", dataset, season, url)
+    return pl.read_parquet(BytesIO(body))
 
 
 def _non_null(df: pl.DataFrame) -> dict[str, int]:
@@ -107,22 +129,13 @@ def fill(
     """
     base = Path(base)
     root = alt_root(season)
-    paths = {d: _tree(d, season, base) for d in (dataset, "schedules", "game_rosters")}
-    missing = [str(p) for p in paths.values() if not p.exists()]
-    if root is None or missing:
-        log.warning(
-            "%s %s: no parsed alt season or missing %s; nothing to fill", dataset, season, missing
-        )
+    path = _tree(dataset, season, base)
+    if root is None or not path.exists():
+        log.warning("%s %s: no parsed alt season or no %s; nothing to fill", dataset, season, path)
         return None
-    current = pl.read_parquet(paths[dataset])
-    frame = fill_frame(
-        dataset,
-        season,
-        current,
-        pl.read_parquet(paths["schedules"]),
-        pl.read_parquet(paths["game_rosters"]),
-        root,
-    )
+    schedule, rosters = (_espn_input(d, season, base) for d in ("schedules", "game_rosters"))
+    current = pl.read_parquet(path)
+    frame = fill_frame(dataset, season, current, schedule, rosters, root)
     before, after = _non_null(current), _non_null(frame)
     for cols in _legs(dataset).values():
         for c in (c for c in cols if c in before):
