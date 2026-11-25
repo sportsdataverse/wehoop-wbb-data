@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from io import BytesIO
+
 import polars as pl
 import pytest
 
@@ -70,3 +72,53 @@ def test_carry_forward_keeps_committed_legs_where_the_rebuild_is_null(tmp_path):
     assert out["yahoo_player_name"].to_list() == ["a", "B", "c"]
     assert out["fox_athlete_id"].to_list() == ["f1", None, None]
     assert alt_fill.carry_forward(fresh, "player_crosswalk", 2025, base).equals(fresh)
+
+
+def _tree_without_game_rosters(tmp_path, monkeypatch, body):
+    """A 2015 tree with the crosswalk + schedule but no game rosters; the release GET mocked."""
+    from wbb_data_build import ingest
+
+    base = tmp_path / "wbb"
+    for dataset, frame in (
+        ("player_crosswalk", pl.DataFrame(PLAYER)),
+        ("schedules", pl.DataFrame({"game_id": [1]})),
+    ):
+        path = alt_fill._tree(dataset, 2015, base)
+        path.parent.mkdir(parents=True)
+        frame.write_parquet(path)
+    urls = []
+    monkeypatch.setattr(ingest, "_http_get_bytes", lambda url: urls.append(url) or body)
+    monkeypatch.setattr(alt_fill, "alt_root", lambda season: tmp_path)
+    return base, urls
+
+
+def test_fill_reads_espn_inputs_the_tree_lacks_from_the_release(tmp_path, monkeypatch):
+    # wbb/game_rosters/parquet holds 2004-07 and 2023+ only; the release holds 2004+. Reading
+    # the tree alone made every 2015-22 fill a silent "nothing to fill".
+    buf = BytesIO()
+    pl.DataFrame({"game_id": [7]}).write_parquet(buf)
+    base, urls = _tree_without_game_rosters(tmp_path, monkeypatch, buf.getvalue())
+    seen = {}
+
+    def fill(league, season, xw, schedule, rosters, root):
+        seen.update(schedule=schedule["game_id"].to_list(), rosters=rosters["game_id"].to_list())
+        return xw.with_columns(pl.col("yahoo_player_id").fill_null("y"))
+
+    monkeypatch.setattr(alt, "with_alt_player_legs", fill)
+    out = tmp_path / "out"
+    frame = alt_fill.fill("player_crosswalk", 2015, base=base, out=out)
+    assert frame is not None and frame["yahoo_player_id"].to_list() == ["y", "y2", "y"]
+    assert seen == {"schedule": [1], "rosters": [7]}  # tree schedule, released game rosters
+    assert urls == [
+        "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/"
+        "espn_womens_college_basketball_game_rosters/game_rosters_2015.parquet"
+    ]
+    assert alt_fill._tree("player_crosswalk", 2015, out).exists()
+
+
+def test_fill_raises_when_an_espn_input_is_in_neither_the_tree_nor_the_release(
+    tmp_path, monkeypatch
+):
+    base, _ = _tree_without_game_rosters(tmp_path, monkeypatch, None)
+    with pytest.raises(RuntimeError, match="no release asset"):
+        alt_fill.fill("player_crosswalk", 2015, base=base, out=tmp_path / "out")
