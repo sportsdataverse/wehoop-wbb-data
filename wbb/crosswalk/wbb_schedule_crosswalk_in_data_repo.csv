@@ -1,8 +1,8 @@
 season,row_count,generated_at_utc,source_endpoint
-2021,5040,2026-11-13 16:43:03 UTC,wehoop::wbb_schedule_crosswalk()
-2022,6450,2026-11-13 16:43:42 UTC,wehoop::wbb_schedule_crosswalk()
-2023,6314,2026-11-13 16:44:19 UTC,wehoop::wbb_schedule_crosswalk()
-2024,6351,2026-11-13 16:44:58 UTC,wehoop::wbb_schedule_crosswalk()
-2025,6472,2026-11-13 16:45:36 UTC,wehoop::wbb_schedule_crosswalk()
+2021,5040,2026-11-25 13:04:50 UTC,wehoop::wbb_schedule_crosswalk()
+2022,6450,2026-11-25 13:05:27 UTC,wehoop::wbb_schedule_crosswalk()
+2023,6314,2026-11-25 13:06:15 UTC,wehoop::wbb_schedule_crosswalk()
+2024,6351,2026-11-25 13:07:03 UTC,wehoop::wbb_schedule_crosswalk()
+2025,6472,2026-11-25 13:07:55 UTC,wehoop::wbb_schedule_crosswalk()
 2026,6521,2026-11-13 16:46:14 UTC,wehoop::wbb_schedule_crosswalk()
 2027,6347,2026-11-25 12:17:43 UTC,wehoop::wbb_schedule_crosswalk()
