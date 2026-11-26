@@ -192,6 +192,65 @@ def test_publish_merges_the_new_season_into_the_released_card(tmp_path, monkeypa
     assert card["gates_by_season"] == {"2025": gate_2025, "2027": gate_2027}
 
 
+class _Resp:
+    def __init__(self, status_code: int, body: dict | None = None):
+        self.status_code, self._body = status_code, body
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise RuntimeError(f"HTTP {self.status_code}")
+
+    def json(self):
+        return self._body
+
+
+def test_fetch_release_card_404_means_a_fresh_card():
+    from wbb_model_publish.artifacts import fetch_release_card
+
+    urls = []
+
+    def get(url, timeout):
+        urls.append(url)
+        return _Resp(404)
+
+    assert fetch_release_card("wbb_ratings", "o/r", "wbb_ratings_card.json", get=get) is None
+    assert urls == ["https://github.com/o/r/releases/download/wbb_ratings/wbb_ratings_card.json"]
+
+
+@pytest.mark.parametrize("status", [401, 403, 500, 503])
+def test_fetch_release_card_raises_on_any_other_failure(status):
+    # a fresh card here would overwrite every published season with this run's
+    from wbb_model_publish.artifacts import fetch_release_card
+
+    with pytest.raises(RuntimeError, match=str(status)):
+        fetch_release_card("t", "o/r", "c.json", get=lambda url, timeout: _Resp(status))
+
+
+def test_fetch_release_card_returns_the_parsed_card():
+    from wbb_model_publish.artifacts import fetch_release_card
+
+    card = {"tag": "wbb_ratings", "seasons": [2025]}
+    assert (
+        fetch_release_card("t", "o/r", "c.json", get=lambda url, timeout: _Resp(200, card)) == card
+    )
+
+
+def test_rebuilding_a_released_season_replaces_it_and_keeps_the_others(tmp_path):
+    old = {"applied": True, "teams": 300}
+    new = {"applied": True, "teams": 362}
+    released = {
+        "seasons": [2024, 2025],
+        "rows_by_season": {"2024": 350, "2025": 300},
+        "gates_by_season": {"2024": {"applied": True, "teams": 350}, "2025": old},
+    }
+    results = [{"season": 2025, "rows": 362, "path": "x.parquet", "gate": new}]
+    path = write_ratings_card(results, tmp_path, existing=released)
+    card = json.loads(path.read_text(encoding="utf-8"))
+    assert card["seasons"] == [2024, 2025]
+    assert card["rows_by_season"] == {"2024": 350, "2025": 362}
+    assert card["gates_by_season"] == {"2024": {"applied": True, "teams": 350}, "2025": new}
+
+
 def _league_like_ratings(
     n: int = MIN_GATED_TEAMS, *, em_scale: float = 1.0, games: int = 30
 ) -> pl.DataFrame:

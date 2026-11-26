@@ -30,6 +30,13 @@ on:
 permissions:
   contents: read
 
+# The card is fetched before the build and uploaded after it, so two
+# overlapping runs (a long backfill dispatch + the daily cron) would let the
+# later uploader drop the other's seasons. Queue them instead.
+concurrency:
+  group: wbb-models
+  cancel-in-progress: false
+
 env:
   PUBLISH_REPO: sportsdataverse/sportsdataverse-data
 
