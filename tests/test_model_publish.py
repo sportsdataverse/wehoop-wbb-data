@@ -150,6 +150,48 @@ def test_cli_build_only_writes_files_and_skips_upload(tmp_path, monkeypatch):
     assert (tmp_path / "wbb_ratings_card.json").exists()
 
 
+def test_publish_merges_the_new_season_into_the_released_card(tmp_path, monkeypatch):
+    """A daily 2027 run must not drop the published 2025 season or its gate record."""
+    import wbb_model_publish.cli as cli
+
+    gate_2025 = {"applied": True, "teams": 360, "adj_em_sd": 19.8}
+    gate_2027 = {"applied": True, "teams": 362, "adj_em_sd": 20.1}
+    released = {
+        "tag": "wbb_ratings",
+        "seasons": [2025],
+        "rows_by_season": {"2025": 362},
+        "gates_by_season": {"2025": gate_2025},
+    }
+    fetched = []
+
+    def fake_fetch(tag, repo, name):
+        fetched.append((tag, repo, name))
+        return released
+
+    monkeypatch.setattr(cli, "fetch_release_card", fake_fetch)
+    monkeypatch.setattr(
+        cli,
+        "build_ratings",
+        lambda seasons, out, **kw: [
+            {"season": 2027, "rows": 364, "path": "x.parquet", "gate": gate_2027}
+        ],
+    )
+    monkeypatch.setattr(
+        cli, "upload_artifacts", lambda *a, **k: {"uploaded": 0, "tag": "wbb_ratings"}
+    )
+
+    rc = main(["ratings", "--seasons", "2027", "--out", str(tmp_path)])
+
+    assert rc == 0
+    assert fetched == [
+        ("wbb_ratings", "sportsdataverse/sportsdataverse-data", "wbb_ratings_card.json")
+    ]
+    card = json.loads((tmp_path / "wbb_ratings_card.json").read_text(encoding="utf-8"))
+    assert card["seasons"] == [2025, 2027]
+    assert card["rows_by_season"] == {"2025": 362, "2027": 364}
+    assert card["gates_by_season"] == {"2025": gate_2025, "2027": gate_2027}
+
+
 def _league_like_ratings(
     n: int = MIN_GATED_TEAMS, *, em_scale: float = 1.0, games: int = 30
 ) -> pl.DataFrame:

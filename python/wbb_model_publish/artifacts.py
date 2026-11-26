@@ -53,6 +53,25 @@ def _gh_release_exists(tag: str, repo: str) -> bool:
     return r.returncode == 0
 
 
+def fetch_release_card(tag: str, repo: str, name: str, *, get=None) -> dict | None:
+    """Download the published ``name`` card from the ``tag`` release; ``None`` if absent.
+
+    Only a 404 (no release yet, or no such asset) means "start a fresh card".
+    Every other failure raises: falling back to a fresh card would overwrite
+    the published per-season record with this run's seasons only. ``get`` is
+    injectable for hermetic testing.
+    """
+    if get is None:
+        import requests
+
+        get = requests.get
+    resp = get(f"https://github.com/{repo}/releases/download/{tag}/{name}", timeout=60)
+    if resp.status_code == 404:
+        return None
+    resp.raise_for_status()
+    return resp.json()
+
+
 def upload_artifacts(
     artifacts_dir,
     tag: str,

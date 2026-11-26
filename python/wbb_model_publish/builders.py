@@ -273,11 +273,12 @@ def build_player_value(seasons: list[int], out_dir, *, compute=None) -> list[dic
     )
 
 
-def write_ratings_card(results: list[dict], out_dir) -> Path:
-    """Write the ``wbb_ratings`` model card next to the season parquet."""
+def write_ratings_card(results: list[dict], out_dir, *, existing: dict | None = None) -> Path:
+    """Write the ``wbb_ratings`` model card next to the season parquet, merged into ``existing``."""
     return _write_card(
         results,
         out_dir,
+        existing=existing,
         tag="wbb_ratings",
         grain="one row per team per season",
         source=(
@@ -297,11 +298,12 @@ def write_ratings_card(results: list[dict], out_dir) -> Path:
     )
 
 
-def write_player_value_card(results: list[dict], out_dir) -> Path:
-    """Write the ``wbb_player_value`` model card next to the season parquet."""
+def write_player_value_card(results: list[dict], out_dir, *, existing: dict | None = None) -> Path:
+    """Write the ``wbb_player_value`` model card next to the season parquet, merged into ``existing``."""
     return _write_card(
         results,
         out_dir,
+        existing=existing,
         tag="wbb_player_value",
         grain="one row per (player_id, season, team_id)",
         source=("sdv-py sportsdataverse.wbb.wbb_box_bpm() over the released ESPN player boxscores"),
@@ -367,20 +369,32 @@ def write_player_value_coefficients(out_dir, *, league: str = "womens", load=Non
     return path
 
 
-def _write_card(results, out_dir, *, tag, grain, source, notes) -> Path:
+def _write_card(results, out_dir, *, tag, grain, source, notes, existing=None) -> Path:
+    """Write ``{tag}_card.json``, merged into the ``existing`` published card.
+
+    A daily run builds one season; the release card covers every season ever
+    published. Seasons are the sorted union, a rebuilt season's rows/gate
+    entries are replaced, and every other season's record is kept untouched.
+    """
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    prev = existing or {}
+    built = {str(r["season"]) for r in results}
+    seasons = sorted({int(s) for s in prev.get("seasons", [])} | {r["season"] for r in results})
+    rows = {k: v for k, v in prev.get("rows_by_season", {}).items() if k not in built}
+    rows.update({str(r["season"]): r["rows"] for r in results})
+    gates = {k: v for k, v in prev.get("gates_by_season", {}).items() if k not in built}
+    gates.update({str(r["season"]): r["gate"] for r in results if r.get("gate")})
     card = {
         "tag": tag,
         "grain": grain,
         "source": source,
-        "seasons": [r["season"] for r in results],
-        "rows_by_season": {str(r["season"]): r["rows"] for r in results},
+        "seasons": seasons,
+        "rows_by_season": {str(s): rows[str(s)] for s in seasons if str(s) in rows},
         "notes": notes,
     }
-    gates = {str(r["season"]): r["gate"] for r in results if r.get("gate")}
     if gates:
-        card["gates_by_season"] = gates
+        card["gates_by_season"] = {str(s): gates[str(s)] for s in seasons if str(s) in gates}
     path = out_dir / f"{tag}_card.json"
     path.write_text(json.dumps(card, indent=2) + "\n", encoding="utf-8")
     print(f"card: {path}")

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 
-from .artifacts import upload_artifacts
+from .artifacts import fetch_release_card, upload_artifacts
 from .builders import (
     build_player_value,
     build_ratings,
@@ -12,9 +12,9 @@ from .builders import (
 )
 
 
-def _write_player_value_sidecars(results, out_dir):
+def _write_player_value_sidecars(results, out_dir, *, existing=None):
     """Card + the fitted coefficient vector, both picked up by the upload pattern."""
-    path = write_player_value_card(results, out_dir)
+    path = write_player_value_card(results, out_dir, existing=existing)
     write_player_value_coefficients(out_dir)
     return path
 
@@ -58,8 +58,13 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _run(args, builder, card_writer, stem: str) -> int:
+    # fetch BEFORE the build so a non-404 download failure aborts before any
+    # upload; the card is then merged, never overwritten with this run's seasons
+    existing = (
+        None if args.build_only else fetch_release_card(args.tag, args.repo, f"{stem}_card.json")
+    )
     results = builder(_seasons(args.seasons), args.out)
-    card_writer(results, args.out)
+    card_writer(results, args.out, existing=existing)
     total = sum(r["rows"] for r in results)
     if args.build_only:
         print(f"{stem}: built seasons={len(results)} rows={total} -> {args.out} (build-only)")
